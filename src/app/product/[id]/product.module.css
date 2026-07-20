@@ -1,0 +1,103 @@
+.productPage {
+  display: flex;
+  gap: 50px;
+  padding: 60px 0;
+}
+
+.gallery {
+  flex: 1;
+  background-color: var(--color-white);
+  border: 1px solid var(--color-border);
+  padding: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.galleryImg {
+  max-width: 100%;
+  height: auto;
+}
+
+.details {
+  flex: 1;
+}
+
+.brand {
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+
+.name {
+  font-size: 2.5rem;
+  font-weight: 900;
+  margin-bottom: 20px;
+  line-height: 1.1;
+  color: var(--color-black);
+}
+
+.price {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: var(--color-primary);
+  margin-bottom: 40px;
+}
+
+.selectorTitle {
+  font-weight: 800;
+  margin-bottom: 15px;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+}
+
+.sizeGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 40px;
+}
+
+.sizeOption {
+  border: 1px solid var(--color-border);
+  padding: 15px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 600;
+}
+
+.sizeOption:hover {
+  border-color: var(--color-black);
+  background-color: var(--color-gray-50);
+}
+
+.addToCartBtn {
+  width: 100%;
+  padding: 22px;
+  font-size: 1.2rem;
+  font-weight: 900;
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: background-color 0.3s;
+}
+
+.addToCartBtn:hover {
+  background-color: var(--color-primary-hover);
+}
+
+.description {
+  margin-top: 50px;
+  padding-top: 50px;
+  border-top: 1px solid var(--color-border);
+}
+
+.descText {
+  color: var(--color-text-muted);
+  line-height: 1.8;
+  font-size: 1.05rem;
+}
