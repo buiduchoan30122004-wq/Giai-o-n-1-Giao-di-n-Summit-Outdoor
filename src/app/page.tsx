@@ -83,16 +83,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Promotion Banner */}
-      <div className={styles.promoBanner}>
-        <div className="container">
-          <div className={styles.promoContent}>
-            <h2>Tuần Lễ Thành Viên</h2>
-            <p>Đăng ký ngay để nhận ưu đãi giảm 20% cho đơn hàng thiết bị dã ngoại đầu tiên.</p>
-            <Link href="/shop" className="btn btn-primary">Tham Gia Ngay</Link>
-          </div>
-        </div>
-      </div>
+
 
       {/* Best Sellers */}
       <section className={styles.section}>
