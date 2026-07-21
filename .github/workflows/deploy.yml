@@ -19,7 +19,7 @@ jobs:
           key: ${{ secrets.VPS_SSH_KEY }}
           password: ${{ secrets.VPS_PASSWORD }}
           source: "."
-          target: "/root"
+          target: "/var/www/summit-outdoor"
 
       - name: Build and Restart on VPS
         uses: appleboy/ssh-action@v1.0.3
@@ -29,11 +29,11 @@ jobs:
           key: ${{ secrets.VPS_SSH_KEY }}
           password: ${{ secrets.VPS_PASSWORD }}
           script: |
-            cd /root
+            cd /var/www/summit-outdoor
             
             # Cài đặt thư viện mới (nếu có) và Build lại
             yarn install
             yarn build
             
             # Khởi động lại ứng dụng qua PM2
-            pm2 restart 1 || pm2 restart trail-running-store
+            pm2 restart 0 || pm2 restart summit-outdoor
