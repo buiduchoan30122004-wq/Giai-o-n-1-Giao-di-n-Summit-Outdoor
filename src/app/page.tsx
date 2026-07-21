@@ -38,15 +38,23 @@ export default function Home() {
           <div className={styles.activityGrid}>
             <Link href="/shop" className={styles.activityCard}>
               <img src="https://images.unsplash.com/photo-1551698618-1dfe5d97d256?q=80&w=800" alt="Trail Running" />
+              <div className={styles.overlay}></div>
               <span className={styles.activityLabel}>Chạy Địa Hình</span>
             </Link>
             <Link href="/shop" className={styles.activityCard}>
               <img src="https://images.unsplash.com/photo-1538805060514-97d9cc17730c?q=80&w=800" alt="Road Running" />
+              <div className={styles.overlay}></div>
               <span className={styles.activityLabel}>Chạy Đường Nhựa</span>
             </Link>
             <Link href="/shop" className={styles.activityCard}>
               <img src="https://images.unsplash.com/photo-1621609764180-2ca554a9d6f2?q=80&w=800" alt="Hiking" />
+              <div className={styles.overlay}></div>
               <span className={styles.activityLabel}>Leo Núi & Dã Ngoại</span>
+            </Link>
+            <Link href="/shop" className={styles.activityCard}>
+              <img src="https://images.unsplash.com/photo-1582266255765-fa5cf1a1d501?q=80&w=800" alt="Accessories" />
+              <div className={styles.overlay}></div>
+              <span className={styles.activityLabel}>Phụ Kiện Thể Thao</span>
             </Link>
           </div>
         </div>
