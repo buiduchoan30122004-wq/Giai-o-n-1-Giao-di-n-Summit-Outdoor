@@ -159,41 +159,41 @@
 
 /* Partner Brands Section */
 .partnerSection {
-  background-color: #f9f9f9;
-  padding: 60px 0;
-  border-top: 1px solid #eee;
-}
-
-.partnerTitle {
-  text-align: center;
-  font-size: 1.4rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: var(--color-gray-dark);
-  margin-bottom: 40px;
-  letter-spacing: 2px;
+  background-color: var(--color-white);
+  padding: 40px 0;
+  border-top: 1px solid #f0f0f0;
 }
 
 .partnerGrid {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 60px;
-  opacity: 0.7;
-  filter: grayscale(100%);
+  flex-wrap: nowrap;
+  gap: 20px;
+  overflow-x: auto;
+  opacity: 0.5;
+  filter: grayscale(100%) contrast(50%);
   transition: all 0.3s ease;
+  scrollbar-width: none; /* Hide scrollbar for Firefox */
+}
+
+.partnerGrid::-webkit-scrollbar {
+  display: none; /* Hide scrollbar for Chrome/Safari */
 }
 
 .partnerGrid:hover {
   opacity: 1;
-  filter: grayscale(0%);
+  filter: grayscale(100%); /* Keep them gray even on hover to match the reference */
+}
+
+.partnerLogo {
+  flex-shrink: 0;
 }
 
 .partnerLogo img {
-  height: 40px;
+  height: 24px; /* Much smaller to match the image */
   object-fit: contain;
-  max-width: 150px;
+  max-width: 120px;
 }
 
 /* Brands Section */
