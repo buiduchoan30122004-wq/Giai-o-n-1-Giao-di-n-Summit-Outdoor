@@ -12,6 +12,9 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Summit Outdoor | Premium Trail Running Gear",
   description: "A premium outdoor and trail running gear retailer focused on authentic products, expert knowledge, and an active outdoor community.",
+  icons: {
+    icon: '/icon.svg?v=red',
+  }
 };
 
 export default function RootLayout({

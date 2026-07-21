@@ -1,6 +1,7 @@
 import styles from './page.module.css';
 import ProductCard from '../components/ProductCard';
 import Link from 'next/link';
+import PromoPopup from '../components/PromoPopup';
 
 export default function Home() {
   const products = [
@@ -12,6 +13,7 @@ export default function Home() {
 
   return (
     <main className={styles.main}>
+      <PromoPopup />
       {/* Hero */}
       <section className={styles.hero}>
         <div className="container" style={{ width: '100%' }}>
