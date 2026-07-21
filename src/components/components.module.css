@@ -48,6 +48,18 @@
   text-transform: uppercase;
   letter-spacing: -1.5px;
   color: var(--color-black);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logoIcon {
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+.logo:hover .logoIcon {
+  transform: rotate(-5deg) scale(1.05);
 }
 
 .logo span {
@@ -109,21 +121,33 @@
   gap: 30px;
 }
 
-.brandBarInner span {
+.brandItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   font-weight: 900;
-  font-size: 1.4rem;
+  font-size: 1.05rem;
   color: var(--color-text-muted);
   text-transform: uppercase;
   letter-spacing: 1px;
-  opacity: 0.6;
+  opacity: 0.5;
   transition: all 0.3s ease;
   font-family: 'Inter', sans-serif;
 }
 
-.brandBarInner span:hover {
+.brandItem:hover {
   opacity: 1;
   color: var(--color-black);
   cursor: pointer;
+}
+
+.brandLogo {
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+.brandItem:hover .brandLogo {
+  transform: scale(1.15);
 }
 
 /* FOOTER - Salomon Style */
@@ -142,11 +166,23 @@
 }
 
 .footerBrand {
-  font-size: 2.5rem;
+  font-size: 2.2rem;
   font-weight: 900;
   letter-spacing: -2px;
   margin-bottom: 25px;
   text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.footerLogoIcon {
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+.footerBrand:hover .footerLogoIcon {
+  transform: rotate(5deg) scale(1.05);
 }
 
 .footerBrand span {
