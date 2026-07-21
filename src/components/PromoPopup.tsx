@@ -14,8 +14,12 @@ const PromoPopup = () => {
     fullName: '',
     email: '',
     phone: '',
-    favoriteBrand: ''
+    favoriteBrand: '',
+    experienceLevel: '',
+    interests: [] as string[]
   });
+
+  const [interestError, setInterestError] = useState('');
 
   // 2s Delay trigger
   useEffect(() => {
@@ -43,18 +47,40 @@ const PromoPopup = () => {
     });
   };
 
+  const handleInterestChange = (interest: string) => {
+    setFormData(prev => {
+      const current = prev.interests;
+      if (current.includes(interest)) {
+        setInterestError('');
+        return { ...prev, interests: current.filter(i => i !== interest) };
+      } else {
+        if (current.length >= 2) {
+          setInterestError('Bạn chỉ được chọn tối đa 2 mục');
+          return prev;
+        }
+        setInterestError('');
+        return { ...prev, interests: [...current, interest] };
+      }
+    });
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
     try {
       // Send data to our internal Next.js API route
+      const payload = {
+        ...formData,
+        interests: formData.interests.join(', ')
+      };
+
       const response = await fetch('/api/subscribe', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
       });
 
       if (response.ok) {
@@ -165,6 +191,45 @@ const PromoPopup = () => {
                     <option value="Salomon">Salomon</option>
                     <option value="Altra">Altra</option>
                   </select>
+                </div>
+
+                <div className={styles.formGroup}>
+                  <label className={styles.label}>Trình độ hiện tại *</label>
+                  <select 
+                    name="experienceLevel" 
+                    required 
+                    className={styles.select}
+                    value={formData.experienceLevel}
+                    onChange={handleChange}
+                  >
+                    <option value="" disabled>-- Chọn trình độ --</option>
+                    <option value="Mới bắt đầu">Mới bắt đầu</option>
+                    <option value="Đã chạy road, muốn chuyển sang trail">Đã chạy road, muốn chuyển sang trail</option>
+                    <option value="Chạy trail dưới 2 năm">Chạy trail dưới 2 năm</option>
+                    <option value="Chạy trail trên 2 năm">Chạy trail trên 2 năm</option>
+                  </select>
+                </div>
+
+                <div className={styles.formGroup}>
+                  <label className={styles.label}>
+                    Bạn quan tâm điều gì nhất? (Chọn tối đa 2)
+                    {interestError && <span className={styles.errorText}> - {interestError}</span>}
+                  </label>
+                  <div className={styles.checkboxGroup}>
+                    {[
+                      'Chọn giày phù hợp', 'Đồng hồ GPS', 'Balo/Nước chạy trail', 
+                      'Quần áo chạy trail', 'Kỹ thuật chạy trail', 'Review sản phẩm', 'Khuyến mãi'
+                    ].map(interest => (
+                      <label key={interest} className={styles.checkboxLabel}>
+                        <input 
+                          type="checkbox" 
+                          checked={formData.interests.includes(interest)}
+                          onChange={() => handleInterestChange(interest)}
+                        />
+                        {interest}
+                      </label>
+                    ))}
+                  </div>
                 </div>
 
                 <button type="submit" className={styles.submitBtn} disabled={isLoading}>
