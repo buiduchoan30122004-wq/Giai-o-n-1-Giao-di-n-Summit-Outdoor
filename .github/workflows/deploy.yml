@@ -8,7 +8,20 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy to VPS via SSH
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Copy files to VPS via SCP
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          password: ${{ secrets.VPS_PASSWORD }}
+          source: "."
+          target: "/root"
+
+      - name: Build and Restart on VPS
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.VPS_HOST }}
@@ -16,15 +29,11 @@ jobs:
           key: ${{ secrets.VPS_SSH_KEY }}
           password: ${{ secrets.VPS_PASSWORD }}
           script: |
-            # ⚠️ QUAN TRỌNG: Sửa lại đường dẫn này thành thư mục chứa code trên VPS của bạn
-            cd /var/www/Giai-o-n-1-Giao-di-n-Summit-Outdoor
-            
-            # Kéo code mới nhất từ GitHub
-            git pull origin main
+            cd /root
             
             # Cài đặt thư viện mới (nếu có) và Build lại
             yarn install
             yarn build
             
-            # Khởi động lại ứng dụng qua PM2 (Sửa tên app nếu cần)
-            pm2 restart trail-running-store || pm2 start yarn --name "trail-running-store" -- start
+            # Khởi động lại ứng dụng qua PM2
+            pm2 restart 1 || pm2 restart trail-running-store
