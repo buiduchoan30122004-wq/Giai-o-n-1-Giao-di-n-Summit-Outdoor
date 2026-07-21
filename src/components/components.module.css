@@ -211,17 +211,17 @@
 
 .productBrand {
   color: var(--color-text-muted);
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   text-transform: uppercase;
   font-weight: 700;
   margin-bottom: 5px;
 }
 
 .productName {
-  font-weight: 800;
-  font-size: 1.1rem;
-  margin-bottom: 15px;
-  line-height: 1.3;
+  font-weight: 700;
+  font-size: 0.95rem;
+  margin-bottom: 12px;
+  line-height: 1.4;
   flex-grow: 1;
   text-transform: uppercase;
   color: var(--color-black);
@@ -230,5 +230,5 @@
 .productPrice {
   color: var(--color-black);
   font-weight: 800;
-  font-size: 1.3rem;
+  font-size: 1.1rem;
 }

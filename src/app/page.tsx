@@ -18,11 +18,11 @@ export default function Home() {
       <section className={styles.hero}>
         <div className="container" style={{ width: '100%' }}>
           <div className={styles.heroContent}>
-            <h1 className={styles.heroTitle}>Tomorrow Is Yours</h1>
-            <p className={styles.heroDesc}>Unleash your potential on the trails. Discover the new Spring/Summer collection designed for peak performance.</p>
+            <h1 className={styles.heroTitle}>Đánh Thức Tiềm Năng</h1>
+            <p className={styles.heroDesc}>Chinh phục mọi địa hình với bộ sưu tập Xuân/Hè mới nhất. Trải nghiệm sự khác biệt trên từng bước chạy.</p>
             <div className={styles.heroBtns}>
-              <Link href="/shop" className="btn btn-primary">Shop Men</Link>
-              <Link href="/shop" className="btn btn-secondary">Shop Women</Link>
+              <Link href="/shop" className="btn btn-primary">Mua Cho Nam</Link>
+              <Link href="/shop" className="btn btn-secondary">Mua Cho Nữ</Link>
             </div>
           </div>
         </div>
@@ -32,20 +32,20 @@ export default function Home() {
       <section className={styles.section}>
         <div className="container">
           <div className={styles.sectionHeader}>
-            <h2 className={styles.sectionTitle}>Shop by Activity</h2>
+            <h2 className={styles.sectionTitle}>Theo Hoạt Động</h2>
           </div>
           <div className={styles.activityGrid}>
             <Link href="/shop" className={styles.activityCard}>
               <img src="https://images.unsplash.com/photo-1551698618-1dfe5d97d256?q=80&w=800" alt="Trail Running" />
-              <span className={styles.activityLabel}>Trail Running</span>
+              <span className={styles.activityLabel}>Chạy Địa Hình</span>
             </Link>
             <Link href="/shop" className={styles.activityCard}>
               <img src="https://images.unsplash.com/photo-1538805060514-97d9cc17730c?q=80&w=800" alt="Road Running" />
-              <span className={styles.activityLabel}>Road Running</span>
+              <span className={styles.activityLabel}>Chạy Đường Nhựa</span>
             </Link>
             <Link href="/shop" className={styles.activityCard}>
               <img src="https://images.unsplash.com/photo-1621609764180-2ca554a9d6f2?q=80&w=800" alt="Hiking" />
-              <span className={styles.activityLabel}>Hiking</span>
+              <span className={styles.activityLabel}>Leo Núi & Dã Ngoại</span>
             </Link>
           </div>
         </div>
@@ -55,8 +55,8 @@ export default function Home() {
       <section className={styles.section}>
         <div className="container">
           <div className={styles.sectionHeader}>
-            <h2 className={styles.sectionTitle}>New Arrivals</h2>
-            <Link href="/shop" className={styles.viewAll}>View All</Link>
+            <h2 className={styles.sectionTitle}>Hàng Mới Về</h2>
+            <Link href="/shop" className={styles.viewAll}>Xem Tất Cả</Link>
           </div>
           <div className={styles.productGrid}>
             {products.map(p => (
@@ -72,9 +72,9 @@ export default function Home() {
       <div className={styles.promoBanner}>
         <div className="container">
           <div className={styles.promoContent}>
-            <h2>Member Week</h2>
-            <p>Sign up now to get 20% off your first trail gear purchase.</p>
-            <Link href="/shop" className="btn btn-primary">Join Summit Outdoor</Link>
+            <h2>Tuần Lễ Thành Viên</h2>
+            <p>Đăng ký ngay để nhận ưu đãi giảm 20% cho đơn hàng thiết bị dã ngoại đầu tiên.</p>
+            <Link href="/shop" className="btn btn-primary">Tham Gia Ngay</Link>
           </div>
         </div>
       </div>
@@ -83,8 +83,8 @@ export default function Home() {
       <section className={styles.section}>
         <div className="container">
           <div className={styles.sectionHeader}>
-            <h2 className={styles.sectionTitle}>Best Sellers</h2>
-            <Link href="/shop" className={styles.viewAll}>View All</Link>
+            <h2 className={styles.sectionTitle}>Bán Chạy Nhất</h2>
+            <Link href="/shop" className={styles.viewAll}>Xem Tất Cả</Link>
           </div>
           <div className={styles.productGrid}>
             {[...products].reverse().map(p => (

@@ -7,42 +7,42 @@ export default function Footer() {
         <div>
           <div className={styles.footerBrand}>SUMMIT<span>OUTDOOR</span></div>
           <p className={styles.footerDesc}>
-            A premium outdoor and trail running gear retailer focused on authentic products, expert knowledge, and an active outdoor community.
+            Hệ thống cửa hàng phân phối đồ chạy bộ địa hình và dã ngoại cao cấp, tập trung vào sản phẩm chính hãng, tư vấn chuyên sâu và xây dựng cộng đồng đam mê thể thao.
           </p>
         </div>
         <div>
-          <h3 className={styles.footerColTitle}>Shop</h3>
+          <h3 className={styles.footerColTitle}>Mua Sắm</h3>
           <ul className={styles.footerList}>
-            <li>Men's Gear</li>
-            <li>Women's Gear</li>
-            <li>Trail Running Shoes</li>
-            <li>Hiking Boots</li>
-            <li>Accessories</li>
+            <li>Đồ Cho Nam</li>
+            <li>Đồ Cho Nữ</li>
+            <li>Giày Chạy Địa Hình</li>
+            <li>Giày Leo Núi</li>
+            <li>Phụ Kiện Thể Thao</li>
           </ul>
         </div>
         <div>
-          <h3 className={styles.footerColTitle}>Support</h3>
+          <h3 className={styles.footerColTitle}>Hỗ Trợ</h3>
           <ul className={styles.footerList}>
-            <li>Track Order</li>
-            <li>Returns & Refunds</li>
-            <li>Warranty</li>
-            <li>Contact Us</li>
-            <li>FAQ</li>
+            <li>Tra Cứu Đơn Hàng</li>
+            <li>Chính Sách Đổi Trả</li>
+            <li>Chính Sách Bảo Hành</li>
+            <li>Liên Hệ</li>
+            <li>Câu Hỏi Thường Gặp</li>
           </ul>
         </div>
         <div>
-          <h3 className={styles.footerColTitle}>Explore</h3>
+          <h3 className={styles.footerColTitle}>Khám Phá</h3>
           <ul className={styles.footerList}>
-            <li>About Summit</li>
-            <li>Community Events</li>
-            <li>Blog & Stories</li>
-            <li>Careers</li>
+            <li>Về Summit Outdoor</li>
+            <li>Sự Kiện Cộng Đồng</li>
+            <li>Blog & Câu Chuyện</li>
+            <li>Tuyển Dụng</li>
           </ul>
         </div>
       </div>
       <div className={styles.copyright}>
         <div className="container">
-          &copy; {new Date().getFullYear()} Summit Outdoor. All rights reserved. Salomon-inspired minimal architecture.
+          &copy; {new Date().getFullYear()} Summit Outdoor. Đã đăng ký bản quyền.
         </div>
       </div>
     </footer>

@@ -21,17 +21,18 @@
 }
 
 .heroTitle {
-  font-size: 5rem;
+  font-size: 3.5rem;
   font-weight: 900;
   text-transform: uppercase;
-  margin-bottom: 25px;
-  line-height: 0.95;
+  margin-bottom: 20px;
+  line-height: 1.1;
 }
 
 .heroDesc {
-  font-size: 1.3rem;
-  margin-bottom: 40px;
+  font-size: 1.1rem;
+  margin-bottom: 35px;
   max-width: 600px;
+  line-height: 1.6;
 }
 
 .heroBtns {
@@ -53,17 +54,17 @@
 }
 
 .sectionTitle {
-  font-size: 3rem;
-  font-weight: 900;
+  font-size: 2.2rem;
+  font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: -1px;
+  letter-spacing: -0.5px;
 }
 
 .viewAll {
-  font-weight: 800;
+  font-weight: 700;
   text-transform: uppercase;
   text-decoration: underline;
-  font-size: 1rem;
+  font-size: 0.9rem;
 }
 
 .viewAll:hover {
@@ -100,10 +101,10 @@
   bottom: 30px;
   left: 30px;
   color: var(--color-white);
-  font-size: 2.2rem;
-  font-weight: 900;
+  font-size: 1.6rem;
+  font-weight: 800;
   text-transform: uppercase;
-  line-height: 1;
+  line-height: 1.2;
 }
 
 /* Product Grid */
@@ -132,14 +133,15 @@
 }
 
 .promoContent h2 {
-  font-size: 4.5rem;
-  margin-bottom: 20px;
+  font-size: 3rem;
+  margin-bottom: 15px;
   color: var(--color-primary);
-  font-weight: 900;
+  font-weight: 800;
   text-transform: uppercase;
 }
 
 .promoContent p {
-  font-size: 1.3rem;
-  margin-bottom: 40px;
+  font-size: 1.1rem;
+  margin-bottom: 30px;
+  line-height: 1.6;
 }
