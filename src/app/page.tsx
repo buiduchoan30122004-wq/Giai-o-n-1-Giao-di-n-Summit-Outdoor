@@ -29,6 +29,20 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Brands Section */}
+      <section className={styles.brandsSection}>
+        <div className="container">
+          <div className={styles.brandGrid}>
+            <span className={styles.brandItem}>SALOMON</span>
+            <span className={styles.brandItem}>HOKA</span>
+            <span className={styles.brandItem}>NIKE TRAIL</span>
+            <span className={styles.brandItem}>ASICS</span>
+            <span className={styles.brandItem}>THE NORTH FACE</span>
+            <span className={styles.brandItem}>GARMIN</span>
+          </div>
+        </div>
+      </section>
+
       {/* Shop by Activity */}
       <section className={styles.section}>
         <div className="container">
@@ -92,6 +106,33 @@ export default function Home() {
                 <ProductCard {...p} />
               </Link>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Partner Brands */}
+      <section className={`${styles.section} ${styles.partnerSection}`}>
+        <div className="container">
+          <h2 className={styles.partnerTitle}>Thương Hiệu Đồng Hành</h2>
+          <div className={styles.partnerGrid}>
+            <div className={styles.partnerLogo}>
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Salomon_logo.svg/2560px-Salomon_logo.svg.png" alt="Salomon" />
+            </div>
+            <div className={styles.partnerLogo}>
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Hoka_One_One_logo.svg/2560px-Hoka_One_One_logo.svg.png" alt="Hoka" />
+            </div>
+            <div className={styles.partnerLogo}>
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Garmin_logo.svg/2560px-Garmin_logo.svg.png" alt="Garmin" />
+            </div>
+            <div className={styles.partnerLogo}>
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/The_North_Face_logo.svg/2560px-The_North_Face_logo.svg.png" alt="The North Face" />
+            </div>
+            <div className={styles.partnerLogo}>
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Logo_NIKE.svg/2560px-Logo_NIKE.svg.png" alt="Nike" />
+            </div>
+            <div className={styles.partnerLogo}>
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Columbia_Sportswear_logo.svg/2560px-Columbia_Sportswear_logo.svg.png" alt="Columbia" />
+            </div>
           </div>
         </div>
       </section>
