@@ -6,7 +6,7 @@ export async function POST(request: Request) {
 
     // WARNING: Replace this URL with your actual Google Apps Script Web App URL
     // You will get this URL after following the setup instructions for Google Sheets
-    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw3xWIjsfWFMak-7vfS77JbL2-4LvDWFHdKHQMuxnW7dwk3Enw7NrhyIwdI7HxUHrXA8w/exec';
+    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzPKq7oWAuMOA2DujKp3_crxnaaJrw7Ul3XMqQwmtHsU8LVeakvcSj7FDGsPHXF5iPDaw/exec';
 
     if (!GOOGLE_SCRIPT_URL) {
         console.warn("Google Sheets Webhook URL is not configured. Data won't be saved to Sheets.");
