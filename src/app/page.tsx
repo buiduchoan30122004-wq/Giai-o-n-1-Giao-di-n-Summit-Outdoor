@@ -14,6 +14,21 @@ export default function Home() {
   return (
     <main className={styles.main}>
       <PromoPopup />
+      
+      {/* Brand Bar */}
+      <div className={styles.brandBar}>
+        <div className="container">
+          <div className={styles.brandBarInner}>
+            <span>SALOMON</span>
+            <span>HOKA</span>
+            <span>NIKE TRAIL</span>
+            <span>ASICS</span>
+            <span>ALTRA</span>
+            <span>LA SPORTIVA</span>
+          </div>
+        </div>
+      </div>
+
       {/* Hero */}
       <section className={styles.hero}>
         <div className="container" style={{ width: '100%' }}>
