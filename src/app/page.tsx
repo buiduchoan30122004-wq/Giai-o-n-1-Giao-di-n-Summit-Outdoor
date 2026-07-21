@@ -34,25 +34,25 @@ export default function Home() {
         <div className="container">
           <div className={styles.partnerGrid}>
             <div className={styles.partnerLogo}>
-              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Asics_Logo.svg/2560px-Asics_Logo.svg.png" alt="Asics" />
+              <img src="/brands/asics.svg" alt="Asics" />
             </div>
             <div className={styles.partnerLogo}>
-              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Adidas_Logo.svg/2560px-Adidas_Logo.svg.png" alt="Adidas" />
+              <img src="/brands/adidas.svg" alt="Adidas" />
             </div>
             <div className={styles.partnerLogo}>
-              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Salomon_logo.svg/2560px-Salomon_logo.svg.png" alt="Salomon" />
+              <img src="/brands/salomon.svg" alt="Salomon" />
             </div>
             <div className={styles.partnerLogo}>
-              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Hoka_One_One_logo.svg/2560px-Hoka_One_One_logo.svg.png" alt="Hoka" />
+              <img src="/brands/hoka.svg" alt="Hoka" />
             </div>
             <div className={styles.partnerLogo}>
-              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Puma_Logo.svg/2560px-Puma_Logo.svg.png" alt="Puma" />
+              <img src="/brands/puma.svg" alt="Puma" />
             </div>
             <div className={styles.partnerLogo}>
-              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/New_Balance_logo.svg/2560px-New_Balance_logo.svg.png" alt="New Balance" />
+              <img src="/brands/new-balance.svg" alt="New Balance" />
             </div>
             <div className={styles.partnerLogo}>
-              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Logo_NIKE.svg/2560px-Logo_NIKE.svg.png" alt="Nike" />
+              <img src="/brands/nike.svg" alt="Nike" />
             </div>
           </div>
         </div>
@@ -130,25 +130,25 @@ export default function Home() {
         <div className="container">
           <div className={styles.partnerGrid}>
             <div className={styles.partnerLogo}>
-              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Asics_Logo.svg/2560px-Asics_Logo.svg.png" alt="Asics" />
+              <img src="/brands/asics.svg" alt="Asics" />
             </div>
             <div className={styles.partnerLogo}>
-              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Adidas_Logo.svg/2560px-Adidas_Logo.svg.png" alt="Adidas" />
+              <img src="/brands/adidas.svg" alt="Adidas" />
             </div>
             <div className={styles.partnerLogo}>
-              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Salomon_logo.svg/2560px-Salomon_logo.svg.png" alt="Salomon" />
+              <img src="/brands/salomon.svg" alt="Salomon" />
             </div>
             <div className={styles.partnerLogo}>
-              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Hoka_One_One_logo.svg/2560px-Hoka_One_One_logo.svg.png" alt="Hoka" />
+              <img src="/brands/hoka.svg" alt="Hoka" />
             </div>
             <div className={styles.partnerLogo}>
-              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Puma_Logo.svg/2560px-Puma_Logo.svg.png" alt="Puma" />
+              <img src="/brands/puma.svg" alt="Puma" />
             </div>
             <div className={styles.partnerLogo}>
-              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/New_Balance_logo.svg/2560px-New_Balance_logo.svg.png" alt="New Balance" />
+              <img src="/brands/new-balance.svg" alt="New Balance" />
             </div>
             <div className={styles.partnerLogo}>
-              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Logo_NIKE.svg/2560px-Logo_NIKE.svg.png" alt="Nike" />
+              <img src="/brands/nike.svg" alt="Nike" />
             </div>
           </div>
         </div>
