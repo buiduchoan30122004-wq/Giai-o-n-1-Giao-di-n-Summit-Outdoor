@@ -40,6 +40,20 @@ export default function Header() {
           </div>
         </div>
       </div>
+
+      {/* Brand Bar (Sticky along with Header) */}
+      <div className={styles.brandBar}>
+        <div className="container">
+          <div className={styles.brandBarInner}>
+            <span>SALOMON</span>
+            <span>HOKA</span>
+            <span>NIKE TRAIL</span>
+            <span>ASICS</span>
+            <span>ALTRA</span>
+            <span>LA SPORTIVA</span>
+          </div>
+        </div>
+      </div>
     </header>
   );
 }
