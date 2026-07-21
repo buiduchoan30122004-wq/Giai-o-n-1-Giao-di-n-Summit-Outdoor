@@ -169,7 +169,7 @@
   justify-content: space-between;
   align-items: center;
   flex-wrap: nowrap;
-  gap: 20px;
+  gap: 40px;
   overflow-x: auto;
   opacity: 0.5;
   filter: grayscale(100%) contrast(50%);
@@ -191,9 +191,9 @@
 }
 
 .partnerLogo img {
-  height: 24px; /* Much smaller to match the image */
+  height: 40px;
   object-fit: contain;
-  max-width: 120px;
+  max-width: 150px;
 }
 
 /* Brands Section */
