@@ -29,16 +29,31 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Brands Section */}
-      <section className={styles.brandsSection}>
+      {/* Brands Section (Logo Strip) */}
+      <section className={styles.partnerSection}>
         <div className="container">
-          <div className={styles.brandGrid}>
-            <span className={styles.brandItem}>SALOMON</span>
-            <span className={styles.brandItem}>HOKA</span>
-            <span className={styles.brandItem}>NIKE TRAIL</span>
-            <span className={styles.brandItem}>ASICS</span>
-            <span className={styles.brandItem}>THE NORTH FACE</span>
-            <span className={styles.brandItem}>GARMIN</span>
+          <div className={styles.partnerGrid}>
+            <div className={styles.partnerLogo}>
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Asics_Logo.svg/2560px-Asics_Logo.svg.png" alt="Asics" />
+            </div>
+            <div className={styles.partnerLogo}>
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Adidas_Logo.svg/2560px-Adidas_Logo.svg.png" alt="Adidas" />
+            </div>
+            <div className={styles.partnerLogo}>
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Salomon_logo.svg/2560px-Salomon_logo.svg.png" alt="Salomon" />
+            </div>
+            <div className={styles.partnerLogo}>
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Hoka_One_One_logo.svg/2560px-Hoka_One_One_logo.svg.png" alt="Hoka" />
+            </div>
+            <div className={styles.partnerLogo}>
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Puma_Logo.svg/2560px-Puma_Logo.svg.png" alt="Puma" />
+            </div>
+            <div className={styles.partnerLogo}>
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/New_Balance_logo.svg/2560px-New_Balance_logo.svg.png" alt="New Balance" />
+            </div>
+            <div className={styles.partnerLogo}>
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Logo_NIKE.svg/2560px-Logo_NIKE.svg.png" alt="Nike" />
+            </div>
           </div>
         </div>
       </section>
