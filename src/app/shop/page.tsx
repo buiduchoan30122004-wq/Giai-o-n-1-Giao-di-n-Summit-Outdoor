@@ -4,12 +4,60 @@ import ProductCard from '../../components/ProductCard';
 
 export default function Shop() {
   const products = [
-    { id: '1', brand: 'Salomon', name: 'Speedcross 6', price: '3.250.000đ', image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=500' },
-    { id: '2', brand: 'Hoka', name: 'Speedgoat 5', price: '3.850.000đ', image: 'https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?q=80&w=500' },
-    { id: '3', brand: 'Nike', name: 'Pegasus Trail 4', price: '3.990.000đ', image: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=500' },
-    { id: '4', brand: 'Asics', name: 'Trabuco Max 2', price: '3.490.000đ', image: 'https://images.unsplash.com/photo-1511556532299-8f662fc26c06?q=80&w=500' },
-    { id: '5', brand: 'Salomon', name: 'SENSE RIDE 5', price: '3.490.000đ', image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=500' },
-    { id: '6', brand: 'Nike', name: 'Wildhorse 8', price: '3.250.000đ', image: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=500' }
+    { 
+      id: '1', 
+      brand: 'Salomon', 
+      name: 'Speedcross 6', 
+      price: '3.250.000đ', 
+      image: '/products/salomon_xt6_black.jpg',
+      status: 'New',
+      subtitle: 'Trail running shoes - Unisex'
+    },
+    { 
+      id: '2', 
+      brand: 'Hoka', 
+      name: 'Speedgoat 5', 
+      price: '3.850.000đ', 
+      image: 'https://images.unsplash.com/photo-1530541930197-ff16ac917b0e?q=80&w=500',
+      status: 'New',
+      subtitle: 'Trail running shoes - Unisex'
+    },
+    { 
+      id: '3', 
+      brand: 'Nike', 
+      name: 'Pegasus Trail 4', 
+      price: '3.990.000đ', 
+      image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=500',
+      status: '',
+      subtitle: 'Trail running shoes - Unisex'
+    },
+    { 
+      id: '4', 
+      brand: 'Asics', 
+      name: 'Trabuco Max 2', 
+      price: '3.490.000đ', 
+      image: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=500',
+      status: 'New',
+      subtitle: 'Trail running shoes - Unisex'
+    },
+    { 
+      id: '5', 
+      brand: 'Salomon', 
+      name: 'Sense Ride 5', 
+      price: '3.490.000đ', 
+      image: '/products/salomon_slab_ultraglide.jpg',
+      status: '',
+      subtitle: 'Trail running shoes - Unisex'
+    },
+    { 
+      id: '6', 
+      brand: 'Nike', 
+      name: 'Wildhorse 8', 
+      price: '3.250.000đ', 
+      image: 'https://images.unsplash.com/photo-1539185441755-769473a23570?q=80&w=500',
+      status: 'New',
+      subtitle: 'Trail running shoes - Unisex'
+    }
   ];
 
   return (
