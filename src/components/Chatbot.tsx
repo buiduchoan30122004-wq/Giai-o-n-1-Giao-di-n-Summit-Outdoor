@@ -4,12 +4,14 @@ import React, { useState, useEffect, useRef } from 'react';
 import styles from './Chatbot.module.css';
 import Link from 'next/link';
 import RecommendationPopup, { RecommendationData } from './RecommendationPopup';
+import { productsDatabase } from '../data/products';
 
 interface Message {
   sender: 'user' | 'bot';
   text: string;
   isFormLink?: boolean;
   showHotline?: boolean;
+  recommendedProducts?: any[];
 }
 
 export default function Chatbot() {
@@ -63,7 +65,79 @@ export default function Chatbot() {
     });
   };
 
-  const handleRecommendationSubmit = async (data: RecommendationData) => {
+  const getMatchingProducts = (data: RecommendationData) => {
+    const type = data.product_type;
+    const terrain = data.terrain;
+    const priority = data.priority;
+    const budget = data.budget;
+
+    const allProducts = Object.values(productsDatabase);
+    let filtered = [...allProducts];
+
+    // 1. Filter by category type
+    if (type.includes('Giày Trail') || type.includes('Giày Hiking')) {
+      filtered = allProducts.filter(p => 
+        p.id === 'xt6' || p.id === 'speedgoat' || p.id === 'pegasus' || 
+        p.id === 'slab' || p.id === 'xt4' || p.id === 'speedcross' || 
+        p.id === 'senseride' || p.id === 'wildhorse' || 
+        p.id === 'speedcross-w' || p.id === 'speedgoat-w' || p.id === 'pegasus-w'
+      );
+      
+      // Sort by relevance score
+      filtered.sort((a, b) => {
+        let scoreA = 0;
+        let scoreB = 0;
+
+        // Priority match
+        if (priority === 'Êm') {
+          if (a.specs.cushioning.includes('Max') || a.specs.cushioning.includes('Êm')) scoreA += 3;
+          if (b.specs.cushioning.includes('Max') || b.specs.cushioning.includes('Êm')) scoreB += 3;
+        } else if (priority === 'Bám tốt') {
+          if (a.specs.terrain.toLowerCase().includes('bùn') || a.features.some(f => f.toLowerCase().includes('bám'))) scoreA += 3;
+          if (b.specs.terrain.toLowerCase().includes('bùn') || b.features.some(f => f.toLowerCase().includes('bám'))) scoreB += 3;
+        } else if (priority === 'Nhẹ') {
+          if (parseInt(a.specs.weight) < 280) scoreA += 3;
+          if (parseInt(b.specs.weight) < 280) scoreB += 3;
+        }
+
+        // Terrain match
+        if (a.specs.terrain.toLowerCase().includes(terrain.toLowerCase())) scoreA += 2;
+        if (b.specs.terrain.toLowerCase().includes(terrain.toLowerCase())) scoreB += 2;
+
+        // Budget match
+        const parsePrice = (pStr: string) => parseInt(pStr.replace(/\./g, '').replace('đ', ''));
+        const priceA = parsePrice(a.price);
+        const priceB = parsePrice(b.price);
+
+        if (budget === 'Dưới 2 triệu') {
+          if (priceA < 3000000) scoreA += 2;
+          if (priceB < 3000000) scoreB += 2;
+        } else if (budget === '2–4 triệu') {
+          if (priceA >= 2000000 && priceA <= 4000000) scoreA += 2;
+          if (priceB >= 2000000 && priceB <= 4000000) scoreB += 2;
+        } else if (budget === '4–6 triệu') {
+          if (priceA >= 4000000 && priceA <= 6000000) scoreA += 2;
+          if (priceB >= 4000000 && priceB <= 6000000) scoreB += 2;
+        } else {
+          if (priceA > 5000000) scoreA += 2;
+          if (priceB > 5000000) scoreB += 2;
+        }
+
+        return scoreB - scoreA;
+      });
+
+    } else if (type.includes('Vest') || type.includes('nước')) {
+      filtered = allProducts.filter(p => p.id === 'hydration-vest' || p.id === 'flask-500' || p.id === 'trail-socks' || p.id === 'garmin-fenix');
+    } else if (type.includes('Dinh dưỡng')) {
+      filtered = allProducts.filter(p => p.id === 'gu-tabs' || p.id === 'gu-gel-real' || p.id === 'lecka-bar' || p.id === 'pillar-recovery-berry');
+    } else {
+      filtered = allProducts.filter(p => p.id === 'xt6' || p.id === 'hydration-vest' || p.id === 'trail-socks' || p.id === 'gu-tabs');
+    }
+
+    return filtered.slice(0, 4);
+  };
+
+  const handleRecommendationSubmit = (data: RecommendationData) => {
     setIsRecommendOpen(false);
 
     // Show a summary message in chat as User
@@ -87,34 +161,28 @@ export default function Chatbot() {
     // Set generating/loading state
     setIsGenerating(true);
 
-    try {
-      const response = await fetch('/api/recommend', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
+    // After 1.2 seconds, reply with exactly the 5 short bullets and the 4 products!
+    setTimeout(() => {
+      const matched = getMatchingProducts(data);
+      const botResponseText = `💡 **Kết quả tư vấn chọn sản phẩm dành cho bạn:**
 
-      if (!response.ok) {
-        throw new Error('API recommend error');
-      }
-
-      const result = await response.json();
+• 🎯 **Nhu cầu:** Đang tìm kiếm sản phẩm **${data.product_type}** phù hợp.
+• 🏃‍♂️ **Hồ sơ chạy:** Cự ly chạy **${data.distance}** trên địa hình **${data.terrain}** (${data.experience}).
+• 💡 **Tiêu chí ưu tiên:** Đề xuất tập trung vào tiêu chí **${data.priority}** trong tầm ngân sách **${data.budget}**.
+• 👟 **Thông số chân:** Size giày **${data.shoe_size || 'Chưa xác định'}** (Vấn đề chân: ${data.foot_issue.length > 0 && !data.foot_issue.includes('Không có') ? data.foot_issue.join(', ') : 'Không đáng ngại'}).
+• 💬 **Đề xuất của Summit:** 4 sản phẩm bên dưới được lọc trực quan khớp nhất với hồ sơ chạy của bạn.`;
 
       setMessages(prev => [
         ...prev,
-        { sender: 'bot', text: result.recommendation || 'Xin lỗi, hệ thống tư vấn đang bận. Bạn vui lòng thử lại sau.' }
+        {
+          sender: 'bot',
+          text: botResponseText,
+          recommendedProducts: matched,
+          showHotline: true
+        }
       ]);
-    } catch (error) {
-      console.error('Error getting recommendation:', error);
-      setMessages(prev => [
-        ...prev,
-        { sender: 'bot', text: 'Đã xảy ra lỗi kết nối với máy chủ AI. Vui lòng kiểm tra lại đường truyền của bạn.' }
-      ]);
-    } finally {
       setIsGenerating(false);
-    }
+    }, 1200);
   };
 
   // Auto-scroll to bottom of messages
@@ -284,15 +352,35 @@ export default function Chatbot() {
                   
                   {msg.isFormLink && (
                     <div className={styles.formLinkBox}>
-                      <a 
-                        href="https://script.google.com/macros/s/AKfycbzPKq7oWAuMOA2DujKp3_crxnaaJrw7Ul3XMqQwmtHsU8LVeakvcSj7FDGsPHXF5iPDaw/exec"
-                        target="_blank" 
-                        rel="noopener noreferrer" 
+                      <button 
+                        type="button"
+                        onClick={() => setIsRecommendOpen(true)}
                         className={styles.formBtn}
+                        style={{ border: 'none', width: '100%', cursor: 'pointer', display: 'block' }}
                       >
                         🔗 Điền form tư vấn tại đây
-                      </a>
+                      </button>
                       <p className={styles.formNote}>Sau khi gửi form, bạn nhắn lại ở đây để mình check và hỗ trợ đề xuất mẫu giày phù hợp ngay nhé!</p>
+                    </div>
+                  )}
+
+                  {msg.recommendedProducts && msg.recommendedProducts.length > 0 && (
+                    <div className={styles.productRow}>
+                      {msg.recommendedProducts.map((p) => (
+                        <Link 
+                          key={p.id}
+                          href={`/product/${p.id}`}
+                          className={styles.miniProductCard}
+                        >
+                          <img 
+                            src={p.image} 
+                            alt={p.name} 
+                            className={styles.miniProductImg}
+                          />
+                          <p className={styles.miniProductName}>{p.name}</p>
+                          <span className={styles.miniProductPrice}>{p.price}</span>
+                        </Link>
+                      ))}
                     </div>
                   )}
 
