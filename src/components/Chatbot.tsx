@@ -84,7 +84,7 @@ export default function Chatbot() {
     if (!text.trim()) return;
 
     // Add user message
-    const newMessages = [...messages, { sender: 'user', text }];
+    const newMessages: Message[] = [...messages, { sender: 'user', text }];
     setMessages(newMessages);
     setInputValue('');
 
