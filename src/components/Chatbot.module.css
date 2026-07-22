@@ -35,16 +35,26 @@
 }
 
 .triggerClosed {
-  background-color: transparent;
-  padding: 0;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  box-shadow: 0 4px 16px rgba(193, 18, 31, 0.4);
+  animation: pulse 2s infinite;
 }
 
-.triggerLogo {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  display: block;
+.triggerClosed:hover {
+  background-color: var(--color-primary-hover);
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(193, 18, 31, 0.5);
+  }
+  70% {
+    box-shadow: 0 0 0 12px rgba(193, 18, 31, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(193, 18, 31, 0);
+  }
 }
 
 .triggerIcon {
