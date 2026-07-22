@@ -37,9 +37,6 @@ jobs:
             rm -rf .next
             yarn build
             
-            # Chạy migration đồng bộ cột database bằng Node.js thuần túy
-            node migrate.js || true
-
             # Giải phóng cổng 3000 (nếu bị kẹt) và khởi động lại Next.js trực tiếp qua PM2 (tránh lỗi thông dịch Shell của yarn)
             npx kill-port 3000 || true
             pm2 delete summit-outdoor || true
