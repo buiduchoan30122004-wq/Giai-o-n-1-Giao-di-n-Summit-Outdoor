@@ -32,8 +32,9 @@ jobs:
           script: |
             cd /var/www/summit-outdoor
             
-            # Cài đặt thư viện mới (nếu có) và Build lại
+            # Cài đặt thư viện và ép biên dịch sqlite3 từ source để tương thích GLIBC của VPS
             yarn install
+            npm_config_build_from_source=true yarn install --force
             yarn build
             
             # Khởi động lại ứng dụng qua PM2
