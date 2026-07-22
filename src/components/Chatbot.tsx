@@ -247,7 +247,24 @@ export default function Chatbot() {
   const handleSend = (text: string) => {
     if (!text.trim()) return;
 
+    // Add user message
+    const newMessages: Message[] = [...messages, { sender: 'user', text }];
+    setMessages(newMessages);
+    setInputValue('');
+
+    // Generate bot reply
+    setTimeout(() => {
+      const reply = getBotReply(text);
+      setMessages(prev => [...prev, reply]);
+    }, 600);
+  };
+
+  const getBotReply = (text: string): Message => {
     const cleanText = text.toLowerCase().trim();
+    let replyText = '';
+    let isFormLink = false;
+
+    // Check for explicit "chốt đơn" / "mua hàng" / "tư vấn" / "phù hợp" intent
     if (
       cleanText.includes('chốt') || 
       cleanText.includes('mua') || 
@@ -268,42 +285,7 @@ export default function Chatbot() {
       cleanText.includes('giày nào') ||
       cleanText.includes('giay nao')
     ) {
-      setIsOpen(true);
-      setIsRecommendOpen(true);
-      setInputValue('');
-      return;
-    }
-
-    // Add user message
-    const newMessages: Message[] = [...messages, { sender: 'user', text }];
-    setMessages(newMessages);
-    setInputValue('');
-
-    // Generate bot reply
-    setTimeout(() => {
-      const reply = getBotReply(text);
-      setMessages(prev => [...prev, reply]);
-    }, 600);
-  };
-
-  const getBotReply = (text: string): Message => {
-    const cleanText = text.toLowerCase().trim();
-    let replyText = '';
-    let isFormLink = false;
-
-    // Check for explicit "chốt đơn" / "mua hàng" intent
-    if (
-      cleanText.includes('chốt') || 
-      cleanText.includes('mua') || 
-      cleanText.includes('đặt hàng') || 
-      cleanText.includes('dat hang') || 
-      cleanText.includes('lấy đôi') ||
-      cleanText.includes('lay doi') ||
-      cleanText.includes('lên đơn') ||
-      cleanText.includes('len don') ||
-      cleanText.includes('order')
-    ) {
-      replyText = 'Để bên mình tư vấn và giới thiệu mẫu giày trail phù hợp nhất với form chân, cự ly và nhu cầu của bạn, bạn dành chút thời gian điền thông tin vào biểu mẫu dưới đây nhé!';
+      replyText = 'Tôi cần bạn cung cấp một số thông tin để tôi chọn sản phẩm phù hợp cho bạn. Bạn dành chút thời gian điền thông tin vào biểu mẫu dưới đây nhé!';
       isFormLink = true;
     } else {
       // Search in FAQs
