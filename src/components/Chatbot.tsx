@@ -257,7 +257,16 @@ export default function Chatbot() {
       cleanText.includes('lay doi') ||
       cleanText.includes('lên đơn') ||
       cleanText.includes('len don') ||
-      cleanText.includes('order')
+      cleanText.includes('order') ||
+      cleanText.includes('phù hợp') ||
+      cleanText.includes('phu hop') ||
+      cleanText.includes('tư vấn') ||
+      cleanText.includes('tu van') ||
+      cleanText.includes('chọn giày') ||
+      cleanText.includes('chon giay') ||
+      cleanText.includes('chọn sản phẩm') ||
+      cleanText.includes('giày nào') ||
+      cleanText.includes('giay nao')
     ) {
       setIsOpen(true);
       setIsRecommendOpen(true);
@@ -309,7 +318,7 @@ export default function Chatbot() {
 
       if (!found) {
         // Default fallback (friendly, helpful, prompting FAQs)
-        replyText = 'Mình đã nhận được thông tin từ bạn. Với tư cách là một chuyên gia tư vấn chạy bộ tại Summit Outdoor, mình khuyên bạn nên lựa chọn các nút hỏi nhanh bên dưới, hoặc gõ rõ các từ khóa liên quan đến "size chân", "chống nước", "chọn vest", "giao hàng" hoặc "chốt đơn" để mình trả lời ngay lập tức nhé!';
+        replyText = 'Mình chưa rõ câu hỏi của bạn lắm. Bạn có thể nhấn nút "Tôi muốn mua hàng" bên dưới để mở form khảo sát giúp mình tư vấn dòng giày phù hợp nhất, hoặc hỏi về "size chân", "chống nước", "chọn vest" để mình hỗ trợ nhé!';
       }
     }
 
