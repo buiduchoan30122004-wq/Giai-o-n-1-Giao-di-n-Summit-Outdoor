@@ -4,8 +4,12 @@ import React, { useState, useEffect } from 'react';
 import styles from './PromoPopup.module.css';
 import Image from 'next/image';
 
-const PromoPopup = () => {
-  const [isOpen, setIsOpen] = useState(false);
+interface PromoPopupProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+const PromoPopup = ({ isOpen, onClose }: PromoPopupProps) => {
   const [isSuccess, setIsSuccess] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -21,23 +25,8 @@ const PromoPopup = () => {
 
   const [interestError, setInterestError] = useState('');
 
-  // 2s Delay trigger
-  useEffect(() => {
-    // Check if user has already seen/closed it in this session to prevent annoyance
-    const hasSeenPopup = sessionStorage.getItem('hasSeenPromoPopup');
-    
-    if (!hasSeenPopup) {
-      const timer = setTimeout(() => {
-        setIsOpen(true);
-        sessionStorage.setItem('hasSeenPromoPopup', 'true');
-      }, 2000); // 2 seconds
-      
-      return () => clearTimeout(timer);
-    }
-  }, []);
-
   const handleClose = () => {
-    setIsOpen(false);
+    onClose();
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {

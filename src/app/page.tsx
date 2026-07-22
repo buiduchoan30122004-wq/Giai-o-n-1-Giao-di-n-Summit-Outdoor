@@ -1,9 +1,25 @@
+"use client";
+
+import React, { useState, useEffect } from 'react';
 import styles from './page.module.css';
 import ProductCard from '../components/ProductCard';
 import Link from 'next/link';
 import PromoPopup from '../components/PromoPopup';
 
 export default function Home() {
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+  useEffect(() => {
+    const hasSeenPopup = sessionStorage.getItem('hasSeenPromoPopup');
+    if (!hasSeenPopup) {
+      const timer = setTimeout(() => {
+        setIsPopupOpen(true);
+        sessionStorage.setItem('hasSeenPromoPopup', 'true');
+      }, 2000); // 2 seconds
+      return () => clearTimeout(timer);
+    }
+  }, []);
+
   const products = [
     { id: '1', brand: 'Salomon', name: 'Speedcross 6', price: '3.250.000đ', image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=500' },
     { id: '2', brand: 'Hoka', name: 'Speedgoat 5', price: '3.850.000đ', image: 'https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?q=80&w=500' },
@@ -13,7 +29,7 @@ export default function Home() {
 
   return (
     <main className={styles.main}>
-      <PromoPopup />
+      <PromoPopup isOpen={isPopupOpen} onClose={() => setIsPopupOpen(false)} />
       
       {/* Hero */}
       <section className={styles.hero}>
@@ -229,7 +245,7 @@ export default function Home() {
               <h3 className={styles.newsletterTitle}>Tham gia danh sách gửi thư của chúng tôi</h3>
               <p className={styles.newsletterDesc}>Ưu đãi độc quyền được gửi trực tiếp vào hộp thư đến của bạn</p>
             </div>
-            <button className={styles.newsletterBtn}>
+            <button className={styles.newsletterBtn} onClick={() => setIsPopupOpen(true)}>
               <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
                 <polyline points="22,6 12,13 2,6" />
