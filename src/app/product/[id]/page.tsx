@@ -12,8 +12,8 @@ const productsDatabase: Record<string, {
   price: string;
   image: string;
   thumbnails: string[];
-  status: string;
-  subtitle: string;
+  status?: string;
+  subtitle?: string;
   description: string;
   features: string[];
   availableColors: string[];
@@ -38,8 +38,7 @@ const productsDatabase: Record<string, {
       '/products/salomon_xt4_yellow.jpg'
     ],
     status: 'New',
-    subtitle: 'Sneakers - Unisex',
-    description: 'The Salomon XT-6 GORE-TEX is the legendary silhouette preferred by world-class athletes. It features a modernized Gore-Tex membrane for water protection, an ultra-durable TPU upper, Agile Chassis system for stability, and mud Contagrip lugs for deep traction on rugged terrain.',
+    description: 'Salomon XT-6 GORE-TEX là dòng giày chạy trail huyền thoại được các vận động viên cự ly siêu dài tin dùng hàng đầu. Giày được trang bị màng chống nước GORE-TEX hiện đại, thân trên bằng nhựa TPU siêu bền bỉ chống rách, bộ khung Agile Chassis System (ACS) tối ưu hóa độ thăng bằng, cùng bộ gai đế Contagrip bám cực chắc trên địa hình sình lầy và đá dốc.',
     features: [
       'Màng chống thấm nước GORE-TEX cao cấp',
       'Hệ thống dây giày rút Quicklace đóng mở siêu nhanh',
@@ -62,8 +61,7 @@ const productsDatabase: Record<string, {
       '/products/salomon_slab_ultraglide.jpg'
     ],
     status: 'New',
-    subtitle: 'Sneakers - Unisex',
-    description: 'A sleek, versatile lifestyle-meets-trail shoe. The XT-WHISPER offers cushioned comfort and breathable mesh construction, perfect for light trails, city exploration, and everyday wear with unmatched outdoor style.',
+    description: 'Đôi giày giao thoa hoàn hảo giữa thời trang đường phố và chạy trail nhẹ nhàng. Salomon XT-WHISPER mang lại cảm giác êm ái tối đa cùng thân lưới siêu thoáng khí, rất thích hợp cho những buổi chạy trail cự ly ngắn, khám phá đô thị hay sử dụng hàng ngày với phong cách outdoor thời thượng.',
     features: [
       'Thân giày lưới dệt Engineered Mesh thông thoáng tối đa',
       'Đệm gót EVA êm ái giảm phản lực bảo vệ khớp chân',
@@ -86,8 +84,7 @@ const productsDatabase: Record<string, {
       '/products/salomon_xt_whisper.jpg'
     ],
     status: 'Limited',
-    subtitle: 'Trail running shoes - Unisex',
-    description: 'A ultra-distance champion shoe developed in collaboration with Courtney Dauwalter. Features dynamic Energy Foam midsole cushioning, maximum stack height for long run comfort, and breathable engineered mesh upper with protective toe cap.',
+    description: 'Nhà vô địch cự ly siêu dài (Ultra Trail) được phát triển cùng huyền thoại chạy trail Courtney Dauwalter. Giày sở hữu lớp đệm Energy Foam đàn hồi vượt trội giúp bảo vệ khớp, độ dày đế tối đa mang lại sự êm ái tuyệt hảo cho cự ly dài, kết hợp cùng thân giày dệt lưới thoáng mát và bọc mũi bảo vệ an toàn.',
     features: [
       'Đế giữa Energy Foam siêu nhẹ và hoàn trả lực cực đỉnh',
       'Phối màu Courtney Dauwalter phiên bản giới hạn toàn cầu',
@@ -109,9 +106,7 @@ const productsDatabase: Record<string, {
       '/products/salomon_xt_whisper.jpg',
       '/products/salomon_slab_ultraglide.jpg'
     ],
-    status: 'New',
-    subtitle: 'Sneakers - Unisex',
-    description: 'The faithful reissue of the original trail runner icon. The XT-4 OG boasts the signature bold contrast color blocking, quicklace system, full-length Agile Chassis for maximum control, and aggressive lug traction for mud and gravel.',
+    description: 'Phiên bản tái bản trung thực của dòng giày chạy trail biểu tượng đời đầu. Salomon XT-4 OG nổi bật với thiết kế phối màu khối tương phản đậm chất thể thao mạnh mẽ, hệ thống dây rút nhanh Quicklace tiện lợi, khung xương Agile Chassis System toàn bàn chân tăng khả năng vững chãi kiểm soát thăng bằng và bộ gai Contagrip chuyên trị bùn sỏi đá.',
     features: [
       'Thiết kế phối màu khối OG nguyên bản tương phản ấn tượng',
       'Lưới upper chống cát sỏi lọt vào bên trong giày',
@@ -134,8 +129,7 @@ const productsDatabase: Record<string, {
       '/products/salomon_xt4_yellow.jpg'
     ],
     status: 'New',
-    subtitle: 'Trail running shoes - Unisex',
-    description: 'The Salomon Speedcross 6 needs no introduction. True to its legendary roots and trail status, this version is lighter with an even more powerful, grippy connection to the ground and faster mud evacuation.',
+    description: 'Salomon Speedcross 6 là dòng giày chạy địa hình chuyên nghiệp không cần giới thiệu nhiều. Giữ nguyên những giá trị huyền thoại và địa vị chạy trail của mình, phiên bản này có trọng lượng nhẹ hơn, lực bám tiếp đất mạnh mẽ hơn cùng khả năng thoát bùn sình cực nhanh.',
     features: [
       'Gai đế hình mũi tên xương cá bám bùn đất tuyệt đối',
       'Công nghệ ôm chân Sensifit bao bọc bàn chân như một cái ôm',
@@ -157,8 +151,7 @@ const productsDatabase: Record<string, {
       'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=500'
     ],
     status: 'New',
-    subtitle: 'Trail running shoes - Unisex',
-    description: 'A workhorse designed for technical trails, the Hoka Speedgoat 5 returns with less weight and more traction than ever before. This trail beast features Vibram® Megagrip with Traction Lug for upgraded grip.',
+    description: 'Được mệnh danh là gã lực sĩ chuyên trị các cung đường trail kỹ thuật khó khăn. Hoka Speedgoat 5 trở lại với trọng lượng nhẹ hơn và độ bám vượt trội nhờ đế ngoài cao su Vibram® Megagrip tích hợp công nghệ gai kéo Traction Lug tăng ma sát tối ưu trên bùn đất đá gồ ghề.',
     features: [
       'Đế ngoài Vibram Megagrip cải tiến thêm gai Traction Lug siêu bám',
       'Vành Meta-Rocker đẩy chân lăn tròn giảm mỏi cổ chân',
@@ -180,8 +173,7 @@ const productsDatabase: Record<string, {
       'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=500'
     ],
     status: '',
-    subtitle: 'Trail running shoes - Unisex',
-    description: 'The Nike Pegasus Trail 4 is your daily running companion for the transition from road to trail. Providing responsive React foam cushioning and flywire lock stability, it keeps you moving through dirt paths.',
+    description: 'Nike Pegasus Trail 4 là người bạn đồng hành chạy bộ hàng ngày giúp chuyển tiếp mượt mà từ đường nhựa đô thị sang đường đất đỏ. Giày mang lại độ êm ái đàn hồi nhạy bén của đệm foam React cùng sự vững chãi của công nghệ cáp treo Flywire khóa chặt bàn chân.',
     features: [
       'Đế giữa đệm Nike React bền bỉ và đàn hồi nhạy bén',
       'Dây đai giữa chân Flywire khóa giữ bàn chân ổn định chống trượt',
@@ -203,8 +195,7 @@ const productsDatabase: Record<string, {
       'https://images.unsplash.com/photo-1530541930197-ff16ac917b0e?q=80&w=500'
     ],
     status: 'New',
-    subtitle: 'Trail running shoes - Unisex',
-    description: 'The Asics Trabuco Max 2 shoe draws inspiration from the concept of technology and how it can be synced with nature. It provides advanced energy-saving properties and plush cushioning to help you navigate trails.',
+    description: 'Asics Trabuco Max 2 mang cảm hứng giao hòa giữa công nghệ hiện đại và thiên nhiên hoang dã. Giày được trang bị lớp đệm dày FF BLAST PLUS siêu êm ái cùng công nghệ đế cong Guidesole giúp tiết kiệm tối đa sức lực cho chân khi vượt dốc cao cự ly dài.',
     features: [
       'Đệm FF BLAST PLUS nén nhẹ cho bước chạy nảy và êm ái sâu',
       'Cấu trúc đế cong GUIDESOLE tiết kiệm sức bền cho bàn chân',
@@ -227,8 +218,7 @@ const productsDatabase: Record<string, {
       '/products/salomon_xt4_yellow.jpg'
     ],
     status: '',
-    subtitle: 'Trail running shoes - Unisex',
-    description: 'A versatile trail shoe that does it all, the Sense Ride 5 is equally in its element on short, fast trail runs as it is on ultra distances. A super comfortable overachiever.',
+    description: 'Dòng giày chạy trail đa năng quốc dân cân mọi cự ly. Salomon Sense Ride 5 thể hiện sự cơ động tuyệt vời ở cả những buổi chạy trail ngắn tốc độ cao lẫn các giải chạy siêu cự ly đầy thử thách với sự êm ái, bảo vệ và đàn hồi tối đa.',
     features: [
       'Đệm đế giữa Energy Foam cân bằng hoàn hảo giữa êm và nảy',
       'Đế ngoài Contagrip đa địa hình bám dính chắc chắn trên cát, cỏ, bùn',
@@ -250,8 +240,7 @@ const productsDatabase: Record<string, {
       'https://images.unsplash.com/photo-1530541930197-ff16ac917b0e?q=80&w=500'
     ],
     status: 'New',
-    subtitle: 'Trail running shoes - Unisex',
-    description: 'Tame the wild trail runs with the Nike Wildhorse 8. Constructed with a high-abrasion rubber outsole that delivers durable multi-directional traction, React foam midsole cushioning, and a structured midfoot saddle.',
+    description: 'Chinh phục những cung đường mòn hoang dã đầy thách thức cùng Nike Wildhorse 8. Giày có đế ngoài cao su chống mài mòn cực tốt mang lại lực kéo đa hướng bền bỉ, kết hợp đệm React đàn hồi cao và bộ khung gót ôm khít vững chãi.',
     features: [
       'Đệm phản hồi Nike React đàn hồi tối ưu bảo vệ gót chân',
       'Đế gai cao su chống mài mòn đúc khối đa hướng bám vách đá',
