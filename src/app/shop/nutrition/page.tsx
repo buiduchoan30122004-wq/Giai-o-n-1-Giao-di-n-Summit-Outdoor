@@ -57,6 +57,51 @@ export default function ShopNutrition() {
       image: 'https://cdn.hstatic.net/products/200001165929/upload_4313a74252a94f94b90421b303c3845e_grande.jpg',
       status: 'Eco-Friendly',
       subtitle: 'Natural Energy Bar - Vị Chuối Quế'
+    },
+    { 
+      id: 'lecka-bar-cacao', 
+      brand: 'Lecka', 
+      name: 'Thanh Năng Lượng Tự Nhiên Lecka Vị Cacao Chuối', 
+      price: '40.000đ', 
+      image: 'https://cdn.hstatic.net/products/200001165929/upload_89eacceb324947b089b62a9b6dafef04_grande.jpg',
+      status: 'Popular',
+      subtitle: 'Natural Energy Bar - Vị Cacao Chuối'
+    },
+    { 
+      id: 'tailwind-rebuild-coffee', 
+      brand: 'Tailwind', 
+      name: 'Bột Phục Hồi Tailwind Rebuild Recovery Vị Cà Phê', 
+      price: '105.000đ', 
+      image: 'https://cdn.hstatic.net/products/200001165929/upload_f8628d03aee6468081987a8a6475fdbb_grande.jpg',
+      status: 'New Flavor',
+      subtitle: 'Rebuild Recovery - Coffee Flavor'
+    },
+    { 
+      id: 'tailwind-rebuild-caramel', 
+      brand: 'Tailwind', 
+      name: 'Bột Phục Hồi Tailwind Rebuild Recovery Vị Caramel Muối', 
+      price: '105.000đ', 
+      image: 'https://cdn.hstatic.net/products/200001165929/upload_9917b20f06da4ad1907eb925cfd9b99a_grande.jpg',
+      status: 'Hot',
+      subtitle: 'Rebuild Recovery - Salted Caramel'
+    },
+    { 
+      id: 'pillar-recovery-berry', 
+      brand: 'Pillar Performance', 
+      name: 'Vi Chất Magie Phục Hồi Pillar Triple Magnesium Berry', 
+      price: '40.000đ', 
+      image: 'https://cdn.hstatic.net/products/200001165929/upload_0e36e90b54224a0882255a7198ed9bf9_grande.jpg',
+      status: 'High Tech',
+      subtitle: 'Triple Magnesium Recovery - 5g'
+    },
+    { 
+      id: 'gu-roctane-chocolate', 
+      brand: 'GU Energy', 
+      name: 'Gel Năng Lượng GU Roctane Vị Socola Muối Biển', 
+      price: '79.000đ', 
+      image: 'https://cdn.hstatic.net/products/200001165929/upload_64ff9079187c44ee8abe49e34418719c_grande.jpg',
+      status: 'Ultra Spec',
+      subtitle: 'Roctane Ultra Energy - Chocolate'
     }
   ];
 

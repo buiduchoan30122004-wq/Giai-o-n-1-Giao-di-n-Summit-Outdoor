@@ -80,7 +80,6 @@
   object-fit: contain;
 }
 
-/* Large Main Image Area - Tăng kích thước ảnh to hơn và dài xuống */
 .mainImageArea {
   flex-grow: 1;
   background-color: #f8fafc;
@@ -93,6 +92,18 @@
   padding: 30px;
   position: relative;
   overflow: hidden;
+}
+
+.mainImageArea::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 130px;
+  height: 40px;
+  background-color: #f8fafc; /* Trùng với màu nền của khung chứa ảnh */
+  z-index: 5;
+  pointer-events: none;
 }
 
 .mainImg {

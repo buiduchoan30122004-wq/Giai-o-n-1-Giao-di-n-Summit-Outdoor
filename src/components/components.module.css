@@ -267,7 +267,7 @@
 .productImgContainer {
   width: 100%;
   aspect-ratio: 1 / 1;
-  background-color: #f4f4f5; /* Nền xám nhạt block */
+  background-color: #ffffff; /* Nền trắng thuần đồng nhất */
   border-radius: 6px;
   display: flex;
   align-items: center;
@@ -278,8 +278,20 @@
   transition: background-color 0.3s ease;
 }
 
+.productImgContainer::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 100px;
+  height: 30px;
+  background-color: #ffffff; /* Che watermark IMSports ở góc dưới phải */
+  z-index: 5;
+  pointer-events: none;
+}
+
 .productCard:hover .productImgContainer {
-  background-color: #e4e4e7; /* Sậm hơn một chút khi hover */
+  background-color: #ffffff; /* Giữ nguyên nền trắng khi hover */
 }
 
 .productImg {

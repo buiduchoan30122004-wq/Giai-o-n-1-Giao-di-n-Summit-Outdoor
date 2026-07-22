@@ -530,6 +530,111 @@ const productsDatabase: Record<string, {
     ],
     availableColors: ['Vàng', 'Nâu'],
     specs: { cushioning: '150 Calo / Thanh', support: 'Thuần chay (Vegan)', drop: 'Không đường tinh luyện', weight: '40g', terrain: 'Chạy trail dã ngoại & Trekking leo núi' }
+  },
+  'lecka-bar-cacao': {
+    id: 'lecka-bar-cacao',
+    brand: 'Lecka',
+    name: 'Thanh Năng Lượng Tự Nhiên Lecka Vị Cacao Chuối',
+    price: '40.000đ',
+    image: 'https://cdn.hstatic.net/products/200001165929/upload_89eacceb324947b089b62a9b6dafef04_grande.jpg',
+    thumbnails: [
+      'https://cdn.hstatic.net/products/200001165929/upload_89eacceb324947b089b62a9b6dafef04_grande.jpg'
+    ],
+    status: 'Popular',
+    subtitle: 'Thanh hạt dinh dưỡng tự nhiên - Vị Cacao Chuối',
+    description: 'Thanh dinh dưỡng Lecka Cacao Chuối cung cấp hàm lượng calo cao cùng chất chống oxy hoá tự nhiên từ cacao nguyên chất Bến Tre phối hợp với chuối chín sấy dẻo ngọt thơm. Giúp nạp năng lượng nhanh và tăng hưng phấn khi tập luyện.',
+    features: [
+      'Cacao nguyên chất giàu chất chống oxy hoá tốt cho tim mạch',
+      'Chuối dẻo tự nhiên giàu Kali bù khoáng cho cơ bắp',
+      'Đồ ăn năng lượng thuần chay, không phẩm màu hoá học',
+      'Thân thiện dã ngoại với bao bì tự phân huỷ sinh học'
+    ],
+    availableColors: ['Nâu', 'Đen'],
+    specs: { cushioning: '150 Calo / Thanh', support: 'Thuần chay (Vegan)', drop: 'Cacao Bến Tre', weight: '40g', terrain: 'Trekking leo núi & Chạy trail dã ngoại' }
+  },
+  'tailwind-rebuild-coffee': {
+    id: 'tailwind-rebuild-coffee',
+    brand: 'Tailwind',
+    name: 'Bột Phục Hồi Tailwind Rebuild Recovery Vị Cà Phê',
+    price: '105.000đ',
+    image: 'https://cdn.hstatic.net/products/200001165929/upload_f8628d03aee6468081987a8a6475fdbb_grande.jpg',
+    thumbnails: [
+      'https://cdn.hstatic.net/products/200001165929/upload_f8628d03aee6468081987a8a6475fdbb_grande.jpg'
+    ],
+    status: 'New Flavor',
+    subtitle: 'Post-Workout Rebuild Recovery - Coffee Flavor',
+    description: 'Bột phục hồi hoàn hảo Tailwind Rebuild Recovery vị Cà Phê chứa công thức độc quyền từ đạm gạo hữu cơ phối hợp axit amin thiết yếu. Giúp sửa chữa sợi cơ và bù đắp glycogen bị cạn kiệt nhanh gấp đôi sau các cự ly chạy trail siêu dài.',
+    features: [
+      'Đạm thực vật hữu cơ cao cấp hấp thu siêu nhanh',
+      'Hương vị Cà Phê tự nhiên thơm ngon tăng tỉnh táo nhẹ nhàng',
+      'Bù muối điện giải dồi dào phục hồi thăng bằng nội môi',
+      'Không chứa gluten, sữa động vật hay các chất kích ứng tiêu hoá'
+    ],
+    availableColors: ['Nâu'],
+    specs: { cushioning: 'Đạm hữu cơ', support: 'Tái tạo cơ bắp', drop: 'Axit amin thiết yếu', weight: '59g', terrain: 'Dùng ngay sau các buổi chạy trail dài' }
+  },
+  'tailwind-rebuild-caramel': {
+    id: 'tailwind-rebuild-caramel',
+    brand: 'Tailwind',
+    name: 'Bột Phục Hồi Tailwind Rebuild Recovery Vị Caramel Muối',
+    price: '105.000đ',
+    image: 'https://cdn.hstatic.net/products/200001165929/upload_9917b20f06da4ad1907eb925cfd9b99a_grande.jpg',
+    thumbnails: [
+      'https://cdn.hstatic.net/products/200001165929/upload_9917b20f06da4ad1907eb925cfd9b99a_grande.jpg'
+    ],
+    status: 'Hot',
+    subtitle: 'Post-Workout Rebuild Recovery - Salted Caramel',
+    description: 'Bột phục hồi đạm thực vật hữu cơ cao cấp Tailwind Rebuild Recovery vị Caramel Muối thơm ngậy mặn nhẹ sảng khoái. Cung cấp lượng đạm hoàn chỉnh giúp sửa chữa tế bào cơ bắp rách mỏi và phục hồi thể lực tức thì.',
+    features: [
+      'Công thức phục hồi đạm thực vật sạch tinh khiết nhất',
+      'Vị Caramel Muối thơm ngậy mặn nhẹ kích thích vị giác sau chạy',
+      'Giúp tái tạo năng lượng dự trữ glycogen hiệu quả',
+      'Thành phần thuần chay hữu cơ tự nhiên lành tính'
+    ],
+    availableColors: ['Vàng', 'Nâu'],
+    specs: { cushioning: 'Đạm hữu cơ', support: 'Tái tạo cơ bắp', drop: 'Caramel & Muối biển', weight: '59g', terrain: 'Phục hồi sau các giải marathon & trail' }
+  },
+  'pillar-recovery-berry': {
+    id: 'pillar-recovery-berry',
+    brand: 'Pillar Performance',
+    name: 'Vi Chất Magie Phục Hồi Pillar Triple Magnesium Berry',
+    price: '40.000đ',
+    image: 'https://cdn.hstatic.net/products/200001165929/upload_0e36e90b54224a0882255a7198ed9bf9_grande.jpg',
+    thumbnails: [
+      'https://cdn.hstatic.net/products/200001165929/upload_0e36e90b54224a0882255a7198ed9bf9_grande.jpg'
+    ],
+    status: 'High Tech',
+    subtitle: 'Triple Magnesium Professional Recovery - Gói 5g',
+    description: 'Bột phục hồi cơ bắp và chất lượng giấc ngủ chuyên sâu Pillar Performance Triple Magnesium. Chứa 3 dạng magie sinh học dễ hấp thu nhất giúp làm dịu hệ thần kinh, thư giãn sâu các sợi cơ căng mỏi, ngăn ngừa chuột rút đêm hiệu quả.',
+    features: [
+      'Chứa 3 nguồn Magie sinh khả dụng tối ưu cho thể thao chuyên nghiệp',
+      'Hỗ trợ giãn cơ bắp căng thẳng sau vận động nặng',
+      'Cải thiện sâu chất lượng giấc ngủ để tăng tốc độ tự hồi phục',
+      'Hương vị dâu quả mọng tự nhiên dễ chịu, gói đơn 5g tiện mang đi'
+    ],
+    availableColors: ['Tím', 'Trắng'],
+    specs: { cushioning: '3 Dạng Magie', support: 'Giãn cơ & Giấc ngủ', drop: 'Không đường ngọt hóa học', weight: '5g', terrain: 'Uống tối trước ngày thi đấu hoặc sau chạy' }
+  },
+  'gu-roctane-chocolate': {
+    id: 'gu-roctane-chocolate',
+    brand: 'GU Energy',
+    name: 'Gel Năng Lượng GU Roctane Vị Socola Muối Biển',
+    price: '79.000đ',
+    image: 'https://cdn.hstatic.net/products/200001165929/upload_64ff9079187c44ee8abe49e34418719c_grande.jpg',
+    thumbnails: [
+      'https://cdn.hstatic.net/products/200001165929/upload_64ff9079187c44ee8abe49e34418719c_grande.jpg'
+    ],
+    status: 'Ultra Spec',
+    subtitle: 'Roctane Ultra-Endurance Gel - Sea Salt Chocolate',
+    description: 'Dòng gel năng lượng GU Roctane siêu dẻo dai chuyên dụng cho cự ly Ultra Trail từ 70km-100km hoặc khi vận động cường độ cực cao. Bổ sung hàm lượng muối Natri gấp đôi và lượng axit amin BCAA gấp 3 lần dòng gel thông thường để chống vọ bẻ tuyệt đối.',
+    features: [
+      'Tăng gấp đôi lượng Natri và Kali bù điện giải siêu tốc',
+      'Cung cấp gấp 3 lượng BCAA bảo vệ sợi cơ chống dị hóa mỏi',
+      'Hương vị Socola Muối Biển ngọt đắng đậm đà, giảm ngán đường',
+      'Được khuyên dùng cho các vận động viên cự ly Ultra marathon'
+    ],
+    availableColors: ['Đen', 'Nâu'],
+    specs: { cushioning: '100 Calo / Gói', support: 'BCAA x3 lần', drop: 'Natri 125mg dồi dào', weight: '32g', terrain: 'Chạy trail cự ly Ultra 70km - 100km' }
   }
 };
 
