@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import styles from './cart.module.css';
 
 export default function Cart() {
@@ -49,7 +50,13 @@ export default function Cart() {
             <span>3.300.000đ</span>
           </div>
 
-          <button className={styles.checkoutBtn}>Proceed to Checkout</button>
+          <Link 
+            href="/checkout" 
+            className={styles.checkoutBtn}
+            style={{ display: 'block', textAlign: 'center', textDecoration: 'none' }}
+          >
+            Proceed to Checkout
+          </Link>
         </div>
       </div>
     </main>
