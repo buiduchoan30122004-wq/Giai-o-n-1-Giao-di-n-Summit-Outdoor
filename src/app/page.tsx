@@ -22,7 +22,7 @@ export default function Home() {
 
   const products = [
     { 
-      id: '1', 
+      id: 'xt6', 
       brand: 'Salomon', 
       name: 'XT-6 GORE-TEX', 
       price: '4.800.000đ', 
@@ -31,7 +31,7 @@ export default function Home() {
       subtitle: 'Sneakers - Unisex'
     },
     { 
-      id: '2', 
+      id: 'xtwhisper', 
       brand: 'Salomon', 
       name: 'XT-WHISPER', 
       price: '3.500.000đ', 
@@ -40,7 +40,7 @@ export default function Home() {
       subtitle: 'Sneakers - Unisex'
     },
     { 
-      id: '3', 
+      id: 'slab', 
       brand: 'Salomon', 
       name: 'S/LAB ULTRA GLIDE 2 LIMITED COURTNEY EDITION', 
       price: '6.500.000đ', 
@@ -49,7 +49,7 @@ export default function Home() {
       subtitle: 'Trail running shoes - Unisex'
     },
     { 
-      id: '4', 
+      id: 'xt4', 
       brand: 'Salomon', 
       name: 'XT-4 OG', 
       price: '4.800.000đ', 

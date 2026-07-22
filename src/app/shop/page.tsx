@@ -5,7 +5,7 @@ import ProductCard from '../../components/ProductCard';
 export default function Shop() {
   const products = [
     { 
-      id: '1', 
+      id: 'speedcross', 
       brand: 'Salomon', 
       name: 'Speedcross 6', 
       price: '3.250.000đ', 
@@ -14,7 +14,7 @@ export default function Shop() {
       subtitle: 'Trail running shoes - Unisex'
     },
     { 
-      id: '2', 
+      id: 'speedgoat', 
       brand: 'Hoka', 
       name: 'Speedgoat 5', 
       price: '3.850.000đ', 
@@ -23,7 +23,7 @@ export default function Shop() {
       subtitle: 'Trail running shoes - Unisex'
     },
     { 
-      id: '3', 
+      id: 'pegasus', 
       brand: 'Nike', 
       name: 'Pegasus Trail 4', 
       price: '3.990.000đ', 
@@ -32,7 +32,7 @@ export default function Shop() {
       subtitle: 'Trail running shoes - Unisex'
     },
     { 
-      id: '4', 
+      id: 'trabuco', 
       brand: 'Asics', 
       name: 'Trabuco Max 2', 
       price: '3.490.000đ', 
@@ -41,7 +41,7 @@ export default function Shop() {
       subtitle: 'Trail running shoes - Unisex'
     },
     { 
-      id: '5', 
+      id: 'senseride', 
       brand: 'Salomon', 
       name: 'Sense Ride 5', 
       price: '3.490.000đ', 
@@ -50,7 +50,7 @@ export default function Shop() {
       subtitle: 'Trail running shoes - Unisex'
     },
     { 
-      id: '6', 
+      id: 'wildhorse', 
       brand: 'Nike', 
       name: 'Wildhorse 8', 
       price: '3.250.000đ', 
