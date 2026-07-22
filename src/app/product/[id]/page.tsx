@@ -409,9 +409,9 @@ const productsDatabase: Record<string, {
     brand: 'GU Energy',
     name: 'Viên Sủi Điện Giải GU Hydration Drink Tabs',
     price: '219.000đ',
-    image: 'https://m.media-amazon.com/images/I/61m1N1hXedL._AC_SL1000_.jpg',
+    image: 'https://cdn.hstatic.net/products/200001165929/20230830_jsdi42u6db_5cf9e7362ea3440387a5069d7fb44de3_grande.jpeg',
     thumbnails: [
-      'https://m.media-amazon.com/images/I/61m1N1hXedL._AC_SL1000_.jpg'
+      'https://cdn.hstatic.net/products/200001165929/20230830_jsdi42u6db_5cf9e7362ea3440387a5069d7fb44de3_grande.jpeg'
     ],
     status: 'Essential',
     subtitle: '12 viên sủi điện giải bù muối - Vị Dâu Hibicus',
@@ -430,9 +430,9 @@ const productsDatabase: Record<string, {
     brand: 'GU Energy',
     name: 'Gel Năng Lượng GU Energy Gel Vị Dâu Chuối',
     price: '45.000đ',
-    image: 'https://m.media-amazon.com/images/I/71wE19yP69L._AC_SL1500_.jpg',
+    image: 'https://cdn.hstatic.net/products/200001165929/upload_ca2ae7d0cbf744d399dff0fe62d1d134_grande.jpg',
     thumbnails: [
-      'https://m.media-amazon.com/images/I/71wE19yP69L._AC_SL1500_.jpg'
+      'https://cdn.hstatic.net/products/200001165929/upload_ca2ae7d0cbf744d399dff0fe62d1d134_grande.jpg'
     ],
     status: 'Hot',
     subtitle: 'Vị Dâu Chuối - Bổ sung năng lượng tức thì',
@@ -451,9 +451,9 @@ const productsDatabase: Record<string, {
     brand: 'Tailwind',
     name: 'Bột Năng Lượng Tailwind Endurance Fuel vị Mâm Xôi',
     price: '98.000đ',
-    image: 'https://m.media-amazon.com/images/I/71Lh5M-nZ+L._AC_SL1500_.jpg',
+    image: 'https://cdn.hstatic.net/products/200001165929/upload_ad4b3c14e9114eddbec5d1e77b0bf9cc_grande.jpg',
     thumbnails: [
-      'https://m.media-amazon.com/images/I/71Lh5M-nZ+L._AC_SL1500_.jpg'
+      'https://cdn.hstatic.net/products/200001165929/upload_ad4b3c14e9114eddbec5d1e77b0bf9cc_grande.jpg'
     ],
     status: 'Best Seller',
     subtitle: 'Raspberry Caffeinated - Gói pha 2 servings',
@@ -472,9 +472,10 @@ const productsDatabase: Record<string, {
     brand: 'Hammer Nutrition',
     name: 'Thức Uống Phục Hồi Hammer Recoverite Socola',
     price: '105.000đ',
-    image: 'https://m.media-amazon.com/images/I/71R2QZ2eGHL._AC_SL1500_.jpg',
+    image: 'https://cdn.hstatic.net/products/200001165929/upload_a5f8396e74d444f8b8eaf1d8955b389d_grande.jpg',
     thumbnails: [
-      'https://m.media-amazon.com/images/I/71R2QZ2eGHL._AC_SL1500_.jpg'
+      'https://cdn.hstatic.net/products/200001165929/upload_a5f8396e74d444f8b8eaf1d8955b389d_grande.jpg',
+      'https://cdn.hstatic.net/products/200001165929/20230528_x91srwsg4m_b8dd8ccd962349f1920d114ab7b6a22b_large.jpeg'
     ],
     status: 'New',
     subtitle: 'Post-Workout Recovery - Chocolate Flavor',
@@ -493,9 +494,9 @@ const productsDatabase: Record<string, {
     brand: 'Hammer Nutrition',
     name: 'Gel Năng Lượng Hammer Gel Vị Montana Huckleberry',
     price: '49.000đ',
-    image: 'https://m.media-amazon.com/images/I/61m1T7vG6jL._AC_SL1000_.jpg',
+    image: 'https://cdn.hstatic.net/products/200001165929/upload_4532655c9b5c42ed813f44962cfe05f2_grande.jpg',
     thumbnails: [
-      'https://m.media-amazon.com/images/I/61m1T7vG6jL._AC_SL1000_.jpg'
+      'https://cdn.hstatic.net/products/200001165929/upload_4532655c9b5c42ed813f44962cfe05f2_grande.jpg'
     ],
     status: 'Popular',
     subtitle: 'Vị Montana Huckleberry đặc trưng từ quả mọng',
@@ -514,9 +515,9 @@ const productsDatabase: Record<string, {
     brand: 'Lecka',
     name: 'Thanh Năng Lượng Tự Nhiên Lecka Vị Chuối Quế',
     price: '40.000đ',
-    image: 'https://lecka.eco/cdn/shop/products/banana_cinnamon_1_grande.jpg',
+    image: 'https://cdn.hstatic.net/products/200001165929/upload_4313a74252a94f94b90421b303c3845e_grande.jpg',
     thumbnails: [
-      'https://lecka.eco/cdn/shop/products/banana_cinnamon_1_grande.jpg'
+      'https://cdn.hstatic.net/products/200001165929/upload_4313a74252a94f94b90421b303c3845e_grande.jpg'
     ],
     status: 'Eco-Friendly',
     subtitle: 'Thanh hạt dinh dưỡng tự nhiên - Vị Chuối Quế',
@@ -535,9 +536,9 @@ const productsDatabase: Record<string, {
     brand: 'Lecka',
     name: 'Thanh Năng Lượng Tự Nhiên Lecka Vị Cacao Chuối',
     price: '40.000đ',
-    image: 'https://lecka.eco/cdn/shop/products/banana_cacao_1_grande.jpg',
+    image: 'https://cdn.hstatic.net/products/200001165929/upload_89eacceb324947b089b62a9b6dafef04_grande.jpg',
     thumbnails: [
-      'https://lecka.eco/cdn/shop/products/banana_cacao_1_grande.jpg'
+      'https://cdn.hstatic.net/products/200001165929/upload_89eacceb324947b089b62a9b6dafef04_grande.jpg'
     ],
     status: 'Popular',
     subtitle: 'Thanh hạt dinh dưỡng tự nhiên - Vị Cacao Chuối',
@@ -556,9 +557,9 @@ const productsDatabase: Record<string, {
     brand: 'Tailwind',
     name: 'Bột Phục Hồi Tailwind Rebuild Recovery Vị Cà Phê',
     price: '105.000đ',
-    image: 'https://m.media-amazon.com/images/I/71m4lOswjGL._AC_SL1500_.jpg',
+    image: 'https://cdn.hstatic.net/products/200001165929/upload_f8628d03aee6468081987a8a6475fdbb_grande.jpg',
     thumbnails: [
-      'https://m.media-amazon.com/images/I/71m4lOswjGL._AC_SL1500_.jpg'
+      'https://cdn.hstatic.net/products/200001165929/upload_f8628d03aee6468081987a8a6475fdbb_grande.jpg'
     ],
     status: 'New Flavor',
     subtitle: 'Post-Workout Rebuild Recovery - Coffee Flavor',
@@ -577,9 +578,9 @@ const productsDatabase: Record<string, {
     brand: 'Tailwind',
     name: 'Bột Phục Hồi Tailwind Rebuild Recovery Vị Caramel Muối',
     price: '105.000đ',
-    image: 'https://m.media-amazon.com/images/I/71K649SDRpL._AC_SL1500_.jpg',
+    image: 'https://cdn.hstatic.net/products/200001165929/upload_9917b20f06da4ad1907eb925cfd9b99a_grande.jpg',
     thumbnails: [
-      'https://m.media-amazon.com/images/I/71K649SDRpL._AC_SL1500_.jpg'
+      'https://cdn.hstatic.net/products/200001165929/upload_9917b20f06da4ad1907eb925cfd9b99a_grande.jpg'
     ],
     status: 'Hot',
     subtitle: 'Post-Workout Rebuild Recovery - Salted Caramel',
@@ -598,9 +599,9 @@ const productsDatabase: Record<string, {
     brand: 'Pillar Performance',
     name: 'Vi Chất Magie Phục Hồi Pillar Triple Magnesium Berry',
     price: '40.000đ',
-    image: 'https://pillarperformance.shop/cdn/shop/files/magnesium-berry-tub_600x600.jpg',
+    image: 'https://cdn.hstatic.net/products/200001165929/upload_0e36e90b54224a0882255a7198ed9bf9_grande.jpg',
     thumbnails: [
-      'https://pillarperformance.shop/cdn/shop/files/magnesium-berry-tub_600x600.jpg'
+      'https://cdn.hstatic.net/products/200001165929/upload_0e36e90b54224a0882255a7198ed9bf9_grande.jpg'
     ],
     status: 'High Tech',
     subtitle: 'Triple Magnesium Professional Recovery - Gói 5g',
@@ -619,9 +620,9 @@ const productsDatabase: Record<string, {
     brand: 'GU Energy',
     name: 'Gel Năng Lượng GU Roctane Vị Socola Muối Biển',
     price: '79.000đ',
-    image: 'https://m.media-amazon.com/images/I/71a6+L3WnRL._AC_SL1500_.jpg',
+    image: 'https://cdn.hstatic.net/products/200001165929/upload_64ff9079187c44ee8abe49e34418719c_grande.jpg',
     thumbnails: [
-      'https://m.media-amazon.com/images/I/71a6+L3WnRL._AC_SL1500_.jpg'
+      'https://cdn.hstatic.net/products/200001165929/upload_64ff9079187c44ee8abe49e34418719c_grande.jpg'
     ],
     status: 'Ultra Spec',
     subtitle: 'Roctane Ultra-Endurance Gel - Sea Salt Chocolate',

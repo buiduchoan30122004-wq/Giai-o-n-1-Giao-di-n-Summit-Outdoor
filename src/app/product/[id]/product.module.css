@@ -67,6 +67,20 @@
   align-items: center;
   justify-content: center;
   transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.thumbBtn::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 20px;
+  height: 8px;
+  background-color: #ffffff;
+  z-index: 5;
+  pointer-events: none;
 }
 
 .thumbActive {
