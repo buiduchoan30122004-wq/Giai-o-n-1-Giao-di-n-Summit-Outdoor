@@ -254,7 +254,7 @@
 
 .disclaimerText {
   font-size: 0.75rem;
-  color: var(--color-text-muted);
+  color: #6b7280; /* Xám nhạt dịu mắt */
   line-height: 1.6;
   max-width: 1000px;
   margin: 0 auto;
@@ -284,7 +284,7 @@
 }
 
 .featureIcon {
-  color: var(--color-black);
+  color: #374151; /* Xám đậm nổi bật nhưng dịu */
   margin-bottom: 18px;
   display: flex;
   align-items: center;
@@ -293,16 +293,18 @@
 
 .featureTitle {
   font-size: 1.05rem;
-  font-weight: 800;
-  color: var(--color-black);
+  font-weight: 700; /* Mềm mại hơn 900 */
+  color: #1f2937; /* Xám đen dịu mắt thay vì đen sì */
   margin-bottom: 10px;
-  line-height: 1.35;
+  line-height: 1.4;
+  text-transform: none; /* Chữ thường mềm mại */
+  letter-spacing: normal;
 }
 
 .featureDesc {
-  font-size: 0.85rem;
-  color: var(--color-text-muted);
-  line-height: 1.5;
+  font-size: 0.88rem;
+  color: #4b5563; /* Màu xám dịu nhưng nổi bật, dễ đọc */
+  line-height: 1.55;
   margin-bottom: 15px;
   flex-grow: 1;
 }
@@ -310,14 +312,14 @@
 .featureLink {
   font-size: 0.88rem;
   font-weight: 700;
-  color: var(--color-black);
+  color: var(--color-primary); /* Đổi sang màu thương hiệu đỏ để liên kết nổi bật */
   text-decoration: underline;
   cursor: pointer;
   transition: color 0.2s ease;
 }
 
 .featureLink:hover {
-  color: var(--color-primary);
+  color: var(--color-black);
 }
 
 /* Newsletter Banner */
@@ -344,19 +346,21 @@
 
 .newsletterTitle {
   font-size: 1.35rem;
-  font-weight: 900;
-  color: var(--color-black);
+  font-weight: 700; /* Mềm mại hơn */
+  color: #1f2937;
   margin-bottom: 4px;
+  text-transform: none; /* Chữ thường mềm mại */
+  letter-spacing: normal;
 }
 
 .newsletterDesc {
   font-size: 0.9rem;
-  color: var(--color-text-muted);
+  color: #4b5563; /* Dịu mắt nhưng nổi bật */
 }
 
 .newsletterBtn {
-  background-color: #0f4c81; /* Màu xanh biển đậm dịu mắt */
-  color: var(--color-white);
+  background-color: var(--color-primary); /* Màu đỏ thương hiệu */
+  color: var(--color-white); /* Chữ trắng */
   border: none;
   padding: 12px 28px;
   font-weight: 700;
@@ -370,7 +374,7 @@
 }
 
 .newsletterBtn:hover {
-  background-color: #0b3a63;
+  background-color: var(--color-primary-hover); /* Đỏ hover */
   transform: translateY(-1px);
 }
 
