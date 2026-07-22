@@ -29,7 +29,7 @@ export default function Header() {
  
           <ul className={styles.navList}>
             <li className={styles.navItem}><Link href="/shop">Giày Nam</Link></li>
-            <li className={styles.navItem}><Link href="/shop">Giày Nữ</Link></li>
+            <li className={styles.navItem}><Link href="/shop/women">Giày Nữ</Link></li>
             <li className={styles.navItem}><Link href="/shop">Chạy Địa Hình</Link></li>
             <li className={styles.navItem}><Link href="/shop">Leo Núi</Link></li>
             <li className={styles.navItem}><Link href="/shop">Phụ Kiện</Link></li>

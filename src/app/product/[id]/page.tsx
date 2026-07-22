@@ -250,6 +250,75 @@ const productsDatabase: Record<string, {
     ],
     availableColors: ['Đen', 'Cam'],
     specs: { cushioning: 'Trung bình', support: 'Vững chãi gót', drop: '8mm', weight: '300g', terrain: 'Địa hình hoang dã dốc đá' }
+  },
+  'speedcross-w': {
+    id: 'speedcross-w',
+    brand: 'Salomon',
+    name: 'Speedcross 6 Women',
+    price: '3.250.000đ',
+    image: '/products/salomon_slab_ultraglide.jpg',
+    thumbnails: [
+      '/products/salomon_slab_ultraglide.jpg',
+      '/products/salomon_xt_whisper.jpg',
+      '/products/salomon_xt6_black.jpg'
+    ],
+    status: 'New',
+    subtitle: 'Trail running shoes - Women',
+    description: 'Phiên bản đặc biệt dành riêng cho phái nữ của Salomon Speedcross 6. Trọng lượng siêu nhẹ cùng thiết kế phom chân ôm gọn gàng, tăng cường đệm nâng đỡ vòm bàn chân giúp phái đẹp tự tin bứt phá các cung đường sình lầy dốc đứng.',
+    features: [
+      'Phom dáng thiết kế dành riêng cho cấu trúc xương chân nữ',
+      'Gai đế sâu hình xương cá bám bùn sình tuyệt hảo',
+      'Bộ đệm EnergyCell+ hoàn trả lực đàn hồi cao',
+      'Thân giày Ripstop bền bỉ kháng nước nhẹ'
+    ],
+    availableColors: ['Trắng', 'Hồng', 'Xám'],
+    specs: { cushioning: 'Êm ái cao', support: 'Nâng đỡ vòm', drop: '10mm', weight: '262g', terrain: 'Đường bùn & Trơn trượt' }
+  },
+  'speedgoat-w': {
+    id: 'speedgoat-w',
+    brand: 'Hoka',
+    name: 'Speedgoat 5 Women',
+    price: '3.850.000đ',
+    image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=500',
+    thumbnails: [
+      'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=500',
+      'https://images.unsplash.com/photo-1530541930197-ff16ac917b0e?q=80&w=500',
+      'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=500'
+    ],
+    status: 'New',
+    subtitle: 'Trail running shoes - Women',
+    description: 'Mẫu giày chạy địa hình được nữ giới ưa chuộng nhất của Hoka. Speedgoat 5 Women mang đến sự êm ái vô song nhờ đệm CMEVA siêu dày, tăng độ bám an toàn tuyệt đối bằng đế ngoài Vibram® Megagrip có gai kéo ma sát.',
+    features: [
+      'Đế ngoài Vibram Megagrip Traction Lug bám đá ẩm',
+      'Lớp đệm gót dày bảo vệ tối đa khớp gối khi đổ dốc',
+      'Trọng lượng tối ưu giảm mỏi cơ cự ly dài',
+      'Cổ giày kéo dài nâng đỡ gân Achilles'
+    ],
+    availableColors: ['Hồng', 'Cam', 'Xanh dương'],
+    specs: { cushioning: 'Đệm cực dày (Max)', support: 'Trung tính', drop: '4mm', weight: '242g', terrain: 'Địa hình kỹ thuật gồ ghề' }
+  },
+  'pegasus-w': {
+    id: 'pegasus-w',
+    brand: 'Nike',
+    name: 'Pegasus Trail 4 Women',
+    price: '3.990.000đ',
+    image: 'https://images.unsplash.com/photo-1539185441755-769473a23570?q=80&w=500',
+    thumbnails: [
+      'https://images.unsplash.com/photo-1539185441755-769473a23570?q=80&w=500',
+      'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=500',
+      'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=500'
+    ],
+    status: '',
+    subtitle: 'Trail running shoes - Women',
+    description: 'Phiên bản chạy trail mượt mà dành riêng cho các nữ runner. Nike Pegasus Trail 4 Women mang thiết kế thanh lịch thời trang kết hợp đệm foam React nhẹ nảy và hệ thống cáp treo Flywire khóa chân thăng bằng vượt trội.',
+    features: [
+      'Đệm React siêu nhẹ êm ái đàn hồi vĩnh cửu',
+      'Dây đai Flywire ôm sát chống trượt bàn chân',
+      'Màu sắc phối hợp thời trang bắt mắt',
+      'Lưới dệt Engineered Mesh thông gió mát chân'
+    ],
+    availableColors: ['Cam', 'Hồng', 'Trắng'],
+    specs: { cushioning: 'Độ nảy cao', support: 'Cân bằng ôm chân', drop: '9.5mm', weight: '240g', terrain: 'Đường hỗn hợp đô thị - mòn' }
   }
 };
 
