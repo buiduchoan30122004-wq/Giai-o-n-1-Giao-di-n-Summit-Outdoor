@@ -25,6 +25,10 @@ export async function GET() {
     const tables = await queryAll("SELECT name FROM sqlite_master WHERE type='table'");
     diagnostics.tables = tables;
 
+    // Xem schema bảng orders và products
+    diagnostics.ordersSchema = await queryAll("PRAGMA table_info(orders)");
+    diagnostics.productsSchema = await queryAll("PRAGMA table_info(products)");
+
     // Thử thực hiện một ghi chép nháp
     const testWrite = await queryRun("CREATE TABLE IF NOT EXISTS _test_debug (id INTEGER PRIMARY KEY, val TEXT)");
     diagnostics.writeResult = testWrite;
