@@ -266,41 +266,41 @@ export default function CartPage() {
 
         {/* Right Column: Order Summary Card */}
         <div className={styles.summary}>
-          <h2 className={styles.summaryTitle}>SUMMARY</h2>
+          <h2 className={styles.summaryTitle}>TÓM TẮT ĐƠN HÀNG</h2>
           
           <div className={styles.summaryRow}>
-            <span>Subtotal</span>
+            <span>Tạm tính</span>
             <span>{formatPrice(subtotal)}</span>
           </div>
 
           {discountAmount > 0 && (
             <div className={styles.summaryRow} style={{ color: '#16a34a', fontWeight: 'bold' }}>
-              <span>Promo Discount</span>
+              <span>Mã giảm giá</span>
               <span>-{formatPrice(discountAmount)}</span>
             </div>
           )}
 
           {giftWrap && (
             <div className={styles.summaryRow}>
-              <span>Gift Wrap</span>
+              <span>Gói quà tặng</span>
               <span>+50.000đ</span>
             </div>
           )}
 
           <div className={styles.summaryRow}>
-            <span>Shipping</span>
-            <span>{shippingFee === 0 ? 'Free' : formatPrice(shippingFee)}</span>
+            <span>Phí vận chuyển</span>
+            <span>{shippingFee === 0 ? 'Miễn phí' : formatPrice(shippingFee)}</span>
           </div>
 
           <div className={styles.totalRow}>
-            <span>Total</span>
+            <span>Tổng cộng</span>
             <span>{formatPrice(total)}</span>
           </div>
 
           {/* Promo code accordion */}
           <div className={styles.promoDropdown}>
             <div className={styles.promoHeader} onClick={() => setPromoOpen(!promoOpen)}>
-              <span>Do you have a promo code?</span>
+              <span>Bạn có mã giảm giá?</span>
               <svg className={`${styles.chevronIcon} ${promoOpen ? styles.chevronOpen : ''}`} width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
                 <path d="M19 9l-7 7-7-7" />
               </svg>
@@ -317,7 +317,7 @@ export default function CartPage() {
                     className={styles.promoInput}
                   />
                   <button type="submit" className={styles.promoApplyBtn}>
-                    Apply
+                    Áp dụng
                   </button>
                 </form>
                 {promoMessage && (
@@ -330,7 +330,7 @@ export default function CartPage() {
           </div>
 
           <p className={styles.giftCardNotice}>
-            If you are looking to pay using a gift card, please select it as a payment method at the next stage of the checkout.
+            Nếu bạn muốn thanh toán bằng thẻ quà tặng (Gift card), vui lòng chọn phương thức thanh toán đó ở bước tiếp theo của quá trình đặt hàng.
           </p>
 
           <Link href="/checkout" className={styles.checkoutBtn}>
@@ -338,15 +338,15 @@ export default function CartPage() {
             <svg className={styles.padlockIcon} width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
             </svg>
-            Checkout securely
+            Thanh toán an toàn
           </Link>
 
           <Link href="/shop" className={styles.continueShopping}>
-            Continue shopping
+            Tiếp tục mua sắm
           </Link>
 
           <p className={styles.taxNotice}>
-            All taxes and duties are already included in the price of each order shipped to mainland EU (Including Ireland).
+            Tất cả các khoản thuế và thuế nhập khẩu đã được bao gồm đầy đủ trong giá bán của mỗi sản phẩm.
           </p>
 
           {/* Payment Icons - Standard Sportsshoes Grid */}
