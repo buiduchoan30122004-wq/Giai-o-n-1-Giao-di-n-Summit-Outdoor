@@ -41,3 +41,10 @@ jobs:
             pm2 delete summit-outdoor || true
             pm2 delete 0 || true
             pm2 start yarn --name "summit-outdoor" -- start
+            
+            # Đợi 5 giây để ghi lại logs trạng thái nhằm phục vụ debug từ xa
+            sleep 5
+            pm2 status
+            pm2 logs summit-outdoor --lines 50 --no-daemon &
+            sleep 3
+            kill $! || true
