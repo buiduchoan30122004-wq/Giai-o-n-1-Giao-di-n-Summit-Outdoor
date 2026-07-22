@@ -114,7 +114,7 @@ export default function Chatbot() {
       cleanText.includes('len don') ||
       cleanText.includes('order')
     ) {
-      replyText = 'Dựa trên cự ly và form chân của bạn, Salomon XT-6 GORE-TEX là lựa chọn tối ưu nhất. Mẫu này đang sẵn hàng đúng size của bạn tại kho.\n\nBạn dành chút thời gian điền thông tin nhận hàng (Tên, SĐT, Địa chỉ) vào biểu mẫu dưới đây để mình lên đơn gửi đi ngay nhé!';
+      replyText = 'Để bên mình tư vấn và giới thiệu mẫu giày trail phù hợp nhất với form chân, cự ly và nhu cầu của bạn, bạn dành chút thời gian điền thông tin vào biểu mẫu dưới đây nhé!';
       isFormLink = true;
     } else {
       // Search in FAQs
@@ -179,9 +179,9 @@ export default function Chatbot() {
                         rel="noopener noreferrer" 
                         className={styles.formBtn}
                       >
-                        🔗 Điền form nhận hàng tại đây
+                        🔗 Điền form tư vấn tại đây
                       </a>
-                      <p className={styles.formNote}>Sau khi gửi form, bạn phản hồi lại một tiếng để mình kiểm tra trên hệ thống gửi mã vận đơn nhé!</p>
+                      <p className={styles.formNote}>Sau khi gửi form, bạn nhắn lại ở đây để mình check và hỗ trợ đề xuất mẫu giày phù hợp ngay nhé!</p>
                     </div>
                   )}
 
