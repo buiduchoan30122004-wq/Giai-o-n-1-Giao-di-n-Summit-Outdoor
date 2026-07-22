@@ -32,9 +32,11 @@ export default function CheckoutPage() {
   const [shipping, setShipping] = useState(50000);
   const [discount, setDiscount] = useState(0);
   const [total, setTotal] = useState(3300000);
+  const [mounted, setMounted] = useState(false);
 
   // Generate random order code and load checkout data on mount
   useEffect(() => {
+    setMounted(true);
     const randomNum = Math.floor(1000 + Math.random() * 9000);
     setOrderCode(`SUMMIT${randomNum}`);
 
@@ -70,7 +72,7 @@ export default function CheckoutPage() {
 
   // Poll payment status if payment method is QR and order code exists
   useEffect(() => {
-    if (paymentMethod !== 'qr' || !orderCode || isPaid) return;
+    if (!mounted || paymentMethod !== 'qr' || !orderCode || isPaid) return;
 
     const interval = setInterval(async () => {
       try {
@@ -87,7 +89,17 @@ export default function CheckoutPage() {
     }, 3000); // Check every 3 seconds
 
     return () => clearInterval(interval);
-  }, [paymentMethod, orderCode, isPaid]);
+  }, [paymentMethod, orderCode, isPaid, mounted]);
+
+  if (!mounted) {
+    return (
+      <main className="container">
+        <div style={{ padding: '80px 0', textAlign: 'center', fontSize: '18px', color: '#666', fontWeight: 'bold' }}>
+          Đang tải thông tin thanh toán...
+        </div>
+      </main>
+    );
+  }
 
   const formatPriceVND = (value: number) => {
     return value.toLocaleString('vi-VN') + 'đ';
