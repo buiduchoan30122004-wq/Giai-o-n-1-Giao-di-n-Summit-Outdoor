@@ -74,32 +74,51 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Shop by Activity */}
+      {/* Shop by Brand */}
       <section className={styles.section}>
         <div className="container">
           <div className={styles.sectionHeader}>
-            <h2 className={styles.sectionTitle}>Theo Hoạt Động</h2>
+            <h2 className={styles.sectionTitle}>Thương Hiệu Nổi Bật</h2>
           </div>
-          <div className={styles.activityGrid}>
-            <Link href="/shop" className={styles.activityCard}>
-              <img src="https://images.unsplash.com/photo-1551698618-1dfe5d97d256?q=80&w=800" alt="Trail Running" />
-              <div className={styles.overlay}></div>
-              <span className={styles.activityLabel}>Chạy Địa Hình</span>
+          <div className={styles.brandGrid}>
+            <Link href="/shop" className={styles.brandCard}>
+              <div className={styles.brandImgWrapper}>
+                <img src="https://images.unsplash.com/photo-1502680390469-be75c86b636f?q=80&w=500" alt="Adidas" className={styles.brandCardImg} />
+                <div className={styles.brandImgOverlay}>
+                  <img src="/brands/adidas.svg" alt="Adidas Logo" className={styles.brandCardLogo} />
+                </div>
+              </div>
+              <div className={styles.brandCardLabel}>adidas</div>
             </Link>
-            <Link href="/shop" className={styles.activityCard}>
-              <img src="https://images.unsplash.com/photo-1538805060514-97d9cc17730c?q=80&w=800" alt="Road Running" />
-              <div className={styles.overlay}></div>
-              <span className={styles.activityLabel}>Chạy Đường Nhựa</span>
+
+            <Link href="/shop" className={styles.brandCard}>
+              <div className={styles.brandImgWrapper}>
+                <img src="https://images.unsplash.com/photo-1538805060514-97d9cc17730c?q=80&w=500" alt="Asics" className={styles.brandCardImg} />
+                <div className={styles.brandImgOverlay}>
+                  <img src="/brands/asics.svg" alt="Asics Logo" className={styles.brandCardLogo} />
+                </div>
+              </div>
+              <div className={styles.brandCardLabel}>ASICS</div>
             </Link>
-            <Link href="/shop" className={styles.activityCard}>
-              <img src="https://images.unsplash.com/photo-1621609764180-2ca554a9d6f2?q=80&w=800" alt="Hiking" />
-              <div className={styles.overlay}></div>
-              <span className={styles.activityLabel}>Leo Núi & Dã Ngoại</span>
+
+            <Link href="/shop" className={styles.brandCard}>
+              <div className={styles.brandImgWrapper}>
+                <img src="https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?q=80&w=500" alt="Brooks" className={styles.brandCardImg} />
+                <div className={styles.brandImgOverlay}>
+                  <img src="/brands/brooks.svg" alt="Brooks Logo" className={styles.brandCardLogo} />
+                </div>
+              </div>
+              <div className={styles.brandCardLabel}>Brooks</div>
             </Link>
-            <Link href="/shop" className={styles.activityCard}>
-              <img src="https://images.unsplash.com/photo-1582266255765-fa5cf1a1d501?q=80&w=800" alt="Accessories" />
-              <div className={styles.overlay}></div>
-              <span className={styles.activityLabel}>Phụ Kiện Thể Thao</span>
+
+            <Link href="/shop" className={styles.brandCard}>
+              <div className={styles.brandImgWrapper}>
+                <img src="https://images.unsplash.com/photo-1530541930197-ff16ac917b0e?q=80&w=500" alt="Hoka" className={styles.brandCardImg} />
+                <div className={styles.brandImgOverlay}>
+                  <img src="/brands/hoka.svg" alt="Hoka Logo" className={styles.brandCardLogo} />
+                </div>
+              </div>
+              <div className={styles.brandCardLabel}>HOKA</div>
             </Link>
           </div>
         </div>
