@@ -81,7 +81,7 @@ export default function CartPage() {
     if (code === 'SUMMIT10OFF') {
       setDiscountPercent(10);
       setPromoMessage({ text: 'Áp dụng mã giảm giá 10% thành công!', type: 'success' });
-    } else if (code === 'FREESHIP') {
+    } else if (code === 'FREESHIP' || code === 'FREE SHIP' || code === 'FREEE SHIP' || code === 'FREESHIP' || code === 'FREEESHIP') {
       setDiscountPercent(0);
       setShippingFee(0);
       setPromoMessage({ text: 'Áp dụng mã miễn phí vận chuyển thành công!', type: 'success' });
