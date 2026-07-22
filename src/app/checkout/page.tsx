@@ -4,6 +4,17 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import styles from './checkout.module.css';
 
+interface CartItem {
+  id: string;
+  brand: string;
+  name: string;
+  price: string;
+  image: string;
+  size: string;
+  color: string;
+  quantity: number;
+}
+
 export default function CheckoutPage() {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
@@ -16,10 +27,45 @@ export default function CheckoutPage() {
   const [isPaid, setIsPaid] = useState(false);
   const [copySuccess, setCopySuccess] = useState<string | null>(null);
 
-  // Generate random order code on mount
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [subtotal, setSubtotal] = useState(0);
+  const [shipping, setShipping] = useState(50000);
+  const [discount, setDiscount] = useState(0);
+  const [total, setTotal] = useState(3300000);
+
+  // Generate random order code and load checkout data on mount
   useEffect(() => {
     const randomNum = Math.floor(1000 + Math.random() * 9000);
     setOrderCode(`SUMMIT${randomNum}`);
+
+    try {
+      const cartDataStr = localStorage.getItem('summit_cart');
+      if (cartDataStr) {
+        const items = JSON.parse(cartDataStr);
+        setCartItems(items);
+        
+        const checkoutDataStr = localStorage.getItem('summit_checkout');
+        if (checkoutDataStr) {
+          const checkData = JSON.parse(checkoutDataStr);
+          setSubtotal(checkData.subtotal || 0);
+          setShipping(checkData.shipping || 0);
+          setDiscount(checkData.discount || 0);
+          setTotal(checkData.total || 0);
+        } else {
+          // Dynamic calculation fallback
+          const parsePrice = (priceStr: string) => {
+            return parseInt(priceStr.replace(/\./g, '').replace('đ', '')) || 0;
+          };
+          const calculatedSubtotal = items.reduce((acc: number, item: any) => acc + parsePrice(item.price) * item.quantity, 0);
+          setSubtotal(calculatedSubtotal);
+          setShipping(50000);
+          setDiscount(0);
+          setTotal(calculatedSubtotal + 50000);
+        }
+      }
+    } catch (e) {
+      console.error(e);
+    }
   }, []);
 
   // Poll payment status if payment method is QR and order code exists
@@ -43,7 +89,9 @@ export default function CheckoutPage() {
     return () => clearInterval(interval);
   }, [paymentMethod, orderCode, isPaid]);
 
-  const totalAmount = 3300000; // 3.300.000đ
+  const formatPriceVND = (value: number) => {
+    return value.toLocaleString('vi-VN') + 'đ';
+  };
 
   const copyToClipboard = (text: string, type: string) => {
     navigator.clipboard.writeText(text);
@@ -91,7 +139,7 @@ export default function CheckoutPage() {
         content: `Thanh toan don hang ${orderCode}`,
         transferType: 'in',
         description: `${name} chuyen khoan qua MB`,
-        transferAmount: totalAmount,
+        transferAmount: total,
         accumulated: 10000000,
         referenceCode: `SIMREF_${Math.floor(Math.random() * 1000000)}`
       })
@@ -140,7 +188,7 @@ export default function CheckoutPage() {
             </div>
             <div className={styles.infoRow}>
               <span className={styles.infoLabel}>Tổng thanh toán:</span>
-              <span className={styles.infoValue}>3.300.000đ</span>
+              <span className={styles.infoValue}>{formatPriceVND(total)}</span>
             </div>
             <div className={styles.infoRow}>
               <span className={styles.infoLabel}>Phương thức:</span>
@@ -278,36 +326,46 @@ export default function CheckoutPage() {
             <h2 className={styles.cardTitle}>Đơn hàng của bạn</h2>
             
             <div className={styles.orderItems}>
-              <div className={styles.orderItem}>
-                <img 
-                  src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=500" 
-                  alt="Giày" 
-                  className={styles.itemImg}
-                />
-                <div className={styles.itemMeta}>
-                  <div className={styles.itemName}>Salomon Speedcross 6 Trail Shoes</div>
-                  <div className={styles.itemSize}>Cỡ: US 9 | Đen</div>
+              {cartItems.map((item, index) => (
+                <div key={`${item.id}-${index}`} className={styles.orderItem}>
+                  <img 
+                    src={item.image} 
+                    alt={item.name} 
+                    className={styles.itemImg}
+                  />
+                  <div className={styles.itemMeta}>
+                    <div className={styles.itemName}>{item.name}</div>
+                    <div className={styles.itemSize}>Cỡ: {item.size} | Màu: {item.color} | SL: {item.quantity}</div>
+                  </div>
+                  <div className={styles.itemPrice}>{item.price}</div>
                 </div>
-                <div className={styles.itemPrice}>3.250.000đ</div>
-              </div>
+              ))}
             </div>
 
             <div className={styles.divider}></div>
 
             <div className={styles.summaryRow}>
               <span>Tạm tính</span>
-              <span>3.250.000đ</span>
+              <span>{formatPriceVND(subtotal)}</span>
             </div>
+
+            {discount > 0 && (
+              <div className={styles.summaryRow} style={{ color: '#16a34a', fontWeight: 'bold' }}>
+                <span>Mã giảm giá</span>
+                <span>-{formatPriceVND(discount)}</span>
+              </div>
+            )}
+
             <div className={styles.summaryRow}>
               <span>Phí vận chuyển</span>
-              <span>50.000đ</span>
+              <span>{shipping === 0 ? 'Miễn phí' : formatPriceVND(shipping)}</span>
             </div>
             
             <div className={styles.divider}></div>
 
             <div className={styles.totalRow}>
               <span>Tổng thanh toán</span>
-              <span>3.300.000đ</span>
+              <span>{formatPriceVND(total)}</span>
             </div>
 
             {/* If payment method is QR, display the VietQR Code and Sepay mockup */}
@@ -316,7 +374,7 @@ export default function CheckoutPage() {
                 <div className={styles.qrImageContainer}>
                   {/* Real-time VietQR Generation API */}
                   <img 
-                    src={`https://img.vietqr.io/image/mbbank-0904759624-compact.png?amount=${totalAmount}&addInfo=${orderCode}&accountName=BUI%20DUC%20HOAN`} 
+                    src={`https://img.vietqr.io/image/mbbank-0904759624-compact.png?amount=${total}&addInfo=${orderCode}&accountName=BUI%20DUC%20HOAN`} 
                     alt="VietQR Chuyển khoản" 
                     className={styles.qrImage}
                   />
@@ -345,10 +403,10 @@ export default function CheckoutPage() {
                   <div className={styles.detailRow}>
                     <span className={styles.detailLabel}>Số tiền:</span>
                     <div className={styles.detailValBox}>
-                      <span className={styles.detailValue}>3.300.000đ</span>
+                      <span className={styles.detailValue}>{formatPriceVND(total)}</span>
                       <button 
                         type="button" 
-                        onClick={() => copyToClipboard('3300000', 'amount')} 
+                        onClick={() => copyToClipboard(total.toString(), 'amount')} 
                         className={styles.copyBtn}
                       >
                         {copySuccess === 'amount' ? 'Đã sao chép' : 'Sao chép'}

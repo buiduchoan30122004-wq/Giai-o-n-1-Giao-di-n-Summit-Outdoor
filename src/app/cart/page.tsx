@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import styles from './cart.module.css';
 
 interface CartItem {
@@ -16,6 +17,7 @@ interface CartItem {
 }
 
 export default function CartPage() {
+  const router = useRouter();
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [giftWrap, setGiftWrap] = useState(false);
   const [promoOpen, setPromoOpen] = useState(false);
@@ -331,13 +333,30 @@ export default function CartPage() {
             Nếu bạn muốn thanh toán bằng thẻ quà tặng (Gift card), vui lòng chọn phương thức thanh toán đó ở bước tiếp theo của quá trình đặt hàng.
           </p>
 
-          <Link href="/checkout" className={styles.checkoutBtn}>
+          <button 
+            onClick={() => {
+              try {
+                localStorage.setItem('summit_checkout', JSON.stringify({
+                  subtotal,
+                  shipping: shippingFee,
+                  discount: discountAmount,
+                  giftWrap: giftWrapFee,
+                  total
+                }));
+                router.push('/checkout');
+              } catch (e) {
+                console.error(e);
+                router.push('/checkout');
+              }
+            }} 
+            className={styles.checkoutBtn}
+          >
             {/* Padlock Icon */}
             <svg className={styles.padlockIcon} width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
             </svg>
             Thanh toán an toàn
-          </Link>
+          </button>
 
           <Link href="/shop" className={styles.continueShopping}>
             Tiếp tục mua sắm
