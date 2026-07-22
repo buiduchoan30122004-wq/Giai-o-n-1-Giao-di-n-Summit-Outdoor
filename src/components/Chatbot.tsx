@@ -149,7 +149,9 @@ export default function Chatbot() {
           {/* Header */}
           <div className={styles.chatHeader}>
             <div className={styles.botInfo}>
-              <div className={styles.avatar}>🏔️</div>
+              <div className={styles.avatar}>
+                <img src="/icon.svg" className={styles.avatarImg} alt="Summit Outdoor Logo" />
+              </div>
               <div>
                 <h4 className={styles.chatTitle} translate="no">Trợ lý Summit Outdoor</h4>
                 <span className={styles.chatSubtitle}>Chuyên gia chạy trail 24/7</span>
@@ -241,7 +243,7 @@ export default function Chatbot() {
 
       {/* Nút tròn Trigger nổi góc dưới bên phải */}
       <button 
-        className={styles.chatbotTrigger} 
+        className={`${styles.chatbotTrigger} ${isOpen ? styles.triggerOpen : styles.triggerClosed}`} 
         onClick={() => setIsOpen(!isOpen)}
         aria-label="Hỏi đáp hỗ trợ"
       >
@@ -252,9 +254,7 @@ export default function Chatbot() {
               <line x1="6" y1="6" x2="18" y2="18"></line>
             </svg>
           ) : (
-            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-            </svg>
+            <img src="/icon.svg" className={styles.triggerLogo} alt="Summit Outdoor Logo" />
           )}
         </div>
         {!isOpen && <span className={styles.tooltip}>Hỏi chuyên gia</span>}
