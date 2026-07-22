@@ -117,7 +117,7 @@ const PromoPopup = ({ isOpen, onClose }: PromoPopupProps) => {
           {!isSuccess ? (
             <>
               <h2 className={styles.title}>Đăng ký nhận ngay</h2>
-              <p className={styles.subtitle}>VOUCHER GIẢM GIÁ 5% TOÀN BỘ SẢN PHẨM</p>
+              <p className={styles.subtitle}>Voucher giảm giá 5% cho toàn bộ sản phẩm</p>
               
               <form onSubmit={handleSubmit} className={styles.form}>
                 <div className={styles.formGroup}>

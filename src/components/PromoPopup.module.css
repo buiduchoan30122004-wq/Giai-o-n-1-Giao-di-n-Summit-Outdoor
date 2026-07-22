@@ -77,22 +77,23 @@
 }
 
 .title {
-  font-size: 1.4rem;
-  font-weight: 900;
-  text-transform: uppercase;
-  color: var(--color-white); /* Chữ trắng */
-  margin-bottom: 4px;
+  font-size: 1.45rem;
+  font-weight: 700; /* Giảm độ dày nét để mềm mại hơn */
+  text-transform: none; /* Bỏ bắt buộc viết hoa */
+  color: var(--color-white);
+  margin-bottom: 6px;
   text-align: center;
-  letter-spacing: -0.01em;
+  letter-spacing: 0.5px;
 }
 
 .subtitle {
-  font-size: 0.85rem;
-  color: #ff4d5a; /* Đỏ sáng hơn một chút để nổi bật trên nền tối */
+  font-size: 0.9rem;
+  color: #ff4d5a;
   margin-bottom: 24px;
   text-align: center;
-  font-weight: 700;
-  letter-spacing: 0.5px;
+  font-weight: 600; /* Mềm mại hơn */
+  letter-spacing: 0.2px;
+  text-transform: none; /* Đảm bảo hiển thị dạng chữ thường */
 }
 
 .form {
@@ -173,15 +174,15 @@
   background-color: var(--color-primary);
   color: var(--color-white);
   padding: 12px;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  font-weight: 700; /* Giảm từ 800 để chữ mềm mại hơn */
+  text-transform: none; /* Chuyển sang chữ thường để bớt thô cứng */
+  letter-spacing: 0.5px;
   border: none;
   border-radius: 10px;
   cursor: pointer;
   transition: all 0.3s ease;
   margin-top: 10px;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
 }
 
 .submitBtn:hover:not(:disabled) {
