@@ -1,7 +1,39 @@
+"use client";
+
 import Link from 'next/link';
 import styles from './components.module.css';
+import React, { useState, useEffect } from 'react';
 
 export default function Header() {
+  const [cartCount, setCartCount] = useState(0);
+
+  useEffect(() => {
+    const updateCartCount = () => {
+      try {
+        const cartDataStr = localStorage.getItem('summit_cart');
+        if (cartDataStr) {
+          const cart = JSON.parse(cartDataStr);
+          const count = cart.reduce((total: number, item: any) => total + (item.quantity || 1), 0);
+          setCartCount(count);
+        } else {
+          setCartCount(0);
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    };
+
+    updateCartCount();
+
+    window.addEventListener('cartUpdated', updateCartCount);
+    window.addEventListener('storage', updateCartCount);
+
+    return () => {
+      window.removeEventListener('cartUpdated', updateCartCount);
+      window.removeEventListener('storage', updateCartCount);
+    };
+  }, []);
+
   return (
     <header className={styles.header}>
       {/* Top Bar */}
@@ -40,8 +72,28 @@ export default function Header() {
           <div className={styles.headerActions}>
             <span className={styles.actionIcon}>🔍</span>
             <span className={styles.actionIcon}>👤</span>
-            <Link href="/cart">
+            <Link href="/cart" style={{ position: 'relative', display: 'inline-flex' }}>
               <span className={styles.actionIcon}>🛒</span>
+              {cartCount > 0 && (
+                <span style={{
+                  position: 'absolute',
+                  top: '-4px',
+                  right: '-4px',
+                  background: 'var(--color-primary)',
+                  color: '#ffffff',
+                  fontSize: '0.62rem',
+                  fontWeight: 'bold',
+                  borderRadius: '50%',
+                  width: '15px',
+                  height: '15px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
+                }}>
+                  {cartCount}
+                </span>
+              )}
             </Link>
           </div>
         </div>

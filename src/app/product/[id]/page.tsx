@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from './product.module.css';
 import Link from 'next/link';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 
 import { productsDatabase } from '@/data/products';
 const defaultProduct = productsDatabase['xt6'];
@@ -23,6 +23,7 @@ const preDefinedColors = [
 
 export default function ProductDetail({ params: paramsProp }: { params: { id: string } }) {
   const params = useParams();
+  const router = useRouter();
   const idStr = Array.isArray(params?.id) ? params.id[0] : params?.id;
   const productId = idStr ? idStr.toLowerCase() : (paramsProp?.id ? paramsProp.id.toLowerCase() : 'xt6');
   const product = productsDatabase[productId] || defaultProduct;
@@ -217,18 +218,102 @@ export default function ProductDetail({ params: paramsProp }: { params: { id: st
               <button 
                 className={styles.cartBtn}
                 onClick={() => {
-                  if (!selectedSize) alert('Vui lòng chọn kích thước (size) trước!');
-                  else if (!selectedColor) alert('Vui lòng chọn màu sắc trước!');
-                  else alert(`Đã thêm vào giỏ hàng: ${product.name} (Màu: ${selectedColor}, Size: ${selectedSize})`);
+                  if (!selectedSize) {
+                    alert('Vui lòng chọn kích thước (size) trước!');
+                    return;
+                  }
+                  if (!selectedColor) {
+                    alert('Vui lòng chọn màu sắc trước!');
+                    return;
+                  }
+
+                  try {
+                    const cartDataStr = localStorage.getItem('summit_cart');
+                    let cart = [];
+                    if (cartDataStr) {
+                      cart = JSON.parse(cartDataStr);
+                    }
+
+                    const existingItemIndex = cart.findIndex(
+                      (item: any) => item.id === product.id && item.size === selectedSize && item.color === selectedColor
+                    );
+
+                    if (existingItemIndex > -1) {
+                      cart[existingItemIndex].quantity += 1;
+                    } else {
+                      cart.push({
+                        id: product.id,
+                        brand: product.brand,
+                        name: product.name,
+                        price: product.price,
+                        image: product.image,
+                        size: selectedSize,
+                        color: selectedColor,
+                        quantity: 1
+                      });
+                    }
+
+                    localStorage.setItem('summit_cart', JSON.stringify(cart));
+                    window.dispatchEvent(new Event('cartUpdated'));
+
+                    alert(`Đã thêm vào giỏ hàng: ${product.name} (Màu: ${selectedColor}, Size: ${selectedSize})`);
+                  } catch (e) {
+                    console.error(e);
+                    alert('Lỗi khi thêm vào giỏ hàng!');
+                  }
                 }}
               >
                 Thêm vào giỏ hàng
               </button>
 
-              {/* Button 2: Buy Now (Triggers Voucher input block) */}
+              {/* Button 2: Buy Now */}
               <button 
                 className={styles.buyNowBtn}
-                onClick={handleBuyNow}
+                onClick={() => {
+                  if (!selectedSize) {
+                    alert('Vui lòng chọn kích thước (size) trước!');
+                    return;
+                  }
+                  if (!selectedColor) {
+                    alert('Vui lòng chọn màu sắc trước!');
+                    return;
+                  }
+
+                  try {
+                    const cartDataStr = localStorage.getItem('summit_cart');
+                    let cart = [];
+                    if (cartDataStr) {
+                      cart = JSON.parse(cartDataStr);
+                    }
+
+                    const existingItemIndex = cart.findIndex(
+                      (item: any) => item.id === product.id && item.size === selectedSize && item.color === selectedColor
+                    );
+
+                    if (existingItemIndex > -1) {
+                      cart[existingItemIndex].quantity += 1;
+                    } else {
+                      cart.push({
+                        id: product.id,
+                        brand: product.brand,
+                        name: product.name,
+                        price: product.price,
+                        image: product.image,
+                        size: selectedSize,
+                        color: selectedColor,
+                        quantity: 1
+                      });
+                    }
+
+                    localStorage.setItem('summit_cart', JSON.stringify(cart));
+                    window.dispatchEvent(new Event('cartUpdated'));
+
+                    router.push('/cart');
+                  } catch (e) {
+                    console.error(e);
+                    router.push('/cart');
+                  }
+                }}
               >
                 Mua ngay
               </button>
