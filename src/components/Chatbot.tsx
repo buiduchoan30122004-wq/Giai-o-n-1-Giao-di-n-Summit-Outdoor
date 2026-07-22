@@ -214,7 +214,7 @@ export default function Chatbot() {
     },
     {
       q: 'Bao lâu thì nên thay giày?',
-      keywords: ['bao lâu', 'thay giày', 'tuổi thọ', 'bền', 'hỏng', 'mòn đế', 'thay giay'],
+      keywords: ['bao lâu thay', 'bao lau thay', 'bao lâu thì thay', 'thay giày', 'thay giay', 'tuổi thọ', 'tieu tho', 'mòn đế', 'mon de'],
       a: 'Thông thường một đôi giày trail duy trì độ êm và độ bám tốt trong khoảng 600–800 km. Tuy nhiên, nếu bạn thường xuyên chạy trên mặt đá gồ ghề, gai đế (grip) có thể sẽ mòn nhanh hơn. Khi thấy gai đế mòn phẳng hoặc cảm giác đệm hết êm, đó là lúc nên cân nhắc thay.'
     },
     {
@@ -239,7 +239,7 @@ export default function Chatbot() {
     },
     {
       q: 'Thời gian ship và phí giao hàng?',
-      keywords: ['ship', 'vận chuyển', 'giao hàng', 'thời gian', 'cần gấp', 'phi ship', 'bao lâu nhận'],
+      keywords: ['ship', 'vận chuyển', 'giao hàng', 'thời gian', 'cần gấp', 'phi ship', 'bao lâu nhận', 'bao lau nhan', 'bao lâu hàng tới', 'bao lau hang toi', 'bao lâu thì có', 'bao lâu thì nhận'],
       a: 'Bên mình giao hàng toàn quốc. Thường sẽ mất khoảng 1-2 ngày nếu bạn ở trung tâm, và 3-4 ngày với các tỉnh xa. Hiện tại một số mẫu đang có sẵn tại kho, nếu bạn chốt sớm mình sẽ ưu tiên đóng gói gửi đi ngay trong ngày hôm nay.'
     },
     {
