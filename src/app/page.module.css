@@ -331,9 +331,9 @@
 
 .newsletterContainer {
   display: flex;
-  justify-content: space-between;
+  justify-content: center; /* Căn giữa toàn bộ */
   align-items: center;
-  gap: 30px;
+  gap: 60px; /* Thu hẹp khoảng cách */
   max-width: 1000px;
   margin: 0 auto;
 }
