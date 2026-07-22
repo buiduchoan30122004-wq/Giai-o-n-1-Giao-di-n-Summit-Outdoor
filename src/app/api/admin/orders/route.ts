@@ -5,7 +5,8 @@ export async function GET() {
   try {
     const orders = await queryAll(`
       SELECT 
-        o.id, o.customer_id, o.product_id, o.quantity, o.total_price, o.status, o.created_at,
+        o.id, o.customer_id, o.product_id, o.quantity, o.total_price, o.status, o.created_at, o.order_code,
+        o.address, o.notes, o.transaction_id, o.payment_amount, o.payment_date,
         c.name as customer_name, c.email as customer_email, c.phone as customer_phone,
         p.brand as product_brand, p.name as product_name, p.price as product_price
       FROM orders o

@@ -53,10 +53,10 @@ export async function POST(req: NextRequest) {
       const totalItemPrice = itemPrice * item.quantity;
       const initialStatus = 'pending';
 
-      // 3. Save order record with order_code
+      // 3. Save order record with shipping details & order_code
       await queryRun(
-        'INSERT INTO orders (customer_id, product_id, quantity, total_price, status, order_code) VALUES (?, ?, ?, ?, ?, ?)',
-        [customerId, dbProductId, item.quantity, totalItemPrice, initialStatus, orderCode]
+        'INSERT INTO orders (customer_id, product_id, quantity, total_price, status, order_code, address, notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+        [customerId, dbProductId, item.quantity, totalItemPrice, initialStatus, orderCode, address || '', notes || '']
       );
 
       // 4. Deduct stock in DB

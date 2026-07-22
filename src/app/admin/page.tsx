@@ -55,6 +55,11 @@ interface Order {
   product_brand?: string;
   product_name?: string;
   product_price?: number;
+  address?: string;
+  notes?: string;
+  transaction_id?: string;
+  payment_amount?: number;
+  payment_date?: string;
 }
 
 type TabType = 'products' | 'customers' | 'orders';
@@ -626,7 +631,17 @@ export default function AdminPage() {
                           <td>
                             <div className="table-user-cell">
                               <span className="font-weight-600">{ord.customer_name || 'Khách bị xóa'}</span>
-                              <span className="text-small">{ord.customer_email || '-'}</span>
+                              <span className="text-small">{ord.customer_email || '-'} | {ord.customer_phone || '-'}</span>
+                              {ord.address && (
+                                <span className="text-small text-muted" style={{ marginTop: '3px', display: 'block', fontSize: '11px', color: '#6b7280' }}>
+                                  🏠 {ord.address}
+                                </span>
+                              )}
+                              {ord.notes && (
+                                <span className="text-small text-muted" style={{ marginTop: '1px', display: 'block', fontSize: '11px', fontStyle: 'italic', color: '#8c95a5' }}>
+                                  📝 {ord.notes}
+                                </span>
+                              )}
                             </div>
                           </td>
                           <td>
@@ -638,11 +653,19 @@ export default function AdminPage() {
                           <td className="text-center font-weight-600">{ord.quantity}</td>
                           <td className="font-weight-600 color-accent">${ord.total_price.toFixed(2)}</td>
                           <td>
-                            <span className={`status-pill ${ord.status}`}>
-                              {ord.status === 'pending' ? 'Chờ thanh toán' : ''}
-                              {ord.status === 'confirmed' ? 'Đã duyệt' : ''}
-                              {ord.status === 'cancelled' ? 'Đã hủy' : ''}
-                            </span>
+                            <div>
+                              <span className={`status-pill ${ord.status}`}>
+                                {ord.status === 'pending' ? 'Chờ thanh toán' : ''}
+                                {ord.status === 'confirmed' ? 'Đã thanh toán' : ''}
+                                {ord.status === 'cancelled' ? 'Đã hủy' : ''}
+                              </span>
+                              {ord.status === 'confirmed' && ord.transaction_id && (
+                                <div style={{ marginTop: '4px', fontSize: '11px', display: 'flex', flexDirection: 'column', gap: '1px', color: '#6b7280' }}>
+                                  <span>💳 GD: {ord.transaction_id}</span>
+                                  <span>💰 Nhận: {ord.payment_amount ? Number(ord.payment_amount).toLocaleString('vi-VN') + 'đ' : ''}</span>
+                                </div>
+                              )}
+                            </div>
                           </td>
                           <td>{new Date(ord.created_at).toLocaleDateString('vi-VN')}</td>
                           <td className="text-right">

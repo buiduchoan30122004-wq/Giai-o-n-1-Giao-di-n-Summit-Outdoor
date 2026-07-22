@@ -79,12 +79,12 @@ export async function POST(request: NextRequest) {
 
     fs.writeFileSync(paymentsFilePath, JSON.stringify(payments, null, 2), 'utf-8');
 
-    // 6. Update order status in SQLite CRM database if queryRun is available
+    // 6. Update order status and record payment details in SQLite CRM database if queryRun is available
     try {
       const { queryRun } = await import('@/lib/db');
       await queryRun(
-        "UPDATE orders SET status = 'confirmed' WHERE order_code = ?",
-        [orderCode]
+        "UPDATE orders SET status = 'confirmed', transaction_id = ?, payment_amount = ?, payment_date = ? WHERE order_code = ?",
+        [id, transferAmount, transactionDate, orderCode]
       );
     } catch (dbError) {
       console.error('Failed to update order status in local SQLite database:', dbError);
