@@ -120,6 +120,26 @@ export default function Home() {
               </div>
               <div className={styles.brandCardLabel}>HOKA</div>
             </Link>
+
+            <Link href="/shop" className={styles.brandCard}>
+              <div className={styles.brandImgWrapper}>
+                <img src="https://images.unsplash.com/photo-1539185441755-769473a23570?q=80&w=500" alt="New Balance" className={styles.brandCardImg} />
+                <div className={styles.brandImgOverlay}>
+                  <img src="/brands/new-balance.svg" alt="New Balance Logo" className={styles.brandCardLogo} />
+                </div>
+              </div>
+              <div className={styles.brandCardLabel}>Cân bằng mới</div>
+            </Link>
+
+            <Link href="/shop" className={styles.brandCard}>
+              <div className={styles.brandImgWrapper}>
+                <img src="https://images.unsplash.com/photo-1486218119243-13883505764c?q=80&w=500" alt="Nike" className={styles.brandCardImg} />
+                <div className={styles.brandImgOverlay}>
+                  <img src="/brands/nike.svg" alt="Nike Logo" className={styles.brandCardLogo} />
+                </div>
+              </div>
+              <div className={styles.brandCardLabel}>Nike</div>
+            </Link>
           </div>
         </div>
       </section>
