@@ -7,6 +7,7 @@ interface Message {
   sender: 'user' | 'bot';
   text: string;
   isFormLink?: boolean;
+  showHotline?: boolean;
 }
 
 export default function Chatbot() {
@@ -14,7 +15,8 @@ export default function Chatbot() {
   const [messages, setMessages] = useState<Message[]>([
     {
       sender: 'bot',
-      text: 'Chào bạn, cảm ơn bạn đã quan tâm đến Summit Outdoor! Bạn đang tìm kiếm một đôi giày trail cho giải chạy sắp tới, hay cần tư vấn phụ kiện (vest, gậy) để bắt đầu tập luyện vậy? Bạn cứ thoải mái chia sẻ cự ly và mục tiêu nhé!'
+      text: 'Chào bạn, cảm ơn bạn đã quan tâm đến Summit Outdoor! Bạn đang tìm kiếm một đôi giày trail cho giải chạy sắp tới, hay cần tư vấn phụ kiện (vest, gậy) để bắt đầu tập luyện vậy? Bạn cứ thoải mái chia sẻ cự ly và mục tiêu nhé!',
+      showHotline: true
     }
   ]);
   const [inputValue, setInputValue] = useState('');
@@ -131,13 +133,11 @@ export default function Chatbot() {
       }
     }
 
-    // Append hotline to every bot reply
-    replyText += '\n\n📞 Hotline hỗ trợ người thật: 0904759624';
-
     return {
       sender: 'bot',
       text: replyText,
-      isFormLink
+      isFormLink,
+      showHotline: true
     };
   };
 
@@ -180,6 +180,14 @@ export default function Chatbot() {
                         🔗 Điền form nhận hàng tại đây
                       </a>
                       <p className={styles.formNote}>Sau khi gửi form, bạn phản hồi lại một tiếng để mình kiểm tra trên hệ thống gửi mã vận đơn nhé!</p>
+                    </div>
+                  )}
+
+                  {msg.showHotline && (
+                    <div className={styles.hotlineBox}>
+                      <a href="tel:0904759624" className={styles.hotlineBtn}>
+                        📞 Hotline hỗ trợ người thật: 0904759624
+                      </a>
                     </div>
                   )}
                 </div>

@@ -221,6 +221,33 @@
   line-height: 1.35;
 }
 
+.hotlineBox {
+  margin-top: 10px;
+  border-top: 1px dashed rgba(0, 0, 0, 0.08);
+  padding-top: 8px;
+}
+
+.hotlineBtn {
+  display: block;
+  background-color: #f8fafc;
+  color: #1e293b !important;
+  text-decoration: none;
+  font-weight: 700;
+  text-align: center;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  border: 1px solid #e2e8f0;
+  transition: all 0.2s ease;
+}
+
+.hotlineBtn:hover {
+  background-color: var(--color-primary);
+  color: var(--color-white) !important;
+  border-color: var(--color-primary);
+  box-shadow: 0 4px 10px rgba(193, 18, 31, 0.15);
+}
+
 /* Quick Replies */
 .quickReplies {
   background-color: #f8fafc;
