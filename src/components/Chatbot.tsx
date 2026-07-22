@@ -141,7 +141,7 @@ export default function Chatbot() {
     setIsRecommendOpen(false);
 
     // Show a summary message in chat as User
-    const summaryText = `📋 **Thông tin khảo sát đã điền:**
+    const summaryText = `📋 Thông tin khảo sát đã điền:
 - Sản phẩm cần tìm: ${data.product_type}
 - Kinh nghiệm: ${data.experience}
 - Cự ly: ${data.distance}
@@ -164,13 +164,12 @@ export default function Chatbot() {
     // After 1.2 seconds, reply with exactly the 5 short bullets and the 4 products!
     setTimeout(() => {
       const matched = getMatchingProducts(data);
-      const botResponseText = `💡 **Kết quả tư vấn chọn sản phẩm dành cho bạn:**
-
-• 🎯 **Nhu cầu:** Đang tìm kiếm sản phẩm **${data.product_type}** phù hợp.
-• 🏃‍♂️ **Hồ sơ chạy:** Cự ly chạy **${data.distance}** trên địa hình **${data.terrain}** (${data.experience}).
-• 💡 **Tiêu chí ưu tiên:** Đề xuất tập trung vào tiêu chí **${data.priority}** trong tầm ngân sách **${data.budget}**.
-• 👟 **Thông số chân:** Size giày **${data.shoe_size || 'Chưa xác định'}** (Vấn đề chân: ${data.foot_issue.length > 0 && !data.foot_issue.includes('Không có') ? data.foot_issue.join(', ') : 'Không đáng ngại'}).
-• 💬 **Đề xuất của Summit:** 4 sản phẩm bên dưới được lọc trực quan khớp nhất với hồ sơ chạy của bạn.`;
+      const botResponseText = `💡 Kết quả tư vấn chọn sản phẩm dành cho bạn:
+- Nhu cầu: Tìm kiếm ${data.product_type} phù hợp.
+- Hồ sơ: Chạy cự ly ${data.distance} trên địa hình ${data.terrain} (${data.experience}).
+- Ưu tiên: Tiêu chí ${data.priority} với mức ngân sách ${data.budget}.
+- Size chân: Cỡ ${data.shoe_size || 'Chưa cung cấp'} (Vấn đề: ${data.foot_issue.length > 0 && !data.foot_issue.includes('Không có') ? data.foot_issue.join(', ') : 'Không đáng ngại'}).
+- Đề xuất: 4 sản phẩm tối ưu nhất bên dưới dành riêng cho bạn.`;
 
       setMessages(prev => [
         ...prev,
