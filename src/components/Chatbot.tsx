@@ -97,6 +97,8 @@ export default function Chatbot() {
 
   const getBotReply = (text: string): Message => {
     const cleanText = text.toLowerCase().trim();
+    let replyText = '';
+    let isFormLink = false;
 
     // Check for explicit "chốt đơn" / "mua hàng" intent
     if (
@@ -110,24 +112,32 @@ export default function Chatbot() {
       cleanText.includes('len don') ||
       cleanText.includes('order')
     ) {
-      return {
-        sender: 'bot',
-        text: 'Dựa trên cự ly bạn đăng ký và form chân bạn mô tả, mình đánh giá Salomon XT-6 GORE-TEX là sự lựa chọn an toàn, bền bỉ và cân bằng nhất lúc này. Mẫu này hiện đang còn đúng size của bạn tại kho. Bạn chốt đôi này luôn để mình lên đơn và gửi đi trong chiều nay, kịp cho buổi tập Long Run cuối tuần của bạn nhé? \n\nĐể đơn vị vận chuyển lấy hàng nhanh nhất, bạn dành chút thời gian điền giúp mình thông tin nhận hàng (Tên, Số điện thoại, Địa chỉ) vào biểu mẫu dưới đây nhé:\n\nHệ thống sẽ tự động ghi nhận đúng size màu mà bạn vừa chọn.',
-        isFormLink: true
-      };
-    }
+      replyText = 'Dựa trên cự ly bạn đăng ký và form chân bạn mô tả, mình đánh giá Salomon XT-6 GORE-TEX là sự lựa chọn an toàn, bền bỉ và cân bằng nhất lúc này. Mẫu này hiện đang còn đúng size của bạn tại kho. Bạn chốt đôi này luôn để mình lên đơn và gửi đi trong chiều nay, kịp cho buổi tập Long Run cuối tuần của bạn nhé? \n\nĐể đơn vị vận chuyển lấy hàng nhanh nhất, bạn dành chút thời gian điền giúp mình thông tin nhận hàng (Tên, Số điện thoại, Địa chỉ) vào biểu mẫu dưới đây nhé:\n\nHệ thống sẽ tự động ghi nhận đúng size màu mà bạn vừa chọn.';
+      isFormLink = true;
+    } else {
+      // Search in FAQs
+      let found = false;
+      for (const faq of faqs) {
+        if (faq.keywords.some(keyword => cleanText.includes(keyword))) {
+          replyText = faq.a;
+          found = true;
+          break;
+        }
+      }
 
-    // Search in FAQs
-    for (const faq of faqs) {
-      if (faq.keywords.some(keyword => cleanText.includes(keyword))) {
-        return { sender: 'bot', text: faq.a };
+      if (!found) {
+        // Default fallback (friendly, helpful, prompting FAQs)
+        replyText = 'Mình đã nhận được thông tin từ bạn. Với tư cách là một chuyên gia tư vấn chạy bộ tại Summit Outdoor, mình khuyên bạn nên lựa chọn các nút hỏi nhanh bên dưới, hoặc gõ rõ các từ khóa liên quan đến "size chân", "chống nước", "chọn vest", "giao hàng" hoặc "chốt đơn" để mình trả lời ngay lập tức nhé!';
       }
     }
 
-    // Default fallback (friendly, helpful, prompting FAQs)
+    // Append hotline to every bot reply
+    replyText += '\n\n📞 Hotline hỗ trợ người thật: 0904759624';
+
     return {
       sender: 'bot',
-      text: 'Mình đã nhận được thông tin từ bạn. Với tư cách là một chuyên gia tư vấn chạy bộ tại Summit Outdoor, mình khuyên bạn nên lựa chọn các nút hỏi nhanh bên dưới, hoặc gõ rõ các từ khóa liên quan đến "size chân", "chống nước", "chọn vest", "giao hàng" hoặc "chốt đơn" để mình trả lời ngay lập tức nhé!'
+      text: replyText,
+      isFormLink
     };
   };
 
