@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import styles from './components.module.css';
+import Link from 'next/link';
 
 interface ProductCardProps {
   id: string;
@@ -13,7 +14,7 @@ interface ProductCardProps {
   subtitle?: string;
 }
 
-export default function ProductCard({ brand, name, price, image, status, subtitle }: ProductCardProps) {
+export default function ProductCard({ id, brand, name, price, image, status, subtitle }: ProductCardProps) {
   const [activeFilter, setActiveFilter] = useState('none');
   const [activeSwatch, setActiveSwatch] = useState(0);
 
@@ -31,17 +32,27 @@ export default function ProductCard({ brand, name, price, image, status, subtitl
     <div className={styles.productCard}>
       {/* Khung ảnh có wishlist và nền xám */}
       <div className={styles.productImgContainer}>
-        <button className={styles.wishlist} aria-label="Thêm vào danh sách yêu thích">
+        <button 
+          className={styles.wishlist} 
+          aria-label="Thêm vào danh sách yêu thích"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            alert('Đã thêm sản phẩm vào danh sách yêu thích!');
+          }}
+        >
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
           </svg>
         </button>
-        <img 
-          src={image} 
-          alt={name} 
-          className={styles.productImg} 
-          style={{ filter: activeFilter }}
-        />
+        <Link href={`/product/${id}`} style={{ display: 'block', width: '100%', height: '100%' }}>
+          <img 
+            src={image} 
+            alt={name} 
+            className={styles.productImg} 
+            style={{ filter: activeFilter }}
+          />
+        </Link>
       </div>
 
       {/* Hàng ảnh thu nhỏ chọn màu */}
@@ -77,12 +88,14 @@ export default function ProductCard({ brand, name, price, image, status, subtitl
       </div>
 
       {/* Thông tin sản phẩm */}
-      <div className={styles.productInfo}>
-        {status && <span className={styles.productStatus}>{status}</span>}
-        <h4 className={styles.productName}>{name}</h4>
-        <span className={styles.productSubtitle}>{subtitle || `${brand} - Unisex`}</span>
-        <div className={styles.productPrice}>{price}</div>
-      </div>
+      <Link href={`/product/${id}`} style={{ textDecoration: 'none', color: 'inherit', display: 'block', marginTop: 'auto' }}>
+        <div className={styles.productInfo}>
+          {status && <span className={styles.productStatus}>{status}</span>}
+          <h4 className={styles.productName}>{name}</h4>
+          <span className={styles.productSubtitle}>{subtitle || `${brand} - Unisex`}</span>
+          <div className={styles.productPrice}>{price}</div>
+        </div>
+      </Link>
     </div>
   );
 }
