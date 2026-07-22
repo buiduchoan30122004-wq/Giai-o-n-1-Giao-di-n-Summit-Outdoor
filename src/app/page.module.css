@@ -162,6 +162,13 @@
   gap: 30px; /* Dãn cách 30px cho thoáng đãng */
 }
 
+.productLink {
+  display: block;
+  height: 100%;
+  text-decoration: none;
+  color: inherit;
+}
+
 /* Promotion Banner */
 .promoBanner {
   width: 100%;

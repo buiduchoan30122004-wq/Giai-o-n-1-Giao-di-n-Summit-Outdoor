@@ -221,7 +221,7 @@ export default function Home() {
           </div>
           <div className={styles.productGrid}>
             {products.map(p => (
-              <Link href={`/product/${p.id}`} key={p.id}>
+              <Link href={`/product/${p.id}`} key={p.id} className={styles.productLink}>
                 <ProductCard {...p} />
               </Link>
             ))}
@@ -240,7 +240,7 @@ export default function Home() {
           </div>
           <div className={styles.productGrid}>
             {[...products].reverse().map(p => (
-              <Link href={`/product/${p.id}`} key={p.id}>
+              <Link href={`/product/${p.id}`} key={p.id} className={styles.productLink}>
                 <ProductCard {...p} />
               </Link>
             ))}
@@ -257,7 +257,7 @@ export default function Home() {
           </div>
           <div className={styles.productGrid}>
             {nutritionProducts.map(p => (
-              <Link href={`/product/${p.id}`} key={p.id}>
+              <Link href={`/product/${p.id}`} key={p.id} className={styles.productLink}>
                 <ProductCard {...p} />
               </Link>
             ))}
