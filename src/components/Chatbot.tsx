@@ -141,7 +141,7 @@ export default function Chatbot() {
             <div className={styles.botInfo}>
               <div className={styles.avatar}>🏔️</div>
               <div>
-                <h4 className={styles.chatTitle}>Summit Assistant</h4>
+                <h4 className={styles.chatTitle} translate="no">Trợ lý Summit Outdoor</h4>
                 <span className={styles.chatSubtitle}>Chuyên gia chạy trail 24/7</span>
               </div>
             </div>
