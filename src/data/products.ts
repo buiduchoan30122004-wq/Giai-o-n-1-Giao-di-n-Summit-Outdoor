@@ -508,7 +508,7 @@ export const productsDatabase: Record<string, Product> = {
     id: 'lecka-bar',
     brand: 'Lecka',
     name: 'Thanh Năng Lượng Tự Nhiên Lecka Vị Chuối Quế',
-    price: '40.000đ',
+    price: '2.000đ',
     image: 'https://cdn.hstatic.net/products/200001165929/upload_4313a74252a94f94b90421b303c3845e_grande.jpg',
     thumbnails: [
       'https://cdn.hstatic.net/products/200001165929/upload_4313a74252a94f94b90421b303c3845e_grande.jpg'
