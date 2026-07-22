@@ -33,6 +33,7 @@ export default function CheckoutPage() {
   const [discount, setDiscount] = useState(0);
   const [total, setTotal] = useState(3300000);
   const [mounted, setMounted] = useState(false);
+  const [orderPlaced, setOrderPlaced] = useState(false);
 
   // Generate random order code and load checkout data on mount
   useEffect(() => {
@@ -72,7 +73,7 @@ export default function CheckoutPage() {
 
   // Poll payment status if payment method is QR and order code exists
   useEffect(() => {
-    if (!mounted || paymentMethod !== 'qr' || !orderCode || isPaid) return;
+    if (!mounted || paymentMethod !== 'qr' || !orderCode || isPaid || !orderPlaced) return;
 
     const interval = setInterval(async () => {
       try {
@@ -89,7 +90,7 @@ export default function CheckoutPage() {
     }, 3000); // Check every 3 seconds
 
     return () => clearInterval(interval);
-  }, [paymentMethod, orderCode, isPaid, mounted]);
+  }, [paymentMethod, orderCode, isPaid, mounted, orderPlaced]);
 
   if (!mounted) {
     return (
@@ -111,7 +112,34 @@ export default function CheckoutPage() {
     setTimeout(() => setCopySuccess(null), 2000);
   };
 
-  const handleCheckoutSubmit = (e: React.FormEvent) => {
+  const saveOrderToDb = async () => {
+    try {
+      const response = await fetch('/api/place-order', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name,
+          phone,
+          email,
+          address,
+          notes,
+          paymentMethod,
+          orderCode,
+          cartItems,
+          total
+        })
+      });
+      const data = await response.json();
+      return data.success;
+    } catch (e) {
+      console.error('Error saving order to database:', e);
+      return false;
+    }
+  };
+
+  const handleCheckoutSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name || !phone || !address) {
       alert('Vui lòng điền đầy đủ Họ tên, Số điện thoại và Địa chỉ giao hàng!');
@@ -119,11 +147,21 @@ export default function CheckoutPage() {
     }
     
     if (paymentMethod === 'cod') {
-      setIsPaid(true);
-      localStorage.removeItem('summit_cart');
-      window.dispatchEvent(new Event('cartUpdated'));
+      const saved = await saveOrderToDb();
+      if (saved) {
+        setIsPaid(true);
+        localStorage.removeItem('summit_cart');
+        window.dispatchEvent(new Event('cartUpdated'));
+      } else {
+        alert('Có lỗi xảy ra khi tạo đơn hàng trên hệ thống CRM.');
+      }
     } else {
-      alert('Vui lòng quét mã QR chuyển khoản và nhấn "Xác nhận đã chuyển khoản" để hoàn tất!');
+      const saved = await saveOrderToDb();
+      if (saved) {
+        setOrderPlaced(true);
+      } else {
+        alert('Có lỗi xảy ra khi tạo đơn hàng trên hệ thống CRM.');
+      }
     }
   };
 
@@ -244,6 +282,7 @@ export default function CheckoutPage() {
                     value={name} 
                     onChange={(e) => setName(e.target.value)}
                     required
+                    disabled={orderPlaced}
                   />
                 </div>
                 
@@ -256,6 +295,7 @@ export default function CheckoutPage() {
                     value={phone} 
                     onChange={(e) => setPhone(e.target.value)}
                     required
+                    disabled={orderPlaced}
                   />
                 </div>
 
@@ -267,6 +307,7 @@ export default function CheckoutPage() {
                     placeholder="tenban@gmail.com"
                     value={email} 
                     onChange={(e) => setEmail(e.target.value)}
+                    disabled={orderPlaced}
                   />
                 </div>
 
@@ -279,6 +320,7 @@ export default function CheckoutPage() {
                     value={address} 
                     onChange={(e) => setAddress(e.target.value)}
                     required
+                    disabled={orderPlaced}
                   />
                 </div>
 
@@ -289,6 +331,7 @@ export default function CheckoutPage() {
                     placeholder="Ví dụ: Giao giờ hành chính, gọi trước khi giao..."
                     value={notes} 
                     onChange={(e) => setNotes(e.target.value)}
+                    disabled={orderPlaced}
                   />
                 </div>
               </div>
@@ -299,12 +342,13 @@ export default function CheckoutPage() {
               <h2 className={styles.cardTitle}>2. Phương thức thanh toán</h2>
               <div className={styles.methodList}>
                 <div 
-                  className={`${styles.methodItem} ${paymentMethod === 'qr' ? styles.methodItemActive : ''}`}
-                  onClick={() => setPaymentMethod('qr')}
+                  className={`${styles.methodItem} ${paymentMethod === 'qr' ? styles.methodItemActive : ''} ${orderPlaced ? styles.disabledMethod : ''}`}
+                  onClick={() => !orderPlaced && setPaymentMethod('qr')}
                 >
                   <input 
                     type="radio" 
                     checked={paymentMethod === 'qr'} 
+                    disabled={orderPlaced}
                     onChange={() => setPaymentMethod('qr')}
                   />
                   <div className={styles.methodInfo}>
@@ -314,12 +358,13 @@ export default function CheckoutPage() {
                 </div>
 
                 <div 
-                  className={`${styles.methodItem} ${paymentMethod === 'cod' ? styles.methodItemActive : ''}`}
-                  onClick={() => setPaymentMethod('cod')}
+                  className={`${styles.methodItem} ${paymentMethod === 'cod' ? styles.methodItemActive : ''} ${orderPlaced ? styles.disabledMethod : ''}`}
+                  onClick={() => !orderPlaced && setPaymentMethod('cod')}
                 >
                   <input 
                     type="radio" 
                     checked={paymentMethod === 'cod'} 
+                    disabled={orderPlaced}
                     onChange={() => setPaymentMethod('cod')}
                   />
                   <div className={styles.methodInfo}>
@@ -380,84 +425,96 @@ export default function CheckoutPage() {
               <span>{formatPriceVND(total)}</span>
             </div>
 
-            {/* If payment method is QR, display the VietQR Code and Sepay mockup */}
+            {/* If payment method is QR, display the VietQR Code and Sepay mockup ONLY after order is registered in CRM */}
             {paymentMethod === 'qr' ? (
-              <div className={styles.qrBox}>
-                <div className={styles.qrImageContainer}>
-                  {/* Real-time VietQR Generation API */}
-                  <img 
-                    src={`https://img.vietqr.io/image/mbbank-0904759624-compact.png?amount=${total}&addInfo=${orderCode}&accountName=BUI%20DUC%20HOAN`} 
-                    alt="VietQR Chuyển khoản" 
-                    className={styles.qrImage}
-                  />
-                </div>
-                
-                <div className={styles.transferDetails}>
-                  <div className={styles.detailRow}>
-                    <span className={styles.detailLabel}>Ngân hàng:</span>
-                    <span className={styles.detailValue}>MB Bank (Ngân hàng Quân Đội)</span>
+              orderPlaced ? (
+                <div className={styles.qrBox}>
+                  <div className={styles.qrImageContainer}>
+                    {/* Real-time VietQR Generation API */}
+                    <img 
+                      src={`https://img.vietqr.io/image/mbbank-0904759624-compact.png?amount=${total}&addInfo=${orderCode}&accountName=BUI%20DUC%20HOAN`} 
+                      alt="VietQR Chuyển khoản" 
+                      className={styles.qrImage}
+                    />
                   </div>
+                  
+                  <div className={styles.transferDetails}>
+                    <div className={styles.detailRow}>
+                      <span className={styles.detailLabel}>Ngân hàng:</span>
+                      <span className={styles.detailValue}>MB Bank (Ngân hàng Quân Đội)</span>
+                    </div>
 
-                  <div className={styles.detailRow}>
-                    <span className={styles.detailLabel}>Số tài khoản:</span>
-                    <div className={styles.detailValBox}>
-                      <span className={styles.detailValue}>0904759624</span>
-                      <button 
-                        type="button" 
-                        onClick={() => copyToClipboard('0904759624', 'acc')} 
-                        className={styles.copyBtn}
-                      >
-                        {copySuccess === 'acc' ? 'Đã sao chép' : 'Sao chép'}
-                      </button>
+                    <div className={styles.detailRow}>
+                      <span className={styles.detailLabel}>Số tài khoản:</span>
+                      <div className={styles.detailValBox}>
+                        <span className={styles.detailValue}>0904759624</span>
+                        <button 
+                          type="button" 
+                          onClick={() => copyToClipboard('0904759624', 'acc')} 
+                          className={styles.copyBtn}
+                        >
+                          {copySuccess === 'acc' ? 'Đã sao chép' : 'Sao chép'}
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className={styles.detailRow}>
+                      <span className={styles.detailLabel}>Số tiền:</span>
+                      <div className={styles.detailValBox}>
+                        <span className={styles.detailValue}>{formatPriceVND(total)}</span>
+                        <button 
+                          type="button" 
+                          onClick={() => copyToClipboard(total.toString(), 'amount')} 
+                          className={styles.copyBtn}
+                        >
+                          {copySuccess === 'amount' ? 'Đã sao chép' : 'Sao chép'}
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className={styles.detailRow} style={{ border: '2px dashed var(--color-primary)' }}>
+                      <span className={styles.detailLabel}>Nội dung CK *:</span>
+                      <div className={styles.detailValBox}>
+                        <span className={styles.detailValue} style={{ color: 'var(--color-primary)' }}>
+                          {orderCode}
+                        </span>
+                        <button 
+                          type="button" 
+                          onClick={() => copyToClipboard(orderCode, 'memo')} 
+                          className={styles.copyBtn}
+                          style={{ background: 'var(--color-primary)', color: '#ffffff' }}
+                        >
+                          {copySuccess === 'memo' ? 'Đã sao chép' : 'Sao chép'}
+                        </button>
+                      </div>
                     </div>
                   </div>
 
-                  <div className={styles.detailRow}>
-                    <span className={styles.detailLabel}>Số tiền:</span>
-                    <div className={styles.detailValBox}>
-                      <span className={styles.detailValue}>{formatPriceVND(total)}</span>
-                      <button 
-                        type="button" 
-                        onClick={() => copyToClipboard(total.toString(), 'amount')} 
-                        className={styles.copyBtn}
-                      >
-                        {copySuccess === 'amount' ? 'Đã sao chép' : 'Sao chép'}
-                      </button>
-                    </div>
+                  <div className={styles.statusIndicator}>
+                    <span className={styles.pulseDot}></span>
+                    <span>Đang chờ chuyển khoản qua Sepay...</span>
                   </div>
 
-                  <div className={styles.detailRow} style={{ border: '2px dashed var(--color-primary)' }}>
-                    <span className={styles.detailLabel}>Nội dung CK *:</span>
-                    <div className={styles.detailValBox}>
-                      <span className={styles.detailValue} style={{ color: 'var(--color-primary)' }}>
-                        {orderCode}
-                      </span>
-                      <button 
-                        type="button" 
-                        onClick={() => copyToClipboard(orderCode, 'memo')} 
-                        className={styles.copyBtn}
-                        style={{ background: 'var(--color-primary)', color: '#ffffff' }}
-                      >
-                        {copySuccess === 'memo' ? 'Đã sao chép' : 'Sao chép'}
-                      </button>
-                    </div>
-                  </div>
+                  {/* Sepay Simulation Button */}
+                  <button 
+                    type="button" 
+                    onClick={simulateSepayPayment} 
+                    className={styles.simPayBtn}
+                  >
+                    Xác nhận đã chuyển khoản (Giả lập Sepay)
+                  </button>
                 </div>
-
-                <div className={styles.statusIndicator}>
-                  <span className={styles.pulseDot}></span>
-                  <span>Đang chờ chuyển khoản qua Sepay...</span>
+              ) : (
+                <div style={{ marginTop: '20px' }}>
+                  <button 
+                    type="button" 
+                    onClick={handleCheckoutSubmit} 
+                    className={styles.submitBtn}
+                  >
+                    Xác nhận thông tin & Nhận mã QR
+                  </button>
                 </div>
-
-                {/* Sepay Simulation Button */}
-                <button 
-                  type="button" 
-                  onClick={simulateSepayPayment} 
-                  className={styles.simPayBtn}
-                >
-                  Xác nhận đã chuyển khoản (Giả lập Sepay)
-                </button>
-              </div>
+              )
             ) : (
               <div style={{ marginTop: '20px' }}>
                 <button 
