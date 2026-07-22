@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './product.module.css';
 import Link from 'next/link';
+import { useParams } from 'next/navigation';
 
 // Unified products database matching homepage and shop page
 const productsDatabase: Record<string, {
@@ -267,14 +268,27 @@ const preDefinedColors = [
   { name: 'Đa sắc', hex: 'linear-gradient(45deg, #ff0000, #00ff00, #0000ff)' }
 ];
 
-export default function ProductDetail({ params }: { params: { id: string } }) {
-  const productId = params.id ? params.id.toLowerCase() : 'xt6';
+export default function ProductDetail({ params: paramsProp }: { params: { id: string } }) {
+  const params = useParams();
+  const idStr = Array.isArray(params?.id) ? params.id[0] : params?.id;
+  const productId = idStr ? idStr.toLowerCase() : (paramsProp?.id ? paramsProp.id.toLowerCase() : 'xt6');
   const product = productsDatabase[productId] || defaultProduct;
 
   const [activeImage, setActiveImage] = useState(product.image);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'overview' | 'features'>('overview');
+
+  // Sync state when product loads or changes
+  useEffect(() => {
+    setActiveImage(product.image);
+    setSelectedSize(null);
+    setSelectedColor(null);
+    setIsVoucherOpen(false);
+    setVoucherInput('');
+    setDiscountPercent(0);
+    setVoucherMessage(null);
+  }, [productId, product.image]);
 
   // Voucher states
   const [isVoucherOpen, setIsVoucherOpen] = useState(false);
