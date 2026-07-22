@@ -40,13 +40,13 @@ export async function POST(req: NextRequest) {
 
     let orderId = 0;
     // Execute inside a database transaction to ensure data integrity
-    await transaction(async (db) => {
+    await transaction(async (db: any) => {
       // 1. Insert order
       await new Promise<void>((resolve, reject) => {
         db.run(
           `INSERT INTO orders (customer_id, product_id, quantity, total_price, status) VALUES (?, ?, ?, ?, 'pending')`,
           [customer_id, product_id, quantity, total_price],
-          function (err) {
+          function (this: any, err: any) {
             if (err) reject(err);
             else {
               orderId = this.lastID;
@@ -61,7 +61,7 @@ export async function POST(req: NextRequest) {
         db.run(
           `UPDATE products SET stock = stock - ? WHERE id = ?`,
           [quantity, product_id],
-          (err) => {
+          (err: any) => {
             if (err) reject(err);
             else resolve();
           }
@@ -90,15 +90,15 @@ export async function PUT(req: NextRequest) {
 
     // If status is transitioning to cancelled, restore stock
     if (status === 'cancelled' && order.status !== 'cancelled') {
-      await transaction(async (db) => {
+      await transaction(async (db: any) => {
         await new Promise<void>((resolve, reject) => {
-          db.run('UPDATE orders SET status = ? WHERE id = ?', [status, id], (err) => {
+          db.run('UPDATE orders SET status = ? WHERE id = ?', [status, id], (err: any) => {
             if (err) reject(err);
             else resolve();
           });
         });
         await new Promise<void>((resolve, reject) => {
-          db.run('UPDATE products SET stock = stock + ? WHERE id = ?', [order.quantity, order.product_id], (err) => {
+          db.run('UPDATE products SET stock = stock + ? WHERE id = ?', [order.quantity, order.product_id], (err: any) => {
             if (err) reject(err);
             else resolve();
           });
@@ -130,15 +130,15 @@ export async function DELETE(req: NextRequest) {
 
     // Restock product if the order was deleted and not already cancelled
     if (order.status !== 'cancelled') {
-      await transaction(async (db) => {
+      await transaction(async (db: any) => {
         await new Promise<void>((resolve, reject) => {
-          db.run('DELETE FROM orders WHERE id = ?', [id], (err) => {
+          db.run('DELETE FROM orders WHERE id = ?', [id], (err: any) => {
             if (err) reject(err);
             else resolve();
           });
         });
         await new Promise<void>((resolve, reject) => {
-          db.run('UPDATE products SET stock = stock + ? WHERE id = ?', [order.quantity, order.product_id], (err) => {
+          db.run('UPDATE products SET stock = stock + ? WHERE id = ?', [order.quantity, order.product_id], (err: any) => {
             if (err) reject(err);
             else resolve();
           });

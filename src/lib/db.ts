@@ -1,17 +1,31 @@
-import sqlite3 from 'sqlite3';
 import path from 'path';
 
 const dbPath = path.join(process.cwd(), 'brain.db');
+let sqlite3Instance: any = null;
 
-export function getDb() {
-  const db = new sqlite3.Database(dbPath);
-  return db;
+// Lazy load sqlite3 to prevent crash on startup if native bindings fail to compile on target server (e.g. VPS Node.js version mismatch)
+async function getSqlite3() {
+  if (!sqlite3Instance) {
+    try {
+      const sqlite3Module = await import('sqlite3');
+      sqlite3Instance = sqlite3Module.default || sqlite3Module;
+    } catch (error) {
+      console.error('CRITICAL: Failed to load sqlite3 native module.', error);
+      throw new Error('SQLite3 driver is not available in this environment.');
+    }
+  }
+  return sqlite3Instance;
 }
 
-export function queryAll<T>(sql: string, params: any[] = []): Promise<T[]> {
+export async function getDb() {
+  const sqlite3 = await getSqlite3();
+  return new sqlite3.Database(dbPath);
+}
+
+export async function queryAll<T>(sql: string, params: any[] = []): Promise<T[]> {
+  const db = await getDb();
   return new Promise((resolve, reject) => {
-    const db = getDb();
-    db.all(sql, params, (err, rows) => {
+    db.all(sql, params, (err: any, rows: any) => {
       db.close();
       if (err) reject(err);
       else resolve(rows as T[]);
@@ -19,10 +33,10 @@ export function queryAll<T>(sql: string, params: any[] = []): Promise<T[]> {
   });
 }
 
-export function queryGet<T>(sql: string, params: any[] = []): Promise<T | undefined> {
+export async function queryGet<T>(sql: string, params: any[] = []): Promise<T | undefined> {
+  const db = await getDb();
   return new Promise((resolve, reject) => {
-    const db = getDb();
-    db.get(sql, params, (err, row) => {
+    db.get(sql, params, (err: any, row: any) => {
       db.close();
       if (err) reject(err);
       else resolve(row as T | undefined);
@@ -30,10 +44,10 @@ export function queryGet<T>(sql: string, params: any[] = []): Promise<T | undefi
   });
 }
 
-export function queryRun(sql: string, params: any[] = []): Promise<{ lastID: number; changes: number }> {
+export async function queryRun(sql: string, params: any[] = []): Promise<{ lastID: number; changes: number }> {
+  const db = await getDb();
   return new Promise((resolve, reject) => {
-    const db = getDb();
-    db.run(sql, params, function (err) {
+    db.run(sql, params, function (this: any, err: any) {
       db.close();
       if (err) {
         reject(err);
@@ -44,14 +58,14 @@ export function queryRun(sql: string, params: any[] = []): Promise<{ lastID: num
   });
 }
 
-export function transaction(actions: (db: sqlite3.Database) => Promise<void>): Promise<void> {
+export async function transaction(actions: (db: any) => Promise<void>): Promise<void> {
+  const db = await getDb();
   return new Promise((resolve, reject) => {
-    const db = getDb();
     db.serialize(async () => {
       try {
         db.run('BEGIN TRANSACTION');
         await actions(db);
-        db.run('COMMIT', (err) => {
+        db.run('COMMIT', (err: any) => {
           db.close();
           if (err) reject(err);
           else resolve();
