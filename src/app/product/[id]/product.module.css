@@ -36,14 +36,14 @@
 
 /* Left Column: Gallery Section */
 .gallerySection {
-  flex: 1.2;
+  flex: 1.25;
 }
 
 .galleryWrapper {
   display: flex;
   gap: 16px;
   position: sticky;
-  top: 140px; /* Keep sticky below the main sticky headers */
+  top: 140px;
 }
 
 /* Vertical Thumbnails List */
@@ -80,13 +80,13 @@
   object-fit: contain;
 }
 
-/* Large Main Image Area */
+/* Large Main Image Area - Tăng kích thước ảnh to hơn và dài xuống */
 .mainImageArea {
   flex-grow: 1;
   background-color: #f8fafc;
   border: 1px solid #f1f5f9;
   border-radius: 12px;
-  height: 440px;
+  height: 520px; /* Tăng từ 440px lên 520px */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -99,7 +99,7 @@
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
-  mix-blend-mode: multiply; /* Make white backgrounds of products look transparent on grey bg */
+  mix-blend-mode: multiply;
 }
 
 .badge {
@@ -120,12 +120,12 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 18px;
 }
 
 .headerArea {
   border-bottom: 1px solid #f1f5f9;
-  padding-bottom: 16px;
+  padding-bottom: 14px;
 }
 
 .brandTag {
@@ -143,7 +143,7 @@
   color: #0f172a;
   line-height: 1.2;
   margin-bottom: 6px;
-  text-transform: none; /* mixed-case soft typography */
+  text-transform: none;
 }
 
 .subtitleText {
@@ -162,6 +162,19 @@
   border-radius: 10px;
 }
 
+.priceDisplay {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.originalPriceCrossed {
+  font-size: 1.15rem;
+  color: #94a3b8;
+  text-decoration: line-through;
+  font-weight: 600;
+}
+
 .currentPrice {
   font-size: 1.65rem;
   font-weight: 800;
@@ -171,7 +184,7 @@
 .shippingTag {
   font-size: 0.78rem;
   font-weight: 700;
-  color: #0f766e; /* teal color for positive shipping tag */
+  color: #0f766e;
   background-color: #f0fdfa;
   padding: 4px 8px;
   border-radius: 4px;
@@ -207,6 +220,67 @@
   font-size: 0.78rem;
   color: #0f172a;
   font-weight: 800;
+}
+
+/* Color Selector Section */
+.colorSelectorSection {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.colorHeader {
+  display: flex;
+  align-items: center;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #334155;
+}
+
+.selectedColorText {
+  color: var(--color-primary);
+}
+
+.colorsGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.colorSwatchBtn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.colorSwatchBtn:hover:not(:disabled) {
+  transform: scale(1.1);
+}
+
+.colorSwatchActive {
+  transform: scale(1.1);
+  border-color: #0f172a !important;
+  box-shadow: 0 0 0 2px var(--color-white), 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.colorSwatchDisabled {
+  opacity: 0.25;
+  cursor: not-allowed;
+}
+
+.disabledSlash {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: #374151;
+  transform: translateY(-50%) rotate(45deg);
 }
 
 /* Size Section */
@@ -268,14 +342,39 @@
   border-color: #0f172a;
 }
 
-/* Action Buttons */
+/* Add to Cart & Buy Now CTA Actions */
 .actionButtons {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 14px;
+  border-top: 1px solid #f1f5f9;
+  padding-top: 18px;
+}
+
+.ctaButtonsRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
 }
 
 .cartBtn {
+  width: 100%;
+  padding: 14px 20px;
+  font-size: 0.95rem;
+  font-weight: 800;
+  background-color: var(--color-white);
+  color: #0f172a;
+  border: 2px solid #0f172a;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cartBtn:hover {
+  background-color: #f8fafc;
+}
+
+.buyNowBtn {
   width: 100%;
   padding: 14px 20px;
   font-size: 0.95rem;
@@ -286,18 +385,70 @@
   border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.2s ease;
-  box-shadow: 0 4px 12px rgba(193, 18, 31, 0.2);
+  box-shadow: 0 4px 12px rgba(193, 18, 31, 0.25);
 }
 
-.cartBtn:hover:not(:disabled) {
+.buyNowBtn:hover {
   background-color: var(--color-primary-hover);
 }
 
-.cartBtn:disabled {
-  background-color: #e2e8f0;
-  color: #94a3b8;
-  cursor: not-allowed;
-  box-shadow: none;
+/* Voucher box design */
+.voucherBox {
+  background-color: #f8fafc;
+  padding: 16px;
+  border-radius: 10px;
+  border: 1px dashed #cbd5e1;
+}
+
+.voucherPrompt {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #4b5563;
+  margin: 0 0 10px 0;
+}
+
+.voucherForm {
+  display: flex;
+  gap: 8px;
+}
+
+.voucherInput {
+  flex-grow: 1;
+  padding: 8px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  text-transform: uppercase;
+}
+
+.voucherApplyBtn {
+  background-color: #0f172a;
+  color: var(--color-white);
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.voucherApplyBtn:hover {
+  background-color: var(--color-primary);
+}
+
+.voucherSuccessText {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #0f766e;
+  margin: 8px 0 0 0;
+}
+
+.voucherErrorText {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin: 8px 0 0 0;
 }
 
 .guarantees {
@@ -383,6 +534,6 @@
     overflow-x: auto;
   }
   .mainImageArea {
-    height: 320px;
+    height: 360px;
   }
 }

@@ -16,6 +16,7 @@ const productsDatabase: Record<string, {
   subtitle: string;
   description: string;
   features: string[];
+  availableColors: string[];
   specs: {
     cushioning: string;
     support: string;
@@ -45,6 +46,7 @@ const productsDatabase: Record<string, {
       'Khung đế Agile Chassis System (ACS) tăng cường độ vững chãi',
       'Đế ngoài bùn Contagrip với gai bám sâu bám chắc địa hình trơn trượt'
     ],
+    availableColors: ['Đen', 'Xám', 'Xanh dương'],
     specs: { cushioning: 'Độ nảy cao', support: 'Cân bằng', drop: '10mm', weight: '365g', terrain: 'Địa hình hỗn hợp' }
   },
   'xtwhisper': {
@@ -68,6 +70,7 @@ const productsDatabase: Record<string, {
       'Phần mũi bọc nhựa bảo vệ ngón chân chống va đập đá sỏi',
       'Gai đế đa hướng tối ưu cho cả chạy trail nhẹ lẫn đi dạo phố'
     ],
+    availableColors: ['Xám', 'Trắng'],
     specs: { cushioning: 'Êm ái cân bằng', support: 'Hỗ trợ vòm', drop: '8mm', weight: '290g', terrain: 'Địa hình bằng phẳng & Nhẹ' }
   },
   'slab': {
@@ -91,6 +94,7 @@ const productsDatabase: Record<string, {
       'Đế cong Rocker thúc đẩy guồng chân cuộn đều tự nhiên',
       'Đế ngoài Contagrip MA chống mài mòn vượt trội trên cự ly Ultra'
     ],
+    availableColors: ['Xanh dương', 'Hồng'],
     specs: { cushioning: 'Đệm cực dày (Max)', support: 'Trung tính', drop: '6mm', weight: '260g', terrain: 'Chạy siêu cự ly (Ultra)' }
   },
   'xt4': {
@@ -114,6 +118,7 @@ const productsDatabase: Record<string, {
       'Bộ khung Agile Chassis System toàn bàn chân kiểm soát thăng bằng',
       'Gai đế cao su Contagrip sắc sảo chuyên trị đường sình lầy'
     ],
+    availableColors: ['Vàng', 'Đen'],
     specs: { cushioning: 'Cứng ổn định', support: 'Chống lệch trong', drop: '9.5mm', weight: '370g', terrain: 'Địa hình kỹ thuật bùn đá' }
   },
   'speedcross': {
@@ -137,6 +142,7 @@ const productsDatabase: Record<string, {
       'Đế giữa đàn hồi cao EnergyCell+ giúp đẩy chân linh hoạt',
       'Vải ripstop kháng rách và ngăn mảnh vụn cọ xát'
     ],
+    availableColors: ['Đen', 'Xám'],
     specs: { cushioning: 'Trung bình', support: 'Trung tính', drop: '10mm', weight: '298g', terrain: 'Đường bùn & Trơn trượt' }
   },
   'speedgoat': {
@@ -159,6 +165,7 @@ const productsDatabase: Record<string, {
       'Đế xốp nén CMEVA siêu nhẹ siêu êm hấp thụ chấn động',
       'Thân giày lưới dệt kép co giãn ôm chân thoải mái'
     ],
+    availableColors: ['Xanh lá', 'Xanh dương'],
     specs: { cushioning: 'Đệm cực dày (Max)', support: 'Trung tính', drop: '4mm', weight: '291g', terrain: 'Địa hình đá gồ ghề kỹ thuật' }
   },
   'pegasus': {
@@ -181,6 +188,7 @@ const productsDatabase: Record<string, {
       'Lưới dệt mỏng bền gia cố tại các vùng chịu lực',
       'Mặt gai cao su chuyển tiếp linh hoạt từ đường nhựa sang đường đất'
     ],
+    availableColors: ['Đỏ', 'Xanh dương'],
     specs: { cushioning: 'Độ phản hồi cao', support: 'Trung tính', drop: '9.5mm', weight: '289g', terrain: 'Đường phố lai địa hình nhẹ' }
   },
   'trabuco': {
@@ -203,6 +211,7 @@ const productsDatabase: Record<string, {
       'Đế ngoài cao su ASICSGRIP bền bỉ độ bám cao trên bùn ẩm',
       'Thân dệt sợi jacquard lưới cao cấp thoáng khí thân thiện môi trường'
     ],
+    availableColors: ['Xám', 'Đỏ'],
     specs: { cushioning: 'Đệm cực dày (Max)', support: 'Trung tính', drop: '5mm', weight: '305g', terrain: 'Mọi địa hình núi đồi' }
   },
   'senseride': {
@@ -226,6 +235,7 @@ const productsDatabase: Record<string, {
       'Chất liệu lưới mỏng co giãn đa chiều siêu nhẹ',
       'Cấu trúc gót ôm khít chống sụt gót chân khi đổ dốc nhanh'
     ],
+    availableColors: ['Xanh dương', 'Hồng'],
     specs: { cushioning: 'Cân bằng', support: 'Trung tính', drop: '8mm', weight: '286g', terrain: 'Hỗn hợp cát sỏi, cỏ bám' }
   },
   'wildhorse': {
@@ -248,33 +258,25 @@ const productsDatabase: Record<string, {
       'Thân giày lưới dệt gia cố viền nhựa chống rách',
       'Cổ giày thun đệm êm hạn chế bụi cát chui vào giày'
     ],
+    availableColors: ['Đen', 'Cam'],
     specs: { cushioning: 'Trung bình', support: 'Vững chãi gót', drop: '8mm', weight: '300g', terrain: 'Địa hình hoang dã dốc đá' }
   }
 };
 
-const defaultProduct = {
-  id: 'xt6',
-  brand: 'Salomon',
-  name: 'XT-6 GORE-TEX',
-  price: '4.800.000đ',
-  image: '/products/salomon_xt6_black.jpg',
-  thumbnails: [
-    '/products/salomon_xt6_black.jpg',
-    '/products/salomon_xt_whisper.jpg',
-    '/products/salomon_slab_ultraglide.jpg',
-    '/products/salomon_xt4_yellow.jpg'
-  ],
-  status: 'New',
-  subtitle: 'Sneakers - Unisex',
-  description: 'The Salomon XT-6 GORE-TEX is the legendary silhouette preferred by world-class athletes. It features a modernized Gore-Tex membrane for water protection, an ultra-durable TPU upper, Agile Chassis system for stability, and mud Contagrip lugs for deep traction on rugged terrain.',
-  features: [
-    'Màng chống thấm nước GORE-TEX cao cấp',
-    'Hệ thống dây giày rút Quicklace đóng mở siêu nhanh',
-    'Khung đế Agile Chassis System (ACS) tăng cường độ vững chãi',
-    'Đế ngoài bùn Contagrip với gai bám sâu bám chắc địa hình trơn trượt'
-  ],
-  specs: { cushioning: 'Độ nảy cao', support: 'Cân bằng', drop: '10mm', weight: '365g', terrain: 'Địa hình hỗn hợp' }
-};
+const defaultProduct = productsDatabase['xt6'];
+
+const preDefinedColors = [
+  { name: 'Đen', hex: '#000000' },
+  { name: 'Trắng', hex: '#ffffff', border: '#e2e8f0' },
+  { name: 'Xám', hex: '#808080' },
+  { name: 'Đỏ', hex: '#c1121f' },
+  { name: 'Xanh dương', hex: '#0055b8' },
+  { name: 'Vàng', hex: '#fcd34d' },
+  { name: 'Cam', hex: '#f97316' },
+  { name: 'Xanh lá', hex: '#10b981' },
+  { name: 'Hồng', hex: '#ec4899' },
+  { name: 'Đa sắc', hex: 'linear-gradient(45deg, #ff0000, #00ff00, #0000ff)' }
+];
 
 export default function ProductDetail({ params }: { params: { id: string } }) {
   const productId = params.id ? params.id.toLowerCase() : 'xt6';
@@ -282,9 +284,47 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
 
   const [activeImage, setActiveImage] = useState(product.image);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
+  const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'overview' | 'features'>('overview');
 
+  // Voucher states
+  const [isVoucherOpen, setIsVoucherOpen] = useState(false);
+  const [voucherInput, setVoucherInput] = useState('');
+  const [discountPercent, setDiscountPercent] = useState(0);
+  const [voucherMessage, setVoucherMessage] = useState<{ text: string; type: 'success' | 'error' } | null>(null);
+
   const sizes = ['US 7.5', 'US 8', 'US 8.5', 'US 9', 'US 9.5', 'US 10', 'US 10.5', 'US 11', 'US 12'];
+
+  // Parse price string to number for calculations (e.g. "4.800.000đ" -> 4800000)
+  const numericPrice = parseInt(product.price.replace(/\./g, '').replace('đ', '')) || 0;
+  const discountedPrice = discountPercent > 0 ? numericPrice * (1 - discountPercent / 100) : numericPrice;
+
+  const formatPriceVND = (value: number) => {
+    return value.toLocaleString('vi-VN') + 'đ';
+  };
+
+  const handleApplyVoucher = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (voucherInput.trim().toUpperCase() === 'SUMMIT10OFF') {
+      setDiscountPercent(10);
+      setVoucherMessage({ text: 'Áp dụng mã thành công! Giảm ngay 10%.', type: 'success' });
+    } else {
+      setDiscountPercent(0);
+      setVoucherMessage({ text: 'Mã giảm giá không hợp lệ. Vui lòng thử lại!', type: 'error' });
+    }
+  };
+
+  const handleBuyNow = () => {
+    if (!selectedSize) {
+      alert('Vui lòng chọn kích thước (size) trước khi mua hàng!');
+      return;
+    }
+    if (!selectedColor) {
+      alert('Vui lòng chọn màu sắc trước khi mua hàng!');
+      return;
+    }
+    setIsVoucherOpen(true);
+  };
 
   return (
     <main className="container" style={{ maxWidth: '1140px', margin: '0 auto' }}>
@@ -315,7 +355,7 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
               ))}
             </div>
 
-            {/* Large Active Main Image */}
+            {/* Large Active Main Image - Tăng kích thước chiều cao */}
             <div className={styles.mainImageArea}>
               {product.status && <span className={styles.badge}>{product.status}</span>}
               <img src={activeImage} alt={product.name} className={styles.mainImg} />
@@ -331,8 +371,18 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
             <p className={styles.subtitleText}>{product.subtitle}</p>
           </div>
 
+          {/* Hiển thị giá có giảm nếu áp voucher */}
           <div className={styles.priceArea}>
-            <span className={styles.currentPrice}>{product.price}</span>
+            <div className={styles.priceDisplay}>
+              {discountPercent > 0 ? (
+                <>
+                  <span className={styles.originalPriceCrossed}>{product.price}</span>
+                  <span className={styles.currentPrice}>{formatPriceVND(discountedPrice)}</span>
+                </>
+              ) : (
+                <span className={styles.currentPrice}>{product.price}</span>
+              )}
+            </div>
             <span className={styles.shippingTag}>🚚 Miễn phí vận chuyển</span>
           </div>
 
@@ -360,6 +410,31 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
             </div>
           </div>
 
+          {/* Color Selector Section - 10 Predefined Colors */}
+          <div className={styles.colorSelectorSection}>
+            <div className={styles.colorHeader}>
+              <span className={styles.colorTitle}>Chọn Màu Sắc</span>
+              {selectedColor && <span className={styles.selectedColorText}>: {selectedColor}</span>}
+            </div>
+            <div className={styles.colorsGrid}>
+              {preDefinedColors.map((color) => {
+                const isAvailable = product.availableColors.includes(color.name);
+                return (
+                  <button
+                    key={color.name}
+                    className={`${styles.colorSwatchBtn} ${selectedColor === color.name ? styles.colorSwatchActive : ''} ${!isAvailable ? styles.colorSwatchDisabled : ''}`}
+                    style={{ background: color.hex, borderColor: color.border || 'transparent' }}
+                    onClick={() => isAvailable && setSelectedColor(color.name)}
+                    disabled={!isAvailable}
+                    title={isAvailable ? color.name : `${color.name} (Tạm hết hàng)`}
+                  >
+                    {!isAvailable && <div className={styles.disabledSlash} />}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
           {/* Size Selector Box */}
           <div className={styles.sizeSection}>
             <div className={styles.sizeHeader}>
@@ -379,17 +454,52 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
             </div>
           </div>
 
-          {/* Add to Cart CTA Actions */}
+          {/* Add to Cart & Buy Now CTA Actions - 2 buttons */}
           <div className={styles.actionButtons}>
-            <Link href="/cart" style={{ display: 'block', width: '100%' }}>
+            <div className={styles.ctaButtonsRow}>
+              {/* Button 1: Add to Cart */}
               <button 
                 className={styles.cartBtn}
-                disabled={!selectedSize}
-                title={selectedSize ? "Thêm sản phẩm vào giỏ hàng" : "Vui lòng chọn size trước"}
+                onClick={() => {
+                  if (!selectedSize) alert('Vui lòng chọn kích thước (size) trước!');
+                  else if (!selectedColor) alert('Vui lòng chọn màu sắc trước!');
+                  else alert(`Đã thêm vào giỏ hàng: ${product.name} (Màu: ${selectedColor}, Size: ${selectedSize})`);
+                }}
               >
-                {selectedSize ? `Thêm vào giỏ hàng (Size ${selectedSize})` : 'Chọn kích cỡ để đặt hàng'}
+                Thêm vào giỏ hàng
               </button>
-            </Link>
+
+              {/* Button 2: Buy Now (Triggers Voucher input block) */}
+              <button 
+                className={styles.buyNowBtn}
+                onClick={handleBuyNow}
+              >
+                Mua ngay
+              </button>
+            </div>
+
+            {/* Voucher input form, displays when clicking "Mua ngay" */}
+            {isVoucherOpen && (
+              <div className={styles.voucherBox}>
+                <p className={styles.voucherPrompt}>Bạn có mã giảm giá? Hãy nhập vào đây:</p>
+                <form onSubmit={handleApplyVoucher} className={styles.voucherForm}>
+                  <input
+                    type="text"
+                    placeholder="Ví dụ: SUMMIT10OFF"
+                    className={styles.voucherInput}
+                    value={voucherInput}
+                    onChange={(e) => setVoucherInput(e.target.value)}
+                  />
+                  <button type="submit" className={styles.voucherApplyBtn}>Áp dụng</button>
+                </form>
+                {voucherMessage && (
+                  <p className={voucherMessage.type === 'success' ? styles.voucherSuccessText : styles.voucherErrorText}>
+                    {voucherMessage.text}
+                  </p>
+                )}
+              </div>
+            )}
+
             <div className={styles.guarantees}>
               <span>✓ Cam kết 100% chính hãng</span>
               <span>✓ Đổi size linh hoạt trong 7 ngày</span>
