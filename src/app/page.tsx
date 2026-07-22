@@ -65,17 +65,16 @@ export default function Home() {
       
       {/* Hero */}
       <section className={styles.hero}>
-        <Link href="/shop" className={styles.heroLink} aria-label="Khám phá bộ sưu tập Hoka Clifton Pro">
-          <picture>
-            <source media="(min-width: 600px)" srcSet="https://cdn.hstatic.net/themes/200001165929/1001503658/14/home_slider_item_imagelg_3.jpg?v=1" />
-            <source media="(min-width: 0)" srcSet="https://cdn.hstatic.net/themes/200001165929/1001503658/14/home_slider_item_imagexs_3_grande.jpg?v=1" />
-            <img 
-              src="https://cdn.hstatic.net/themes/200001165929/1001503658/14/home_slider_item_imagelg_3.jpg?v=1" 
-              alt="Hoka Clifton Pro - Run it again" 
-              className={styles.heroImg} 
-            />
-          </picture>
-        </Link>
+        <div className="container" style={{ width: '100%' }}>
+          <div className={styles.heroContent}>
+            <h1 className={styles.heroTitle}>Đánh Thức Tiềm Năng</h1>
+            <p className={styles.heroDesc}>Chinh phục mọi địa hình với bộ sưu tập Xuân/Hè mới nhất. Trải nghiệm sự khác biệt trên từng bước chạy.</p>
+            <div className={styles.heroBtns}>
+              <Link href="/shop" className="btn btn-primary">Mua Cho Nam</Link>
+              <Link href="/shop" className="btn btn-secondary">Mua Cho Nữ</Link>
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* Brands Section (Logo Strip) */}
