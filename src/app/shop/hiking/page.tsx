@@ -1,15 +1,42 @@
 import Link from 'next/link';
-import styles from './shop.module.css';
-import ProductCard from '../../components/ProductCard';
+import styles from '../shop.module.css';
+import ProductCard from '../../../components/ProductCard';
 
-export default function Shop() {
+export default function ShopHiking() {
   const products = [
+    { 
+      id: 'xt6', 
+      brand: 'Salomon', 
+      name: 'XT-6 GORE-TEX', 
+      price: '4.800.000đ', 
+      image: '/products/salomon_xt6_black.jpg',
+      status: 'New',
+      subtitle: 'Sneakers - Unisex'
+    },
+    { 
+      id: 'xt4', 
+      brand: 'Salomon', 
+      name: 'XT-4 OG', 
+      price: '4.800.000đ', 
+      image: '/products/salomon_xt4_yellow.jpg',
+      status: 'New',
+      subtitle: 'Sneakers - Unisex'
+    },
     { 
       id: 'speedcross', 
       brand: 'Salomon', 
       name: 'Speedcross 6', 
       price: '3.250.000đ', 
       image: '/products/salomon_xt6_black.jpg',
+      status: 'New',
+      subtitle: 'Trail running shoes - Unisex'
+    },
+    { 
+      id: 'trabuco', 
+      brand: 'Asics', 
+      name: 'Trabuco Max 2', 
+      price: '3.490.000đ', 
+      image: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=500',
       status: 'New',
       subtitle: 'Trail running shoes - Unisex'
     },
@@ -23,39 +50,12 @@ export default function Shop() {
       subtitle: 'Trail running shoes - Unisex'
     },
     { 
-      id: 'pegasus', 
-      brand: 'Nike', 
-      name: 'Pegasus Trail 4', 
-      price: '3.990.000đ', 
-      image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=500',
-      status: '',
-      subtitle: 'Trail running shoes - Unisex'
-    },
-    { 
-      id: 'trabuco', 
-      brand: 'Asics', 
-      name: 'Trabuco Max 2', 
-      price: '3.490.000đ', 
-      image: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=500',
-      status: 'New',
-      subtitle: 'Trail running shoes - Unisex'
-    },
-    { 
       id: 'senseride', 
       brand: 'Salomon', 
       name: 'Sense Ride 5', 
       price: '3.490.000đ', 
       image: '/products/salomon_slab_ultraglide.jpg',
       status: '',
-      subtitle: 'Trail running shoes - Unisex'
-    },
-    { 
-      id: 'wildhorse', 
-      brand: 'Nike', 
-      name: 'Wildhorse 8', 
-      price: '3.250.000đ', 
-      image: 'https://images.unsplash.com/photo-1539185441755-769473a23570?q=80&w=500',
-      status: 'New',
       subtitle: 'Trail running shoes - Unisex'
     }
   ];
@@ -65,36 +65,29 @@ export default function Shop() {
       <div className={styles.shopContainer}>
         {/* Sidebar */}
         <aside className={styles.sidebar}>
-          <h2 className={styles.sidebarTitle}>Filters</h2>
+          <h2 className={styles.sidebarTitle}>Filters (Leo Núi)</h2>
           <div className={styles.filterGroup}>
             <h3 className={styles.filterTitle}>Brand</h3>
             <ul className={styles.filterList}>
-              <li><input type="checkbox" /> Salomon (12)</li>
-              <li><input type="checkbox" /> Hoka (8)</li>
-              <li><input type="checkbox" /> Nike (15)</li>
-            </ul>
-          </div>
-          <div className={styles.filterGroup}>
-            <h3 className={styles.filterTitle}>Size</h3>
-            <ul className={styles.filterList}>
-              <li><input type="checkbox" /> US 8</li>
-              <li><input type="checkbox" /> US 9</li>
-              <li><input type="checkbox" /> US 10</li>
+              <li><input type="checkbox" /> Salomon (10)</li>
+              <li><input type="checkbox" /> Hoka (5)</li>
+              <li><input type="checkbox" /> Asics (4)</li>
             </ul>
           </div>
         </aside>
 
         {/* Main Content */}
         <div className={styles.mainContent}>
+          {/* Hiking banner showing mountains */}
           <div className={styles.categoryBanner}>
-            <img src="https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?q=80&w=1200" alt="Trail Running Banner" className={styles.bannerImg} />
+            <img src="https://images.unsplash.com/photo-1501555088652-021faa106b9b?q=80&w=1200" alt="Hiking Banner" className={styles.bannerImg} />
             <div className={styles.bannerOverlay}>
-              <h1 className={styles.bannerTitle}>Men's Trail Collection</h1>
+              <h1 className={styles.bannerTitle}>Hiking & Mountaineering</h1>
             </div>
           </div>
           
           <div className={styles.header}>
-            <span className={styles.itemCount}>Hiển thị 6 sản phẩm</span>
+            <span className={styles.itemCount}>Hiển thị 6 sản phẩm dã ngoại leo núi</span>
             <select className={styles.sort}>
               <option>Sort by: Recommended</option>
               <option>Price: Low to High</option>

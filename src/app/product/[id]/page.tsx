@@ -319,6 +319,90 @@ const productsDatabase: Record<string, {
     ],
     availableColors: ['Cam', 'Hồng', 'Trắng'],
     specs: { cushioning: 'Độ nảy cao', support: 'Cân bằng ôm chân', drop: '9.5mm', weight: '240g', terrain: 'Đường hỗn hợp đô thị - mòn' }
+  },
+  'hydration-vest': {
+    id: 'hydration-vest',
+    brand: 'Salomon',
+    name: 'Balo Nước Active Skin 8',
+    price: '2.850.000đ',
+    image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?q=80&w=500',
+    thumbnails: [
+      'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?q=80&w=500'
+    ],
+    status: 'Best Seller',
+    subtitle: 'Trail Running Hydration Vest - Unisex',
+    description: 'Balo nước Salomon Active Skin 8 là người bạn đồng hành hoàn hảo cho cự ly trail ngắn đến trung bình. Thiết kế ôm sát cơ thể như lớp áo thứ hai chống rung lắc, chất liệu lưới co giãn thoáng khí tối đa, đi kèm 2 bình nước mềm Salomon 500ml tiện lợi.',
+    features: [
+      'Công nghệ Sensifit ôm sát chống nảy tối ưu',
+      'Đi kèm 2 bình nước mềm Soft Flask 500ml cao cấp',
+      'Nhiều ngăn chứa đồ phía trước và ngăn lớn phía sau',
+      'Dây đai ngực tự co giãn điều chỉnh linh hoạt'
+    ],
+    availableColors: ['Đen', 'Xanh dương'],
+    specs: { cushioning: 'Dung tích 8L', support: 'Lưới 3D Mesh', drop: 'Bình 2x500ml', weight: '210g', terrain: 'Chạy trail & Road dài' }
+  },
+  'garmin-fenix': {
+    id: 'garmin-fenix',
+    brand: 'Garmin',
+    name: 'Đồng Hồ Fenix 7 Pro Sapphire Solar',
+    price: '18.990.000đ',
+    image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=500',
+    thumbnails: [
+      'https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=500'
+    ],
+    status: 'Premium',
+    subtitle: 'GPS Multisport Smartwatch',
+    description: 'Đồng hồ GPS thể thao cao cấp nhất dành cho các vận động viên ultra trail. Garmin Fenix 7 Pro sở hữu kính Sapphire chống trầy xước sạc năng lượng mặt trời siêu bền, bản đồ topo chi tiết, đo nhịp tim thế hệ mới và thời lượng pin cực khủng lên tới nhiều tuần hoạt động liên tục.',
+    features: [
+      'Mặt kính sạc pin mặt trời Power Sapphire chống trầy',
+      'Định vị đa băng tần GPS/GLONASS/Galileo cực kỳ chính xác',
+      'Bản đồ dẫn đường offline chi tiết từng lối mòn (TopoActive)',
+      'Tích hợp đèn pin LED chiếu sáng khẩn cấp trên đường chạy đêm'
+    ],
+    availableColors: ['Đen', 'Xám'],
+    specs: { cushioning: 'Pin 22 ngày', support: 'Kính Sapphire', drop: 'Chống nước 10ATM', weight: '73g', terrain: 'Leo núi & Chạy Ultra' }
+  },
+  'trail-socks': {
+    id: 'trail-socks',
+    brand: 'Compressport',
+    name: 'Tất Chạy Trail PRS V4.0',
+    price: '450.000đ',
+    image: 'https://images.unsplash.com/photo-1582966772680-860e372bb558?q=80&w=500',
+    thumbnails: [
+      'https://images.unsplash.com/photo-1582966772680-860e372bb558?q=80&w=500'
+    ],
+    status: 'New',
+    subtitle: 'High Performance Trail Socks',
+    description: 'Tất chạy trail Compressport Pro Racing Socks v4.0 Trail được gia cố đệm dày đặc tại các vùng ngón chân và gót chân giúp giảm lực va đập khi chạy xuống dốc. Công nghệ chấm 3D.Dots tăng cường lưu thông máu, mát-xa bàn chân nhẹ nhàng và ngăn ngừa phồng rộp.',
+    features: [
+      'Công nghệ 3D.Dots chống trượt và chống phồng rộp tối đa',
+      'Gia cố đệm bảo vệ mắt cá chân và gân Achilles',
+      'Sợi vải dệt siêu thoáng khí thoát mồ hôi cực nhanh',
+      'Độ bó nhẹ hỗ trợ vòm gan bàn chân giảm mỏi'
+    ],
+    availableColors: ['Đen', 'Trắng', 'Đỏ', 'Xanh dương'],
+    specs: { cushioning: 'Đệm 3D.Dots dày', support: 'Nâng đỡ vòm', drop: 'Kháng khuẩn', weight: '37g', terrain: 'Mọi địa hình chạy mòn' }
+  },
+  'flask-500': {
+    id: 'flask-500',
+    brand: 'Salomon',
+    name: 'Bình Nước Mềm Soft Flask 500ml',
+    price: '550.000đ',
+    image: 'https://images.unsplash.com/photo-1523362628745-0c100150b504?q=80&w=500',
+    thumbnails: [
+      'https://images.unsplash.com/photo-1523362628745-0c100150b504?q=80&w=500'
+    ],
+    status: '',
+    subtitle: 'Flexible Soft Water Flask',
+    description: 'Bình nước mềm Salomon Soft Flask 500ml thiết kế tự động xẹp lại khi uống để tránh hiện tượng nước xóc bên trong. Đầu van hút thông minh silicon chống rò rỉ nước, chất liệu TPU cao cấp hoàn toàn không chứa chất độc hại BPA và PVC.',
+    features: [
+      'Tự động xẹp nhỏ lại khi nước giảm chống rung lắc',
+      'Van hút silicon tiện lợi mở khóa nước khi cắn nhẹ',
+      'Chất liệu nhựa dẻo TPU siêu bền chịu lực co bóp tốt',
+      'Hoàn toàn không chứa BPA và PVC gây hại sức khỏe'
+    ],
+    availableColors: ['Xanh dương'],
+    specs: { cushioning: 'Thể tích 500ml', support: 'Nhựa dẻo TPU', drop: 'BPA & PVC Free', weight: '30g', terrain: 'Chạy trail & Chạy bộ' }
   }
 };
 

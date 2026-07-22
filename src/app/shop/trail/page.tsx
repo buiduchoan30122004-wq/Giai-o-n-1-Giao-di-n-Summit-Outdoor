@@ -1,9 +1,18 @@
 import Link from 'next/link';
-import styles from './shop.module.css';
-import ProductCard from '../../components/ProductCard';
+import styles from '../shop.module.css';
+import ProductCard from '../../../components/ProductCard';
 
-export default function Shop() {
+export default function ShopTrail() {
   const products = [
+    { 
+      id: 'xt6', 
+      brand: 'Salomon', 
+      name: 'XT-6 GORE-TEX', 
+      price: '4.800.000đ', 
+      image: '/products/salomon_xt6_black.jpg',
+      status: 'New',
+      subtitle: 'Sneakers - Unisex'
+    },
     { 
       id: 'speedcross', 
       brand: 'Salomon', 
@@ -48,15 +57,6 @@ export default function Shop() {
       image: '/products/salomon_slab_ultraglide.jpg',
       status: '',
       subtitle: 'Trail running shoes - Unisex'
-    },
-    { 
-      id: 'wildhorse', 
-      brand: 'Nike', 
-      name: 'Wildhorse 8', 
-      price: '3.250.000đ', 
-      image: 'https://images.unsplash.com/photo-1539185441755-769473a23570?q=80&w=500',
-      status: 'New',
-      subtitle: 'Trail running shoes - Unisex'
     }
   ];
 
@@ -65,21 +65,13 @@ export default function Shop() {
       <div className={styles.shopContainer}>
         {/* Sidebar */}
         <aside className={styles.sidebar}>
-          <h2 className={styles.sidebarTitle}>Filters</h2>
+          <h2 className={styles.sidebarTitle}>Filters (Trail)</h2>
           <div className={styles.filterGroup}>
             <h3 className={styles.filterTitle}>Brand</h3>
             <ul className={styles.filterList}>
-              <li><input type="checkbox" /> Salomon (12)</li>
+              <li><input type="checkbox" /> Salomon (15)</li>
               <li><input type="checkbox" /> Hoka (8)</li>
-              <li><input type="checkbox" /> Nike (15)</li>
-            </ul>
-          </div>
-          <div className={styles.filterGroup}>
-            <h3 className={styles.filterTitle}>Size</h3>
-            <ul className={styles.filterList}>
-              <li><input type="checkbox" /> US 8</li>
-              <li><input type="checkbox" /> US 9</li>
-              <li><input type="checkbox" /> US 10</li>
+              <li><input type="checkbox" /> Nike (10)</li>
             </ul>
           </div>
         </aside>
@@ -89,12 +81,12 @@ export default function Shop() {
           <div className={styles.categoryBanner}>
             <img src="https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?q=80&w=1200" alt="Trail Running Banner" className={styles.bannerImg} />
             <div className={styles.bannerOverlay}>
-              <h1 className={styles.bannerTitle}>Men's Trail Collection</h1>
+              <h1 className={styles.bannerTitle}>Trail Running Collection</h1>
             </div>
           </div>
           
           <div className={styles.header}>
-            <span className={styles.itemCount}>Hiển thị 6 sản phẩm</span>
+            <span className={styles.itemCount}>Hiển thị 6 sản phẩm chạy địa hình</span>
             <select className={styles.sort}>
               <option>Sort by: Recommended</option>
               <option>Price: Low to High</option>
