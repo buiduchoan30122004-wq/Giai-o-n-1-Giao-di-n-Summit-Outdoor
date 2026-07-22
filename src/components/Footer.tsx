@@ -7,9 +7,8 @@ export default function Footer() {
         <div>
           <div className={styles.footerBrand}>
             <svg width="48" height="48" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" className={styles.footerLogoIcon}>
-              <polygon points="13,6 3,24 23,24" fill="var(--color-primary)" />
-              <polygon points="21,11 13,24 29,24" fill="var(--color-white)" />
-              <polygon points="13,24 16,19 18,24" fill="var(--color-black)" />
+              <circle cx="16" cy="16" r="16" fill="var(--color-white)" />
+              <path d="M16 8 L24 22 H8 Z" fill="var(--color-primary)" />
             </svg>
             SUMMIT<span>OUTDOOR</span>
           </div>
