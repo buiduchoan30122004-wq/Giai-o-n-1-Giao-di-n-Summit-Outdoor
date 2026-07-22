@@ -251,6 +251,16 @@ export default function Chatbot() {
       q: 'Cảm ơn bạn',
       keywords: ['cảm ơn', 'cam on', 'thank', 'ok', 'oke', 'dạ vâng', 'da vang', 'ok nhé', 'ok nhe'],
       a: 'Dạ không có gì ạ! Rất vui được hỗ trợ bạn. Chúc bạn tìm được sản phẩm ưng ý và có những buổi chạy trail thật tuyệt vời!'
+    },
+    {
+      q: 'Giá đắt thế?',
+      keywords: ['đắt', 'dat', 'đắt thế', 'đắt quá', 'giá cao', 'gia cao', 'đắt vậy', 'mắc', 'mac'],
+      a: 'Dạ sản phẩm bên mình đều là hàng chính hãng 100% từ các thương hiệu hàng đầu thế giới nên chất lượng và độ bền bỉ rất xứng đáng ạ. Tuy nhiên bên mình có nhiều phân khúc giá khác nhau. Bạn có thể nhấn nút "Tôi muốn mua hàng" bên dưới để điền form khảo sát, mình sẽ lựa chọn ra các mẫu phù hợp nhất với tầm ngân sách của bạn nhé!'
+    },
+    {
+      q: 'Có sản phẩm giá rẻ không?',
+      keywords: ['giá rẻ', 'gia re', 'rẻ', 're', 'rẻ thế', 'rẻ quá', 'bình dân', 'binh dan', 'học sinh', 'sinh viên'],
+      a: 'Dạ bên mình có các mẫu giày đa dạng phân khúc từ bình dân (khoảng dưới 2 triệu) đến cao cấp phục vụ chạy trail. Bạn nhấn nút "Tôi muốn mua hàng" dưới đây để điền form khảo sát, mình sẽ lọc ngay các mẫu có mức giá tiết kiệm nhất cho bạn nhé!'
     }
   ];
 
