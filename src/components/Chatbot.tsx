@@ -402,8 +402,7 @@ export default function Chatbot() {
               <button 
                 className={styles.quickReplyBtn} 
                 onClick={() => {
-                  setIsOpen(true);
-                  setIsRecommendOpen(true);
+                  handleSend('Tôi muốn mua hàng');
                 }}
               >
                 🛒 Tôi muốn mua hàng
