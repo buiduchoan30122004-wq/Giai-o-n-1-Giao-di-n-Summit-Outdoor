@@ -193,7 +193,7 @@ const PromoPopup = () => {
                   </select>
                 </div>
 
-                <div className={styles.formGroup}>
+                <div className={`${styles.formGroup} ${styles.formGroupFull}`}>
                   <label className={styles.label}>Trình độ hiện tại *</label>
                   <select 
                     name="experienceLevel" 
@@ -210,7 +210,7 @@ const PromoPopup = () => {
                   </select>
                 </div>
 
-                <div className={styles.formGroup}>
+                <div className={`${styles.formGroup} ${styles.formGroupFull}`}>
                   <label className={styles.label}>
                     Bạn quan tâm điều gì nhất? (Chọn tối đa 2)
                     {interestError && <span className={styles.errorText}> - {interestError}</span>}
