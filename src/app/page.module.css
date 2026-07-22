@@ -42,7 +42,7 @@
 
 /* Section Common */
 .section {
-  padding: 80px 0;
+  padding: 45px 0; /* Thu gọn từ 80px */
   width: 100%;
 }
 
@@ -50,14 +50,16 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  margin-bottom: 50px;
+  margin-bottom: 24px; /* Thu gọn từ 50px */
 }
 
 .sectionTitle {
-  font-size: 2.2rem;
-  font-weight: 800;
+  font-size: 1.55rem; /* Thu nhỏ từ 2.2rem */
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: -0.5px;
+  color: #4b5563; /* Đổi sang màu xám */
+  text-shadow: 0.5px 0.5px 1.5px rgba(0, 0, 0, 0.08); /* Đổ bóng nhẹ nổi bật */
 }
 
 .viewAll {
@@ -72,7 +74,7 @@
 }
 
 .brandSection {
-  padding: 0 0 60px 0; /* Bỏ padding top thừa */
+  padding: 0 0 35px 0; /* Thu gọn từ 60px */
   width: 100%;
 }
 
