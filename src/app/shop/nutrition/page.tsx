@@ -5,58 +5,58 @@ import ProductCard from '../../../components/ProductCard';
 export default function ShopNutrition() {
   const products = [
     { 
-      id: 'gu-gel', 
+      id: 'gu-tabs', 
       brand: 'GU Energy', 
-      name: 'Gel Năng Lượng Liquid Energy Cam Dâu', 
-      price: '45.000đ', 
-      image: 'https://images.unsplash.com/photo-1551248429-40975aa4de74?q=80&w=500',
-      status: 'Hot',
-      subtitle: 'Liquid Energy Gel'
-    },
-    { 
-      id: 'maurten-gel', 
-      brand: 'Maurten', 
-      name: 'Gel Năng Lượng Hydrogel Gel 100', 
-      price: '95.000đ', 
-      image: 'https://images.unsplash.com/photo-1546483875-5f01450a83d4?q=80&w=500',
-      status: 'Premium',
-      subtitle: 'Hydrogel Technology'
-    },
-    { 
-      id: 'tailwind-drink', 
-      brand: 'Tailwind', 
-      name: 'Bột Điện Giải Endurance Fuel', 
-      price: '85.000đ', 
-      image: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=500',
-      status: 'Best Seller',
-      subtitle: 'Electrolyte Drink Mix'
-    },
-    { 
-      id: 'saltstick-caps', 
-      brand: 'SaltStick', 
-      name: 'Viên Muối Điện Giải SaltStick (100 viên)', 
-      price: '450.000đ', 
-      image: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?q=80&w=500',
+      name: 'Viên Sủi Điện Giải GU Hydration Drink Tabs', 
+      price: '219.000đ', 
+      image: 'https://cdn.hstatic.net/products/200001165929/20230830_jsdi42u6db_5cf9e7362ea3440387a5069d7fb44de3_grande.jpeg',
       status: 'Essential',
-      subtitle: 'Anti-Cramp Capsules'
+      subtitle: 'Hydration Drink Tabs - Vị Dâu Hibicus'
     },
     { 
-      id: 'hammer-recover', 
-      brand: 'Hammer Nutrition', 
-      name: 'Bột Phục Hồi Recoverite Socola', 
-      price: '90.000đ', 
-      image: 'https://images.unsplash.com/photo-1579758629938-03607ccdbaba?q=80&w=500',
-      status: 'New',
-      subtitle: 'Recovery Drink Mix'
-    },
-    { 
-      id: 'gu-roctane', 
+      id: 'gu-gel-real', 
       brand: 'GU Energy', 
-      name: 'Gel Năng Lượng Siêu Bền Roctane Vị Dứa', 
-      price: '65.000đ', 
-      image: 'https://images.unsplash.com/photo-1505576399279-565b52d4ac71?q=80&w=500',
-      status: 'Ultra Spec',
-      subtitle: 'Roctane Ultra Energy'
+      name: 'Gel Năng Lượng GU Energy Gel Vị Dâu Chuối', 
+      price: '45.000đ', 
+      image: 'https://cdn.hstatic.net/products/200001165929/upload_ca2ae7d0cbf744d399dff0fe62d1d134_grande.jpg',
+      status: 'Hot',
+      subtitle: 'Energy Gel - Vị Dâu Chuối'
+    },
+    { 
+      id: 'tailwind-pack', 
+      brand: 'Tailwind', 
+      name: 'Bột Năng Lượng Tailwind Endurance Fuel vị Mâm Xôi', 
+      price: '98.000đ', 
+      image: 'https://cdn.hstatic.net/products/200001165929/upload_ad4b3c14e9114eddbec5d1e77b0bf9cc_grande.jpg',
+      status: 'Best Seller',
+      subtitle: 'Endurance Fuel - Raspberry Caffeinated'
+    },
+    { 
+      id: 'hammer-recover-real', 
+      brand: 'Hammer Nutrition', 
+      name: 'Thức Uống Phục Hồi Hammer Recoverite Socola', 
+      price: '105.000đ', 
+      image: 'https://cdn.hstatic.net/products/200001165929/upload_a5f8396e74d444f8b8eaf1d8955b389d_grande.jpg',
+      status: 'New',
+      subtitle: 'Post-Workout Recovery - Chocolate'
+    },
+    { 
+      id: 'hammer-gel-real', 
+      brand: 'Hammer Nutrition', 
+      name: 'Gel Năng Lượng Hammer Gel Vị Montana Huckleberry', 
+      price: '49.000đ', 
+      image: 'https://cdn.hstatic.net/products/200001165929/upload_4532655c9b5c42ed813f44962cfe05f2_grande.jpg',
+      status: 'Popular',
+      subtitle: 'Hammer Energy Gel - Vị Huckleberry'
+    },
+    { 
+      id: 'lecka-bar', 
+      brand: 'Lecka', 
+      name: 'Thanh Năng Lượng Tự Nhiên Lecka Vị Chuối Quế', 
+      price: '40.000đ', 
+      image: 'https://cdn.hstatic.net/products/200001165929/upload_4313a74252a94f94b90421b303c3845e_grande.jpg',
+      status: 'Eco-Friendly',
+      subtitle: 'Natural Energy Bar - Vị Chuối Quế'
     }
   ];
 
