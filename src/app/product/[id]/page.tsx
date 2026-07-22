@@ -14,7 +14,7 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
         <div className={styles.details}>
           <div className={styles.brand}>Salomon</div>
           <h1 className={styles.name}>Speedcross 6 Trail Running Shoes</h1>
-          <div className={styles.price}>$130.00</div>
+          <div className={styles.price}>3.250.000đ</div>
 
           <div>
             <div className={styles.selectorTitle}>Select Size (US)</div>

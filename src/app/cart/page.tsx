@@ -23,7 +23,7 @@ export default function Cart() {
                 <button className={styles.removeBtn}>Remove</button>
               </div>
             </div>
-            <div className={styles.itemPrice}>$130.00</div>
+            <div className={styles.itemPrice}>3.250.000đ</div>
           </div>
         </div>
 
@@ -33,11 +33,11 @@ export default function Cart() {
           
           <div className={styles.summaryRow}>
             <span>Subtotal</span>
-            <span>$130.00</span>
+            <span>3.250.000đ</span>
           </div>
           <div className={styles.summaryRow}>
             <span>Estimated Shipping</span>
-            <span>$15.00</span>
+            <span>50.000đ</span>
           </div>
           <div className={styles.summaryRow}>
             <span>Tax</span>
@@ -46,7 +46,7 @@ export default function Cart() {
           
           <div className={styles.summaryTotal}>
             <span>Total</span>
-            <span>$145.00</span>
+            <span>3.300.000đ</span>
           </div>
 
           <button className={styles.checkoutBtn}>Proceed to Checkout</button>

@@ -5,10 +5,10 @@ import PromoPopup from '../components/PromoPopup';
 
 export default function Home() {
   const products = [
-    { id: '1', brand: 'Salomon', name: 'Speedcross 6', price: '$130.00', image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=500' },
-    { id: '2', brand: 'Hoka', name: 'Speedgoat 5', price: '$155.00', image: 'https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?q=80&w=500' },
-    { id: '3', brand: 'Nike', name: 'Pegasus Trail 4', price: '$160.00', image: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=500' },
-    { id: '4', brand: 'Asics', name: 'Trabuco Max 2', price: '$140.00', image: 'https://images.unsplash.com/photo-1511556532299-8f662fc26c06?q=80&w=500' }
+    { id: '1', brand: 'Salomon', name: 'Speedcross 6', price: '3.250.000đ', image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=500' },
+    { id: '2', brand: 'Hoka', name: 'Speedgoat 5', price: '3.850.000đ', image: 'https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?q=80&w=500' },
+    { id: '3', brand: 'Nike', name: 'Pegasus Trail 4', price: '3.990.000đ', image: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=500' },
+    { id: '4', brand: 'Asics', name: 'Trabuco Max 2', price: '3.490.000đ', image: 'https://images.unsplash.com/photo-1511556532299-8f662fc26c06?q=80&w=500' }
   ];
 
   return (
