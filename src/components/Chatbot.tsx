@@ -114,7 +114,7 @@ export default function Chatbot() {
       cleanText.includes('len don') ||
       cleanText.includes('order')
     ) {
-      replyText = 'Dựa trên cự ly bạn đăng ký và form chân bạn mô tả, mình đánh giá Salomon XT-6 GORE-TEX là sự lựa chọn an toàn, bền bỉ và cân bằng nhất lúc này. Mẫu này hiện đang còn đúng size của bạn tại kho. Bạn chốt đôi này luôn để mình lên đơn và gửi đi trong chiều nay, kịp cho buổi tập Long Run cuối tuần của bạn nhé? \n\nĐể đơn vị vận chuyển lấy hàng nhanh nhất, bạn dành chút thời gian điền giúp mình thông tin nhận hàng (Tên, Số điện thoại, Địa chỉ) vào biểu mẫu dưới đây nhé:\n\nHệ thống sẽ tự động ghi nhận đúng size màu mà bạn vừa chọn.';
+      replyText = 'Dựa trên cự ly và form chân của bạn, Salomon XT-6 GORE-TEX là lựa chọn tối ưu nhất. Mẫu này đang sẵn hàng đúng size của bạn tại kho.\n\nBạn dành chút thời gian điền thông tin nhận hàng (Tên, SĐT, Địa chỉ) vào biểu mẫu dưới đây để mình lên đơn gửi đi ngay nhé!';
       isFormLink = true;
     } else {
       // Search in FAQs
