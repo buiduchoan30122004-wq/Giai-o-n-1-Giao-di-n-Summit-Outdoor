@@ -319,8 +319,7 @@ export default function Chatbot() {
       }
 
       if (!found) {
-        // Default fallback (friendly, helpful, prompting FAQs)
-        replyText = 'Mình chưa rõ câu hỏi của bạn lắm. Bạn có thể nhấn nút "Tôi muốn mua hàng" bên dưới để mở form khảo sát giúp mình tư vấn dòng giày phù hợp nhất, hoặc hỏi về "size chân", "chống nước", "chọn vest" để mình hỗ trợ nhé!';
+        replyText = 'Bạn liên hệ hotline để được tư vấn kỹ hơn nhé!';
       }
     }
 
