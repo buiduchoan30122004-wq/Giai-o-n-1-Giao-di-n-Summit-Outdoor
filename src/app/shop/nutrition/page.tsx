@@ -14,33 +14,6 @@ export default function ShopNutrition() {
       subtitle: 'Hydration Drink Tabs - Vị Dâu Hibicus'
     },
     { 
-      id: 'gu-gel-real', 
-      brand: 'GU Energy', 
-      name: 'Gel Năng Lượng GU Energy Gel Vị Dâu Chuối', 
-      price: '45.000đ', 
-      image: 'https://cdn.hstatic.net/products/200001165929/upload_ca2ae7d0cbf744d399dff0fe62d1d134_grande.jpg',
-      status: 'Hot',
-      subtitle: 'Energy Gel - Vị Dâu Chuối'
-    },
-    { 
-      id: 'tailwind-pack', 
-      brand: 'Tailwind', 
-      name: 'Bột Năng Lượng Tailwind Endurance Fuel vị Mâm Xôi', 
-      price: '98.000đ', 
-      image: 'https://cdn.hstatic.net/products/200001165929/upload_ad4b3c14e9114eddbec5d1e77b0bf9cc_grande.jpg',
-      status: 'Best Seller',
-      subtitle: 'Endurance Fuel - Raspberry Caffeinated'
-    },
-    { 
-      id: 'hammer-recover-real', 
-      brand: 'Hammer Nutrition', 
-      name: 'Thức Uống Phục Hồi Hammer Recoverite Socola', 
-      price: '105.000đ', 
-      image: 'https://cdn.hstatic.net/products/200001165929/upload_a5f8396e74d444f8b8eaf1d8955b389d_grande.jpg',
-      status: 'New',
-      subtitle: 'Post-Workout Recovery - Chocolate'
-    },
-    { 
       id: 'hammer-gel-real', 
       brand: 'Hammer Nutrition', 
       name: 'Gel Năng Lượng Hammer Gel Vị Montana Huckleberry', 
@@ -68,24 +41,6 @@ export default function ShopNutrition() {
       subtitle: 'Natural Energy Bar - Vị Cacao Chuối'
     },
     { 
-      id: 'tailwind-rebuild-coffee', 
-      brand: 'Tailwind', 
-      name: 'Bột Phục Hồi Tailwind Rebuild Recovery Vị Cà Phê', 
-      price: '105.000đ', 
-      image: 'https://cdn.hstatic.net/products/200001165929/upload_f8628d03aee6468081987a8a6475fdbb_grande.jpg',
-      status: 'New Flavor',
-      subtitle: 'Rebuild Recovery - Coffee Flavor'
-    },
-    { 
-      id: 'tailwind-rebuild-caramel', 
-      brand: 'Tailwind', 
-      name: 'Bột Phục Hồi Tailwind Rebuild Recovery Vị Caramel Muối', 
-      price: '105.000đ', 
-      image: 'https://cdn.hstatic.net/products/200001165929/upload_9917b20f06da4ad1907eb925cfd9b99a_grande.jpg',
-      status: 'Hot',
-      subtitle: 'Rebuild Recovery - Salted Caramel'
-    },
-    { 
       id: 'pillar-recovery-berry', 
       brand: 'Pillar Performance', 
       name: 'Vi Chất Magie Phục Hồi Pillar Triple Magnesium Berry', 
@@ -93,15 +48,6 @@ export default function ShopNutrition() {
       image: 'https://cdn.hstatic.net/products/200001165929/upload_0e36e90b54224a0882255a7198ed9bf9_grande.jpg',
       status: 'High Tech',
       subtitle: 'Triple Magnesium Recovery - 5g'
-    },
-    { 
-      id: 'gu-roctane-chocolate', 
-      brand: 'GU Energy', 
-      name: 'Gel Năng Lượng GU Roctane Vị Socola Muối Biển', 
-      price: '79.000đ', 
-      image: 'https://cdn.hstatic.net/products/200001165929/upload_64ff9079187c44ee8abe49e34418719c_grande.jpg',
-      status: 'Ultra Spec',
-      subtitle: 'Roctane Ultra Energy - Chocolate'
     }
   ];
 
