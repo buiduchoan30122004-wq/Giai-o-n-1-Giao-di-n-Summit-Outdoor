@@ -266,42 +266,44 @@ export default function CartPage() {
 
         {/* Right Column: Order Summary Card */}
         <div className={styles.summary}>
-          <h2 className={styles.summaryTitle}>Tổng đơn hàng</h2>
+          <h2 className={styles.summaryTitle}>SUMMARY</h2>
           
           <div className={styles.summaryRow}>
-            <span>Tạm tính</span>
+            <span>Subtotal</span>
             <span>{formatPrice(subtotal)}</span>
           </div>
 
           {discountAmount > 0 && (
             <div className={styles.summaryRow} style={{ color: '#16a34a', fontWeight: 'bold' }}>
-              <span>Giảm giá (10%)</span>
+              <span>Promo Discount</span>
               <span>-{formatPrice(discountAmount)}</span>
             </div>
           )}
 
           {giftWrap && (
             <div className={styles.summaryRow}>
-              <span>Gói quà nghệ thuật</span>
+              <span>Gift Wrap</span>
               <span>+50.000đ</span>
             </div>
           )}
 
           <div className={styles.summaryRow}>
-            <span>Phí vận chuyển</span>
-            <span>{shippingFee === 0 ? 'Miễn phí' : formatPrice(shippingFee)}</span>
+            <span>Shipping</span>
+            <span>{shippingFee === 0 ? 'Free' : formatPrice(shippingFee)}</span>
           </div>
 
           <div className={styles.totalRow}>
-            <span>TỔNG CỘNG</span>
+            <span>Total</span>
             <span>{formatPrice(total)}</span>
           </div>
 
           {/* Promo code accordion */}
           <div className={styles.promoDropdown}>
             <div className={styles.promoHeader} onClick={() => setPromoOpen(!promoOpen)}>
-              <span>Bạn có mã giảm giá / coupon?</span>
-              <span>{promoOpen ? '▲' : '▼'}</span>
+              <span>Do you have a promo code?</span>
+              <svg className={`${styles.chevronIcon} ${promoOpen ? styles.chevronOpen : ''}`} width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+                <path d="M19 9l-7 7-7-7" />
+              </svg>
             </div>
             
             {promoOpen && (
@@ -315,7 +317,7 @@ export default function CartPage() {
                     className={styles.promoInput}
                   />
                   <button type="submit" className={styles.promoApplyBtn}>
-                    Áp dụng
+                    Apply
                   </button>
                 </form>
                 {promoMessage && (
@@ -327,30 +329,58 @@ export default function CartPage() {
             )}
           </div>
 
-          <p className={styles.freeShipNotice}>
-            * Thuế VAT đã được bao gồm trong giá sản phẩm. Đơn hàng được xử lý và xác nhận qua cổng thanh toán bảo mật.
+          <p className={styles.giftCardNotice}>
+            If you are looking to pay using a gift card, please select it as a payment method at the next stage of the checkout.
           </p>
 
           <Link href="/checkout" className={styles.checkoutBtn}>
             {/* Padlock Icon */}
-            <svg className={styles.padlockIcon} fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-              <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
+            <svg className={styles.padlockIcon} width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
             </svg>
-            Thanh toán bảo mật
+            Checkout securely
           </Link>
 
           <Link href="/shop" className={styles.continueShopping}>
-            Tiếp tục mua sắm
+            Continue shopping
           </Link>
 
-          {/* Payment Icons */}
+          <p className={styles.taxNotice}>
+            All taxes and duties are already included in the price of each order shipped to mainland EU (Including Ireland).
+          </p>
+
+          {/* Payment Icons - Standard Sportsshoes Grid */}
           <div className={styles.paymentPartners}>
-            <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Visa.svg" alt="Visa" className={styles.payIcon} />
-            <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="Mastercard" className={styles.payIcon} />
-            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal" className={styles.payIcon} />
-            <img src="https://upload.wikimedia.org/wikipedia/commons/3/30/American_Express_logo.svg" alt="Amex" className={styles.payIcon} />
-            <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_Pay_logo.svg" alt="Apple Pay" className={styles.payIcon} />
-            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c7/Google_Pay_Logo.svg" alt="Google Pay" className={styles.payIcon} />
+            <div className={styles.payBadge}>
+              <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Visa.svg" alt="Visa" className={styles.payIcon} />
+            </div>
+            <div className={styles.payBadge}>
+              <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Sofort_Direct_eBanking_logo.svg" alt="Sofort" className={styles.payIcon} />
+            </div>
+            <div className={styles.payBadge}>
+              <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="Mastercard" className={styles.payIcon} />
+            </div>
+            <div className={styles.payBadge}>
+              <img src="https://upload.wikimedia.org/wikipedia/commons/c/c7/Google_Pay_Logo.svg" alt="Google Pay" className={styles.payIcon} />
+            </div>
+            <div className={styles.payBadge}>
+              <img src="https://upload.wikimedia.org/wikipedia/commons/3/30/American_Express_logo.svg" alt="Amex" className={styles.payIcon} />
+            </div>
+            <div className={styles.payBadge}>
+              <img src="https://upload.wikimedia.org/wikipedia/commons/1/14/Giropay_logo.svg" alt="Giropay" className={styles.payIcon} />
+            </div>
+            <div className={styles.payBadge}>
+              <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal" className={styles.payIcon} />
+            </div>
+            <div className={styles.payBadge}>
+              <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_Pay_logo.svg" alt="Apple Pay" className={styles.payIcon} />
+            </div>
+            <div className={styles.payBadge}>
+              <img src="https://upload.wikimedia.org/wikipedia/commons/0/07/Klarna_Logo.svg" alt="Klarna" className={styles.payIcon} />
+            </div>
+            <div className={styles.payBadge}>
+              <img src="https://upload.wikimedia.org/wikipedia/commons/d/df/Clearpay_logo.svg" alt="Clearpay" className={styles.payIcon} />
+            </div>
           </div>
 
           {/* Trust list checklist */}
