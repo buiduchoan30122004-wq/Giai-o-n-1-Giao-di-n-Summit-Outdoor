@@ -241,6 +241,16 @@ export default function Chatbot() {
       q: 'Thời gian ship và phí giao hàng?',
       keywords: ['ship', 'vận chuyển', 'giao hàng', 'thời gian', 'cần gấp', 'phi ship', 'bao lâu nhận'],
       a: 'Bên mình giao hàng toàn quốc. Thường sẽ mất khoảng 1-2 ngày nếu bạn ở trung tâm, và 3-4 ngày với các tỉnh xa. Hiện tại một số mẫu đang có sẵn tại kho, nếu bạn chốt sớm mình sẽ ưu tiên đóng gói gửi đi ngay trong ngày hôm nay.'
+    },
+    {
+      q: 'Để tôi suy nghĩ thêm',
+      keywords: ['suy nghĩ', 'suy nghi', 'xem thêm', 'xem them', 'tham khảo', 'tham khao', 'để sau', 'de sau', 'chưa mua', 'chua mua'],
+      a: 'Dạ vâng ạ. Bạn cứ thong thả tham khảo thêm nhé. Bất cứ khi nào bạn cần hỗ trợ thêm thông tin hoặc tư vấn mẫu mã, bạn cứ nhắn tin ở đây cho mình nhé!'
+    },
+    {
+      q: 'Cảm ơn bạn',
+      keywords: ['cảm ơn', 'cam on', 'thank', 'ok', 'oke', 'dạ vâng', 'da vang', 'ok nhé', 'ok nhe'],
+      a: 'Dạ không có gì ạ! Rất vui được hỗ trợ bạn. Chúc bạn tìm được sản phẩm ưng ý và có những buổi chạy trail thật tuyệt vời!'
     }
   ];
 
