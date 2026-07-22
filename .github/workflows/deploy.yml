@@ -37,11 +37,14 @@ jobs:
             rm -rf .next
             yarn build
             
-            # Giải phóng cổng 3000 (nếu bị kẹt) và khởi động lại sạch tiến trình PM2
+            # Chạy migration đồng bộ cột database bằng công cụ sqlite3 CLI của VPS
+            sqlite3 /var/www/summit-outdoor/brain.db "ALTER TABLE orders ADD COLUMN order_code TEXT;" || true
+
+            # Giải phóng cổng 3000 (nếu bị kẹt) và khởi động lại Next.js trực tiếp qua PM2 (tránh lỗi thông dịch Shell của yarn)
             npx kill-port 3000 || true
             pm2 delete summit-outdoor || true
             pm2 delete 0 || true
-            pm2 start yarn --name "summit-outdoor" -- start
+            pm2 start node_modules/next/dist/bin/next --name "summit-outdoor" -- start
             
             # Đợi 5 giây để ghi lại logs trạng thái nhằm phục vụ debug từ xa
             sleep 5
