@@ -22,6 +22,27 @@ export default function CheckoutPage() {
     setOrderCode(`SUMMIT${randomNum}`);
   }, []);
 
+  // Poll payment status if payment method is QR and order code exists
+  useEffect(() => {
+    if (paymentMethod !== 'qr' || !orderCode || isPaid) return;
+
+    const interval = setInterval(async () => {
+      try {
+        const response = await fetch(`/api/check-payment?orderCode=${orderCode}`);
+        const data = await response.json();
+        if (data.paid) {
+          setIsPaid(true);
+          localStorage.removeItem('summit_cart');
+          window.dispatchEvent(new Event('cartUpdated'));
+        }
+      } catch (e) {
+        console.error('Error polling payment status:', e);
+      }
+    }, 3000); // Check every 3 seconds
+
+    return () => clearInterval(interval);
+  }, [paymentMethod, orderCode, isPaid]);
+
   const totalAmount = 3300000; // 3.300.000đ
 
   const copyToClipboard = (text: string, type: string) => {
@@ -38,8 +59,9 @@ export default function CheckoutPage() {
     }
     
     if (paymentMethod === 'cod') {
-      // COD orders complete instantly
       setIsPaid(true);
+      localStorage.removeItem('summit_cart');
+      window.dispatchEvent(new Event('cartUpdated'));
     } else {
       alert('Vui lòng quét mã QR chuyển khoản và nhấn "Xác nhận đã chuyển khoản" để hoàn tất!');
     }
@@ -51,7 +73,44 @@ export default function CheckoutPage() {
       alert('Vui lòng điền đầy đủ Thông tin nhận hàng (Họ tên, SĐT, Địa chỉ) trước khi thanh toán!');
       return;
     }
-    setIsPaid(true);
+
+    // Call the server API directly to trigger a simulated webhook payload
+    fetch('/api/sepay-webhook', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Apikey summit_sepay_secret'
+      },
+      body: JSON.stringify({
+        id: Math.floor(Math.random() * 1000000),
+        gateway: 'MBBank',
+        transactionDate: new Date().toISOString().replace('T', ' ').substring(0, 19),
+        accountNumber: '0904759624',
+        subAccount: '',
+        code: `SIM_${Math.floor(Math.random() * 1000000)}`,
+        content: `Thanh toan don hang ${orderCode}`,
+        transferType: 'in',
+        description: `${name} chuyen khoan qua MB`,
+        transferAmount: totalAmount,
+        accumulated: 10000000,
+        referenceCode: `SIMREF_${Math.floor(Math.random() * 1000000)}`
+      })
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        console.log('Webhook simulation sent successfully, waiting for polling to detect payment.');
+      } else {
+        alert('Có lỗi xảy ra khi gửi webhook giả lập: ' + data.message);
+      }
+    })
+    .catch(err => {
+      console.error(err);
+      // Fallback
+      setIsPaid(true);
+      localStorage.removeItem('summit_cart');
+      window.dispatchEvent(new Event('cartUpdated'));
+    });
   };
 
   if (isPaid) {
