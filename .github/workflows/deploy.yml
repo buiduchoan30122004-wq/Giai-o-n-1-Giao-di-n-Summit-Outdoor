@@ -20,6 +20,7 @@ jobs:
           password: ${{ secrets.VPS_PASSWORD }}
           source: "."
           target: "/var/www/summit-outdoor"
+          exclude: "brain.db"
 
       - name: Build and Restart on VPS
         uses: appleboy/ssh-action@v1.0.3
