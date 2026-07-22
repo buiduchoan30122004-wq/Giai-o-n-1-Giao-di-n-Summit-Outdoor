@@ -6,7 +6,11 @@ export default function Footer() {
       <div className={`container ${styles.footerInner}`}>
         <div>
           <div className={styles.footerBrand}>
-            <img src="/icon.svg" alt="Summit Outdoor Logo" width="48" height="48" className={styles.footerLogoIcon} />
+            <svg width="48" height="48" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" className={styles.footerLogoIcon}>
+              <polygon points="13,6 3,24 23,24" fill="var(--color-primary)" />
+              <polygon points="21,11 13,24 29,24" fill="var(--color-white)" />
+              <polygon points="13,24 16,19 18,24" fill="var(--color-black)" />
+            </svg>
             SUMMIT<span>OUTDOOR</span>
           </div>
           <p className={styles.footerDesc}>
