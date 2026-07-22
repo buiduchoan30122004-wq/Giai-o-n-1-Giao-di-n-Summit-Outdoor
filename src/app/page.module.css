@@ -71,6 +71,11 @@
   color: var(--color-primary);
 }
 
+.brandSection {
+  padding: 0 0 60px 0; /* Bỏ padding top thừa */
+  width: 100%;
+}
+
 /* Brand Grid - Premium Cards */
 .brandGrid {
   display: grid;

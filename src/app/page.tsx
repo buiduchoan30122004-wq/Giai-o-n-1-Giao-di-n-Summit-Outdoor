@@ -75,11 +75,8 @@ export default function Home() {
       </section>
 
       {/* Shop by Brand */}
-      <section className={styles.section}>
+      <section className={styles.brandSection}>
         <div className="container">
-          <div className={styles.sectionHeader}>
-            <h2 className={styles.sectionTitle}>Thương Hiệu Nổi Bật</h2>
-          </div>
           <div className={styles.brandGrid}>
             <Link href="/shop" className={styles.brandCard}>
               <div className={styles.brandImgWrapper}>
