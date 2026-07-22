@@ -229,11 +229,9 @@ export default function CartPage() {
                   value={country} 
                   onChange={(e) => setCountry(e.target.value)} 
                   className={styles.calcSelect}
+                  disabled
                 >
-                  <option value="Vietnam">Việt Nam</option>
-                  <option value="United Kingdom">United Kingdom</option>
-                  <option value="United States">United States</option>
-                  <option value="Singapore">Singapore</option>
+                  <option value="Vietnam">Việt Nam (Chỉ hỗ trợ giao hàng nội địa)</option>
                 </select>
               </div>
 
