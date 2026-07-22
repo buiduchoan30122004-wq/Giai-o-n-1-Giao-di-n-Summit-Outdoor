@@ -38,8 +38,15 @@ export default function Shop() {
 
         {/* Main Content */}
         <div className={styles.mainContent}>
+          <div className={styles.categoryBanner}>
+            <img src="https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?q=80&w=1200" alt="Trail Running Banner" className={styles.bannerImg} />
+            <div className={styles.bannerOverlay}>
+              <h1 className={styles.bannerTitle}>Trail Running Shoes</h1>
+            </div>
+          </div>
+          
           <div className={styles.header}>
-            <h1 className={styles.title}>Trail Running Shoes</h1>
+            <span className={styles.itemCount}>Hiển thị 6 sản phẩm</span>
             <select className={styles.sort}>
               <option>Sort by: Recommended</option>
               <option>Price: Low to High</option>

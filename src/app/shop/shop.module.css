@@ -49,10 +49,47 @@
   margin-bottom: 40px;
 }
 
-.title {
-  font-size: 2.2rem;
+.categoryBanner {
+  position: relative;
+  width: 100%;
+  height: 160px; /* Thấp theo yêu cầu */
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 25px;
+}
+
+.bannerImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.bannerOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.45); /* Lớp phủ đen mờ */
+  display: flex;
+  align-items: center;
+  padding: 0 35px;
+}
+
+.bannerTitle {
+  color: var(--color-white);
+  font-size: 2rem;
   font-weight: 900;
   text-transform: uppercase;
+  margin: 0;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.itemCount {
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+  font-weight: 500;
 }
 
 .sort {
