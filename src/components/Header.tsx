@@ -19,10 +19,7 @@ export default function Header() {
       <div className={styles.mainHeader}>
         <div className={styles.mainHeaderInner}>
           <Link href="/" className={styles.logo}>
-            <svg width="36" height="36" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" className={styles.logoIcon}>
-              <circle cx="16" cy="16" r="16" fill="var(--color-black)" />
-              <path d="M16 8 L24 22 H8 Z" fill="var(--color-primary)" />
-            </svg>
+            <img src="/icon.svg" alt="Summit Outdoor Logo" width="36" height="36" className={styles.logoIcon} />
             SUMMIT<span>OUTDOOR</span>
           </Link>
  

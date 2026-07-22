@@ -6,10 +6,7 @@ export default function Footer() {
       <div className={`container ${styles.footerInner}`}>
         <div>
           <div className={styles.footerBrand}>
-            <svg width="48" height="48" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" className={styles.footerLogoIcon}>
-              <circle cx="16" cy="16" r="16" fill="var(--color-white)" />
-              <path d="M16 8 L24 22 H8 Z" fill="var(--color-primary)" />
-            </svg>
+            <img src="/icon.svg" alt="Summit Outdoor Logo" width="48" height="48" className={styles.footerLogoIcon} />
             SUMMIT<span>OUTDOOR</span>
           </div>
           <p className={styles.footerDesc}>
