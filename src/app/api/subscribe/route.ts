@@ -1,48 +1,33 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
+import { queryRun } from '@/lib/db';
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
-    const data = await request.json();
-
-    // WARNING: Replace this URL with your actual Google Apps Script Web App URL
-    // You will get this URL after following the setup instructions for Google Sheets
-    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzPKq7oWAuMOA2DujKp3_crxnaaJrw7Ul3XMqQwmtHsU8LVeakvcSj7FDGsPHXF5iPDaw/exec';
-
-    if (!GOOGLE_SCRIPT_URL) {
-        console.warn("Google Sheets Webhook URL is not configured. Data won't be saved to Sheets.");
-        // In production without a webhook, we just return success to not block the user flow
-        return NextResponse.json({ success: true, message: 'Simulated success (No webhook configured)' });
+    const { name, email, phone, preferred_brand, experience_level, interests } = await request.json();
+    
+    if (!name || !email) {
+      return NextResponse.json({ success: false, error: 'Thiếu tên hoặc email khách hàng' }, { status: 400 });
     }
 
-    // Try to send data to Google Sheets
-    try {
-        const response = await fetch(GOOGLE_SCRIPT_URL, {
-            method: 'POST',
-            // Google Apps Script requires no-cors or simple form url encoded often, 
-            // but fetching a POST from Next.js server to Google Script usually works fine.
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        });
+    // Insert subscriber into local SQLite database (customers table)
+    await queryRun(
+      `INSERT INTO customers (name, email, phone, preferred_brand, experience_level, interests) VALUES (?, ?, ?, ?, ?, ?)`,
+      [
+        name,
+        email,
+        phone || '',
+        preferred_brand || '',
+        experience_level || '',
+        interests || ''
+      ]
+    );
 
-        if (!response.ok) {
-            console.error('Google Script responded with error:', response.status);
-            // We still return success to frontend to show the discount code
-        }
-    } catch (fetchError) {
-        console.error('Failed to fetch Google Script:', fetchError);
-        // We still return success to frontend to show the discount code
-    }
-
-    // Always return success to the user so they get their discount code
-    // even if the background save to Google Sheets has issues.
     return NextResponse.json({ success: true });
     
-  } catch (error) {
-    console.error('API Route Error:', error);
+  } catch (error: any) {
+    console.error('Subscribe API Route Error:', error);
     return NextResponse.json(
-      { error: 'Internal Server Error' },
+      { success: false, error: error.message || 'Internal Server Error' },
       { status: 500 }
     );
   }
