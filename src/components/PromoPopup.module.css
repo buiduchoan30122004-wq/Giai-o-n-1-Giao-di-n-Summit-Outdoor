@@ -4,8 +4,8 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(4px);
+  background-color: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(5px);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -13,89 +13,108 @@
   animation: fadeIn 0.3s ease-out forwards;
 }
 
+/* 2-Column Split Container - Larger width */
 .popupContainer {
   position: relative;
-  width: 95%;
-  max-width: 680px;
-  min-height: auto;
-  border-radius: 24px;
+  width: 90%;
+  max-width: 900px; /* To hơn 1 chút */
+  min-height: 520px;
+  background-color: var(--color-white);
+  border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
-  display: block;
-  animation: slideUp 0.4s ease-out forwards;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.45);
+  display: flex;
+  flex-direction: row;
+  animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Close Button - Placed absolute on top right */
 .closeButton {
   position: absolute;
-  top: 16px;
-  right: 16px;
-  width: 32px;
-  height: 32px;
+  top: 20px;
+  right: 20px;
+  width: 36px;
+  height: 36px;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 24px;
+  font-size: 20px;
   color: var(--color-white);
   cursor: pointer;
-  z-index: 20;
-  background: rgba(255, 255, 255, 0.15);
+  z-index: 30;
+  background: rgba(0, 0, 0, 0.4);
   border: none;
   border-radius: 50%;
   transition: all 0.2s ease;
 }
 
 .closeButton:hover {
-  color: var(--color-primary);
-  background: rgba(255, 255, 255, 0.3);
+  background: var(--color-primary);
+  color: var(--color-white);
+  transform: scale(1.05);
 }
 
-.imageSection {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-  display: block !important;
-}
-
-.promoImage {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
+/* Left Column: Form Area (White background) */
 .formSection {
-  position: relative;
-  z-index: 10;
-  padding: 35px 30px;
-  background: rgba(15, 23, 42, 0.78); /* Nền tối dịu (Slate Dark) vẫn nhìn thấy ảnh bên dưới */
-  backdrop-filter: blur(16px) saturate(140%);
-  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  flex: 1.1;
+  padding: 40px 45px;
+  background-color: var(--color-white);
   display: flex;
   flex-direction: column;
+  justify-content: center;
 }
 
-.title {
-  font-size: 1.45rem;
-  font-weight: 700; /* Giảm độ dày nét để mềm mại hơn */
-  text-transform: none; /* Bỏ bắt buộc viết hoa */
-  color: var(--color-white);
-  margin-bottom: 6px;
-  text-align: center;
+/* Green Badge Wrapper */
+.badgeWrapper {
+  margin-bottom: 12px;
+}
+
+.badge {
+  background-color: #bfff00; /* Neon Lime Green */
+  color: #111827;
+  padding: 5px 12px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  border-radius: 4px;
   letter-spacing: 0.5px;
 }
 
-.subtitle {
-  font-size: 0.9rem;
-  color: #ff4d5a;
-  margin-bottom: 24px;
-  text-align: center;
-  font-weight: 600; /* Mềm mại hơn */
-  letter-spacing: 0.2px;
-  text-transform: none; /* Đảm bảo hiển thị dạng chữ thường */
+.title {
+  font-size: 2.1rem;
+  font-weight: 800;
+  color: #111827;
+  margin-bottom: 8px;
+  line-height: 1.1;
+  letter-spacing: -0.5px;
+  text-transform: none;
 }
 
+.subtitle {
+  font-size: 0.85rem;
+  color: #4b5563;
+  line-height: 1.4;
+  margin-bottom: 24px;
+  text-transform: none;
+}
+
+/* Grid Form Layout */
 .form {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -113,161 +132,192 @@
 }
 
 .label {
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   font-weight: 700;
-  color: #e5e7eb; /* Màu xám sáng để dịu mắt */
+  color: #374151;
 }
 
 .errorText {
-  color: #ff4d5a;
-  font-weight: 600;
+  color: var(--color-primary);
+  font-weight: 700;
   font-size: 0.75rem;
 }
 
-.checkboxGroup {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 8px 12px;
-  margin-top: 6px;
-}
-
-.checkboxLabel {
-  display: flex;
-  align-items: flex-start;
-  gap: 6px;
-  font-size: 0.75rem;
-  color: #d1d5db; /* Màu xám nhạt */
-  font-weight: 500;
-  cursor: pointer;
-  line-height: 1.3;
-}
-
-.checkboxLabel input {
-  margin-top: 2px;
-}
-
+/* Inputs on White Background */
 .input, .select {
   width: 100%;
   padding: 8px 12px;
-  border: 1px solid rgba(255, 255, 255, 0.15); /* Viền mờ */
-  border-radius: 10px;
-  font-size: 0.85rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 0.82rem;
   font-family: inherit;
   transition: all 0.2s ease;
-  background-color: rgba(255, 255, 255, 0.08); /* Input tối */
-  color: var(--color-white); /* Chữ trắng */
+  background-color: #f8fafc;
+  color: #0f172a;
 }
 
 .input::placeholder {
-  color: #9ca3af;
+  color: #94a3b8;
 }
 
 .input:focus, .select:focus {
   outline: none;
-  border-color: #ff4d5a;
-  background-color: rgba(255, 255, 255, 0.15);
-  box-shadow: 0 0 0 3px rgba(255, 77, 90, 0.2);
+  border-color: #0f172a;
+  background-color: var(--color-white);
+  box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.1);
 }
 
+.checkboxGroup {
+  display: flex;
+  gap: 16px;
+  margin-top: 4px;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  color: #4b5563;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Solid Black Submit Button */
 .submitBtn {
   grid-column: span 2;
-  background-color: var(--color-primary);
+  background-color: #111827; /* Solid charcoal/black */
   color: var(--color-white);
-  padding: 12px;
-  font-weight: 700; /* Giảm từ 800 để chữ mềm mại hơn */
-  text-transform: none; /* Chuyển sang chữ thường để bớt thô cứng */
+  padding: 12px 20px;
+  font-weight: 800;
+  text-transform: none;
   letter-spacing: 0.5px;
   border: none;
-  border-radius: 10px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   margin-top: 10px;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
 }
 
 .submitBtn:hover:not(:disabled) {
-  background-color: var(--color-black);
+  background-color: var(--color-primary); /* Turns red on hover to match brand */
   transform: translateY(-1px);
 }
 
 .submitBtn:disabled {
-  opacity: 0.7;
+  background-color: #e2e8f0;
+  color: #94a3b8;
   cursor: not-allowed;
 }
 
-/* Success State */
+.termsText {
+  font-size: 0.7rem;
+  color: #94a3b8;
+  text-align: center;
+  margin-top: 12px;
+}
+
+/* Right Column: Image Section */
+.imageSection {
+  flex: 0.9;
+  position: relative;
+  height: auto;
+  min-height: 520px;
+  background-color: #f1f5f9;
+}
+
+.promoImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Success Container */
 .successContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  text-align: center;
-  height: 100%;
-  animation: fadeIn 0.5s ease-out forwards;
+  padding: 20px 0;
 }
 
 .successTitle {
-  font-size: 2rem;
-  font-weight: 900;
-  color: #ff4d5a; /* Đỏ sáng */
-  text-transform: uppercase;
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: #111827;
   margin-bottom: 8px;
 }
 
 .successSubtitle {
-  font-size: 1rem;
-  color: #e5e7eb; /* Xám nhạt */
-  margin-bottom: 32px;
+  font-size: 0.9rem;
+  color: #4b5563;
+  margin-bottom: 24px;
+  text-align: center;
 }
 
 .codeBox {
-  background-color: rgba(255, 255, 255, 0.1); /* Hộp code trong suốt */
-  border: 2px dashed #ff4d5a;
-  padding: 20px 40px;
-  border-radius: 16px;
+  border: 2px dashed var(--color-primary);
+  background-color: #fff5f5;
+  padding: 16px 36px;
+  border-radius: 8px;
   margin-bottom: 24px;
 }
 
 .code {
-  font-size: 2.5rem;
+  font-size: 1.6rem;
   font-weight: 900;
-  color: var(--color-white); /* Chữ trắng */
-  letter-spacing: 2px;
+  letter-spacing: 1px;
+  color: var(--color-primary);
 }
 
 .copyBtn {
-  background-color: var(--color-white);
-  color: var(--color-black);
-  padding: 12px 32px;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  border-radius: 12px;
-  display: flex;
+  background-color: #111827;
+  color: var(--color-white);
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
   align-items: center;
   gap: 8px;
+  transition: all 0.2s ease;
+  font-size: 0.88rem;
 }
 
 .copyBtn:hover {
   background-color: var(--color-primary);
 }
 
-.copyBtn.copied {
-  background-color: #10B981; /* Green */
+.copied {
+  background-color: #10b981; /* Green success */
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+.copied:hover {
+  background-color: #10b981;
 }
 
-@keyframes slideUp {
-  from { 
-    opacity: 0;
-    transform: translateY(20px);
+/* Responsive collapse */
+@media (max-width: 768px) {
+  .popupContainer {
+    flex-direction: column;
+    max-width: 460px;
+    min-height: auto;
   }
-  to { 
-    opacity: 1;
-    transform: translateY(0);
+  .imageSection {
+    display: none; /* Hide image on mobile for better space utility */
+  }
+  .formSection {
+    padding: 30px 24px;
+  }
+  .closeButton {
+    color: #111827;
+    background: rgba(0, 0, 0, 0.05);
+  }
+  .closeButton:hover {
+    background: rgba(0, 0, 0, 0.1);
+    color: var(--color-primary);
   }
 }
