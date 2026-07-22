@@ -3,7 +3,9 @@ import { queryAll, queryRun } from '@/lib/db';
 
 export async function GET() {
   try {
-    const customers = await queryAll('SELECT * FROM customers ORDER BY id DESC');
+    const customers = await queryAll(
+      "SELECT * FROM customers WHERE (preferred_brand IS NOT NULL AND preferred_brand != '') OR (experience_level IS NOT NULL AND experience_level != '') ORDER BY id DESC"
+    );
     return NextResponse.json({ success: true, customers });
   } catch (error: any) {
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });
