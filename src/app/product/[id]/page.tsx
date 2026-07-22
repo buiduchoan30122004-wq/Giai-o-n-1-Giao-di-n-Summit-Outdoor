@@ -403,6 +403,132 @@ const productsDatabase: Record<string, {
     ],
     availableColors: ['Xanh dương'],
     specs: { cushioning: 'Thể tích 500ml', support: 'Nhựa dẻo TPU', drop: 'BPA & PVC Free', weight: '30g', terrain: 'Chạy trail & Chạy bộ' }
+  },
+  'gu-gel': {
+    id: 'gu-gel',
+    brand: 'GU Energy',
+    name: 'Gel Năng Lượng Liquid Energy Cam Dâu',
+    price: '45.000đ',
+    image: 'https://images.unsplash.com/photo-1551248429-40975aa4de74?q=80&w=500',
+    thumbnails: [
+      'https://images.unsplash.com/photo-1551248429-40975aa4de74?q=80&w=500'
+    ],
+    status: 'Hot',
+    subtitle: 'High Performance Energy Gel',
+    description: 'Gel năng lượng lỏng GU Liquid Gel giúp cơ thể hấp thụ carbohydrate siêu nhanh mà không cần uống kèm nước. Bổ sung năng lượng tức thì trong quá trình tập luyện cự ly trung bình và dài, ngăn ngừa cạn kiệt glycogen hiệu quả.',
+    features: [
+      'Kết cấu lỏng hấp thụ nhanh không cần uống kèm nước',
+      'Cung cấp 100 calo năng lượng sạch từ carbohydrate kép',
+      'Bổ sung amino axit BCAA bảo vệ cơ bắp chống mỏi',
+      'Hương vị Cam Dâu tự nhiên thơm ngon thanh mát'
+    ],
+    availableColors: ['Cam', 'Đỏ'],
+    specs: { cushioning: '100 Calo', support: 'BCAA Bảo vệ cơ', drop: 'Natri 450mg', weight: '60g', terrain: 'Chạy trail, road & đạp xe' }
+  },
+  'maurten-gel': {
+    id: 'maurten-gel',
+    brand: 'Maurten',
+    name: 'Gel Năng Lượng Hydrogel Gel 100',
+    price: '95.000đ',
+    image: 'https://images.unsplash.com/photo-1546483875-5f01450a83d4?q=80&w=500',
+    thumbnails: [
+      'https://images.unsplash.com/photo-1546483875-5f01450a83d4?q=80&w=500'
+    ],
+    status: 'Premium',
+    subtitle: 'Advanced Hydrogel Nutrition',
+    description: 'Gel năng lượng cao cấp nhất thế giới sử dụng công nghệ màng Hydrogel độc quyền từ Thụy Điển, được sử dụng bởi kỷ lục gia Eliud Kipchoge. Gel không mùi, không màu, không chất bảo quản, giúp dạ dày dễ dàng hấp thụ lượng lớn carbohydrate mà không gây kích ứng đường tiêu hóa.',
+    features: [
+      'Công nghệ Hydrogel vận chuyển năng lượng qua dạ dày êm ái',
+      'Chứa tỷ lệ carbohydrate fructose và glucose 0.8:1 tối ưu hấp thu',
+      'Hoàn toàn tự nhiên không màu, không mùi, không hương liệu',
+      'Thương hiệu dinh dưỡng số 1 cho các giải chạy Marathon & Ultra'
+    ],
+    availableColors: ['Trắng'],
+    specs: { cushioning: '100 Calo / Gel', support: 'Dạ dày êm ái', drop: 'Carb kép 25g', weight: '40g', terrain: 'Chạy cự ly Marathon & Ultra' }
+  },
+  'tailwind-drink': {
+    id: 'tailwind-drink',
+    brand: 'Tailwind',
+    name: 'Bột Điện Giải Endurance Fuel vị Việt Quất',
+    price: '85.000đ',
+    image: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=500',
+    thumbnails: [
+      'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=500'
+    ],
+    status: 'Best Seller',
+    subtitle: 'Energy & Electrolyte Drink Mix',
+    description: 'Bột pha nước Tailwind Endurance Fuel cung cấp trọn vẹn năng lượng, nước và điện giải trong cùng một gói tiện lợi. Giúp các runner dã ngoại duy trì sức mạnh bền bỉ cả ngày dài mà không cần ăn gel hay viên muối phức tạp.',
+    features: [
+      'Pha trực tiếp vào bình nước mềm mang đi chạy mòn',
+      'Bổ sung đầy đủ Kali, Natri, Canxi, Magie chống chuột rút',
+      'Hương vị Việt Quất nhẹ nhàng dễ uống không gây khát nước',
+      'Thành phần thuần chay hữu cơ tự nhiên hoàn toàn'
+    ],
+    availableColors: ['Xanh dương'],
+    specs: { cushioning: '200 Calo / Gói', support: 'Điện giải bù muối', drop: 'Không kích ứng', weight: '54g', terrain: 'Chạy trail tự túc cự ly dài' }
+  },
+  'saltstick-caps': {
+    id: 'saltstick-caps',
+    brand: 'SaltStick',
+    name: 'Viên Muối Điện Giải SaltStick (Lọ 100 viên)',
+    price: '450.000đ',
+    image: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?q=80&w=500',
+    thumbnails: [
+      'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?q=80&w=500'
+    ],
+    status: 'Essential',
+    subtitle: 'Electrolyte Replacement Capsules',
+    description: 'Viên uống muối điện giải SaltStick giúp bù đắp lượng muối hao hụt qua mồ hôi một cách nhanh chóng. Chứa công thức mô phỏng chính xác tỷ lệ điện giải mất đi của cơ thể, là trang bị sinh tồn bắt buộc để chống chuột rút và sốc nhiệt khi chạy trail trời nắng nóng.',
+    features: [
+      'Bù muối nhanh chóng Kali, Natri, Canxi, Magie',
+      'Công thức khoa học mô phỏng tỷ lệ mồ hôi tiết ra',
+      'Viên nhộng bọc thực vật dễ nuốt và hấp thu nhanh',
+      'Giúp duy trì thăng bằng điện giải phòng tránh chuột rút'
+    ],
+    availableColors: ['Trắng'],
+    specs: { cushioning: '100 Viên / Lọ', support: 'Chống chuột rút', drop: 'Bù muối Natri', weight: '120g', terrain: 'Chạy trail nắng nóng, cự ly dài' }
+  },
+  'hammer-recover': {
+    id: 'hammer-recover',
+    brand: 'Hammer Nutrition',
+    name: 'Bột Phục Hồi Recoverite Socola',
+    price: '90.000đ',
+    image: 'https://images.unsplash.com/photo-1579758629938-03607ccdbaba?q=80&w=500',
+    thumbnails: [
+      'https://images.unsplash.com/photo-1579758629938-03607ccdbaba?q=80&w=500'
+    ],
+    status: 'New',
+    subtitle: 'Post-Workout Recovery Drink Mix',
+    description: 'Bột phục hồi Recoverite từ Hammer Nutrition cung cấp tỷ lệ carbohydrate và protein 3:1 tối ưu khoa học để tái tạo glycogen và sửa chữa cơ bắp bị xơ rách sau các buổi tập nặng hoặc chạy giải ultra trail.',
+    features: [
+      'Tỷ lệ Carb và Whey Protein cô đặc 3:1 khoa học phục hồi nhanh',
+      'Chứa hàm lượng cao Glutamine giúp tái tạo mô cơ',
+      'Hương vị Socola thơm béo tự nhiên dễ uống sau tập',
+      'Hồi phục năng lượng và giảm ê ẩm đau nhức cơ bắp'
+    ],
+    availableColors: ['Đen'],
+    specs: { cushioning: 'Protein & Carb', support: 'Tái tạo cơ bắp', drop: 'Glutamine phục hồi', weight: '49g', terrain: 'Dùng ngay sau khi kết thúc giải chạy' }
+  },
+  'gu-roctane': {
+    id: 'gu-roctane',
+    brand: 'GU Energy',
+    name: 'Gel Năng Lượng Siêu Bền Roctane Vị Dứa',
+    price: '65.000đ',
+    image: 'https://images.unsplash.com/photo-1505576399279-565b52d4ac71?q=80&w=500',
+    thumbnails: [
+      'https://images.unsplash.com/photo-1505576399279-565b52d4ac71?q=80&w=500'
+    ],
+    status: 'Ultra Spec',
+    subtitle: 'Ultra-Endurance Energy Gel',
+    description: 'Gel năng lượng cao cấp GU Roctane thiết kế đặc biệt cho các hoạt động thể thao cường độ cực cao hoặc thời gian kéo dài trên 3 giờ. Sản phẩm tăng gấp đôi hàm lượng axit amin BCAA bảo vệ cơ bắp và bổ sung thêm các chất đệm axit giúp cơ bắp hoạt động dẻo dai hơn.',
+    features: [
+      'Chứa hàm lượng điện giải Natri nhiều gấp đôi gel thông thường',
+      'Bổ sung lượng amino axit chuỗi nhánh BCAA vượt trội bảo vệ cơ',
+      'Hương vị Dứa chua ngọt sảng khoái tăng kích thích vị giác',
+      'Công nghệ dinh dưỡng siêu bền chuyên dùng cho cự ly Ultra Trail'
+    ],
+    availableColors: ['Vàng'],
+    specs: { cushioning: '100 Calo / Gel', support: 'BCAA x3 lần', drop: 'Natri 1425mg', weight: '32g', terrain: 'Chạy trail cự ly Ultra 70km-100km' }
   }
 };
 

@@ -33,6 +33,7 @@ export default function Header() {
             <li className={styles.navItem}><Link href="/shop/trail">Chạy Địa Hình</Link></li>
             <li className={styles.navItem}><Link href="/shop/hiking">Leo Núi</Link></li>
             <li className={styles.navItem}><Link href="/shop/accessories">Phụ Kiện</Link></li>
+            <li className={styles.navItem}><Link href="/shop/nutrition">Dinh Dưỡng</Link></li>
             <li className={styles.navItem} style={{ color: 'var(--color-primary)' }}><Link href="/shop/sale">Khuyến Mãi</Link></li>
           </ul>
  
