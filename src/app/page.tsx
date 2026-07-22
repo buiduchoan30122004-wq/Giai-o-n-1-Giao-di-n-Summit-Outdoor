@@ -59,6 +59,45 @@ export default function Home() {
     }
   ];
 
+  const nutritionProducts = [
+    { 
+      id: 'gu-tabs', 
+      brand: 'GU Energy', 
+      name: 'Viên Sủi Điện Giải GU Hydration Drink Tabs', 
+      price: '219.000đ', 
+      image: 'https://cdn.hstatic.net/products/200001165929/20230830_jsdi42u6db_5cf9e7362ea3440387a5069d7fb44de3_grande.jpeg',
+      status: 'Essential',
+      subtitle: 'Hydration Drink Tabs - Vị Dâu Hibicus'
+    },
+    { 
+      id: 'hammer-gel-real', 
+      brand: 'Hammer Nutrition', 
+      name: 'Gel Năng Lượng Hammer Gel Vị Montana Huckleberry', 
+      price: '49.000đ', 
+      image: 'https://cdn.hstatic.net/products/200001165929/upload_4532655c9b5c42ed813f44962cfe05f2_grande.jpg',
+      status: 'Popular',
+      subtitle: 'Hammer Energy Gel - Vị Huckleberry'
+    },
+    { 
+      id: 'lecka-bar', 
+      brand: 'Lecka', 
+      name: 'Thanh Năng Lượng Tự Nhiên Lecka Vị Chuối Quế', 
+      price: '40.000đ', 
+      image: 'https://cdn.hstatic.net/products/200001165929/upload_4313a74252a94f94b90421b303c3845e_grande.jpg',
+      status: 'Eco-Friendly',
+      subtitle: 'Natural Energy Bar - Vị Chuối Quế'
+    },
+    { 
+      id: 'pillar-recovery-berry', 
+      brand: 'Pillar Performance', 
+      name: 'Vi Chất Magie Phục Hồi Pillar Triple Magnesium Berry', 
+      price: '40.000đ', 
+      image: 'https://cdn.hstatic.net/products/200001165929/upload_0e36e90b54224a0882255a7198ed9bf9_grande.jpg',
+      status: 'High Tech',
+      subtitle: 'Triple Magnesium Recovery - 5g'
+    }
+  ];
+
   return (
     <main className={styles.main}>
       <PromoPopup isOpen={isPopupOpen} onClose={() => setIsPopupOpen(false)} />
@@ -201,6 +240,23 @@ export default function Home() {
           </div>
           <div className={styles.productGrid}>
             {[...products].reverse().map(p => (
+              <Link href={`/product/${p.id}`} key={p.id}>
+                <ProductCard {...p} />
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Dinh Dưỡng Năng Lượng */}
+      <section className={styles.section}>
+        <div className="container">
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.sectionTitle}>Dinh Dưỡng & Năng Lượng</h2>
+            <Link href="/shop/nutrition" className={styles.viewAll}>Xem Tất Cả</Link>
+          </div>
+          <div className={styles.productGrid}>
+            {nutritionProducts.map(p => (
               <Link href={`/product/${p.id}`} key={p.id}>
                 <ProductCard {...p} />
               </Link>
