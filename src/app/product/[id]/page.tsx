@@ -5,7 +5,7 @@ import styles from './product.module.css';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 
-import { productsDatabase } from '../../../data/products';
+import { productsDatabase } from '@/data/products';
 const defaultProduct = productsDatabase['xt6'];
 
 const preDefinedColors = [

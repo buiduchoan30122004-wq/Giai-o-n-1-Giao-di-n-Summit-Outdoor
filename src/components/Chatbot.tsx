@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import styles from './Chatbot.module.css';
 import Link from 'next/link';
 import RecommendationPopup, { RecommendationData } from './RecommendationPopup';
-import { productsDatabase } from '../data/products';
+import { productsDatabase } from '@/data/products';
 
 interface Message {
   sender: 'user' | 'bot';
