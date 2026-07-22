@@ -25,7 +25,14 @@ export async function GET() {
     const tables = await queryAll("SELECT name FROM sqlite_master WHERE type='table'");
     diagnostics.tables = tables;
 
-    // Xem schema bảng orders và products
+    // Chạy migration thêm cột order_code vào bảng orders
+    try {
+      diagnostics.migrationResult = await queryRun("ALTER TABLE orders ADD COLUMN order_code TEXT");
+    } catch (migError: any) {
+      diagnostics.migrationError = migError.message;
+    }
+
+    // Xem schema bảng orders và products sau migration
     diagnostics.ordersSchema = await queryAll("PRAGMA table_info(orders)");
     diagnostics.productsSchema = await queryAll("PRAGMA table_info(products)");
 
