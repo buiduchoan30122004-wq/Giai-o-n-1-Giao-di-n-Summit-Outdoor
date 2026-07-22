@@ -2,6 +2,8 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import styles from './Chatbot.module.css';
+import Link from 'next/link';
+import RecommendationPopup, { RecommendationData } from './RecommendationPopup';
 
 interface Message {
   sender: 'user' | 'bot';
@@ -12,6 +14,8 @@ interface Message {
 
 export default function Chatbot() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isRecommendOpen, setIsRecommendOpen] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
       sender: 'bot',
@@ -21,6 +25,97 @@ export default function Chatbot() {
   ]);
   const [inputValue, setInputValue] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const renderMessageText = (text: string) => {
+    return text.split('\n').map((line, lineIndex) => {
+      const parts = [];
+      let lastIndex = 0;
+      const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
+      let match;
+
+      while ((match = linkRegex.exec(line)) !== null) {
+        if (match.index > lastIndex) {
+          parts.push(line.substring(lastIndex, match.index));
+        }
+        const label = match[1];
+        const url = match[2];
+        parts.push(
+          <Link 
+            key={match.index} 
+            href={url} 
+            style={{ color: '#2563eb', textDecoration: 'underline', fontWeight: 600 }}
+          >
+            {label}
+          </Link>
+        );
+        lastIndex = linkRegex.lastIndex;
+      }
+
+      if (lastIndex < line.length) {
+        parts.push(line.substring(lastIndex));
+      }
+
+      return (
+        <p key={lineIndex} style={{ margin: lineIndex > 0 ? '8px 0 0 0' : 0 }}>
+          {parts.length > 0 ? parts : line}
+        </p>
+      );
+    });
+  };
+
+  const handleRecommendationSubmit = async (data: RecommendationData) => {
+    setIsRecommendOpen(false);
+
+    // Show a summary message in chat as User
+    const summaryText = `📋 **Thông tin khảo sát đã điền:**
+- Sản phẩm cần tìm: ${data.product_type}
+- Kinh nghiệm: ${data.experience}
+- Cự ly: ${data.distance}
+- Địa hình: ${data.terrain}
+- Ưu tiên: ${data.priority}
+- Size giày: ${data.shoe_size || 'Chưa cung cấp'}
+- Thương hiệu đang dùng: ${data.current_brand}
+- Ngân sách: ${data.budget}
+- Vấn đề: ${data.foot_issue.length > 0 ? data.foot_issue.join(', ') : 'Không có'}
+- Người liên hệ: ${data.name || 'Khách hàng'} ${data.phone ? `(${data.phone})` : ''}`;
+
+    setMessages(prev => [
+      ...prev,
+      { sender: 'user', text: summaryText }
+    ]);
+
+    // Set generating/loading state
+    setIsGenerating(true);
+
+    try {
+      const response = await fetch('/api/recommend', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw new Error('API recommend error');
+      }
+
+      const result = await response.json();
+
+      setMessages(prev => [
+        ...prev,
+        { sender: 'bot', text: result.recommendation || 'Xin lỗi, hệ thống tư vấn đang bận. Bạn vui lòng thử lại sau.' }
+      ]);
+    } catch (error) {
+      console.error('Error getting recommendation:', error);
+      setMessages(prev => [
+        ...prev,
+        { sender: 'bot', text: 'Đã xảy ra lỗi kết nối với máy chủ AI. Vui lòng kiểm tra lại đường truyền của bạn.' }
+      ]);
+    } finally {
+      setIsGenerating(false);
+    }
+  };
 
   // Auto-scroll to bottom of messages
   useEffect(() => {
@@ -84,6 +179,24 @@ export default function Chatbot() {
 
   const handleSend = (text: string) => {
     if (!text.trim()) return;
+
+    const cleanText = text.toLowerCase().trim();
+    if (
+      cleanText.includes('chốt') || 
+      cleanText.includes('mua') || 
+      cleanText.includes('đặt hàng') || 
+      cleanText.includes('dat hang') || 
+      cleanText.includes('lấy đôi') ||
+      cleanText.includes('lay doi') ||
+      cleanText.includes('lên đơn') ||
+      cleanText.includes('len don') ||
+      cleanText.includes('order')
+    ) {
+      setIsOpen(true);
+      setIsRecommendOpen(true);
+      setInputValue('');
+      return;
+    }
 
     // Add user message
     const newMessages: Message[] = [...messages, { sender: 'user', text }];
@@ -167,9 +280,7 @@ export default function Chatbot() {
             {messages.map((msg, index) => (
               <div key={index} className={`${styles.messageWrapper} ${msg.sender === 'user' ? styles.userWrapper : styles.botWrapper}`}>
                 <div className={`${styles.messageBubble} ${msg.sender === 'user' ? styles.userBubble : styles.botBubble}`}>
-                  {msg.text.split('\n').map((para, i) => (
-                    <p key={i} style={{ margin: i > 0 ? '8px 0 0 0' : 0 }}>{para}</p>
-                  ))}
+                  {renderMessageText(msg.text)}
                   
                   {msg.isFormLink && (
                     <div className={styles.formLinkBox}>
@@ -195,14 +306,29 @@ export default function Chatbot() {
                 </div>
               </div>
             ))}
+            {isGenerating && (
+              <div className={`${styles.messageWrapper} ${styles.botWrapper}`}>
+                <div className={`${styles.messageBubble} ${styles.botBubble} ${styles.loadingBubble}`}>
+                  <span className={styles.dot}></span>
+                  <span className={styles.dot}></span>
+                  <span className={styles.dot}></span>
+                </div>
+              </div>
+            )}
             <div ref={messagesEndRef} />
           </div>
 
           {/* Quick Reply Swipes */}
           <div className={styles.quickReplies}>
             <div className={styles.quickRepliesScroll}>
-              <button className={styles.quickReplyBtn} onClick={() => handleSend('Chốt đơn hàng')}>
-                🛒 Tôi muốn chốt đơn!
+              <button 
+                className={styles.quickReplyBtn} 
+                onClick={() => {
+                  setIsOpen(true);
+                  setIsRecommendOpen(true);
+                }}
+              >
+                🛒 Tôi muốn mua hàng
               </button>
               {faqs.map((faq, index) => (
                 <button 
@@ -261,6 +387,12 @@ export default function Chatbot() {
         </div>
         {!isOpen && <span className={styles.tooltip}>Hỏi chuyên gia</span>}
       </button>
+
+      <RecommendationPopup 
+        isOpen={isRecommendOpen}
+        onClose={() => setIsRecommendOpen(false)}
+        onSubmit={handleRecommendationSubmit}
+      />
     </div>
   );
 }
