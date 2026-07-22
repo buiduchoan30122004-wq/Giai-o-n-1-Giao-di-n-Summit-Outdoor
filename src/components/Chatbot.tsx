@@ -186,7 +186,7 @@ export default function Chatbot() {
                   {msg.showHotline && (
                     <div className={styles.hotlineBox}>
                       <a href="tel:0904759624" className={styles.hotlineBtn}>
-                        📞 Hotline hỗ trợ người thật: 0904759624
+                        📞 Hotline: 0904759624
                       </a>
                     </div>
                   )}
