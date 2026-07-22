@@ -32,8 +32,9 @@ jobs:
           script: |
             cd /var/www/summit-outdoor
             
-            # Cài đặt thư viện mới (nếu có) và Build lại
+            # Cài đặt thư viện mới (nếu có) và Build lại sạch
             yarn install
+            rm -rf .next
             yarn build
             
             # Giải phóng cổng 3000 (nếu bị kẹt) và khởi động lại sạch tiến trình PM2
