@@ -2,9 +2,21 @@ import path from 'path';
 import fs from 'fs';
 
 const isVps = fs.existsSync('/var/www/summit-outdoor');
-const dbPath = isVps 
-  ? '/var/www/summit-outdoor/brain.db' 
-  : path.join(process.cwd(), 'brain.db');
+let dbPath = path.join(process.cwd(), 'brain.db');
+
+if (isVps) {
+  const newPath = '/var/www/brain.db';
+  const oldPath = '/var/www/summit-outdoor/brain.db';
+  try {
+    if (fs.existsSync(oldPath) && !fs.existsSync(newPath)) {
+      fs.copyFileSync(oldPath, newPath);
+      console.log('Database self-migrated to parent directory successfully.');
+    }
+  } catch (err) {
+    console.error('Error during database migration:', err);
+  }
+  dbPath = newPath;
+}
 
 let clientInstance: any = null;
 
