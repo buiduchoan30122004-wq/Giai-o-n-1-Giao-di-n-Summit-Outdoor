@@ -18,6 +18,19 @@ if (isVps) {
   dbPath = newPath;
 }
 
+// Automatic backup helper
+function autoBackup() {
+  try {
+    if (fs.existsSync(dbPath)) {
+      const backupPath = dbPath + '.bak';
+      fs.copyFileSync(dbPath, backupPath);
+      console.log(`Database auto-backup created successfully at: ${backupPath}`);
+    }
+  } catch (err) {
+    console.error('Database auto-backup failed:', err);
+  }
+}
+
 let clientInstance: any = null;
 
 async function runMigrations(client: any) {
@@ -28,7 +41,10 @@ async function runMigrations(client: any) {
     "ALTER TABLE orders ADD COLUMN transaction_id TEXT;",
     "ALTER TABLE orders ADD COLUMN payment_amount REAL;",
     "ALTER TABLE orders ADD COLUMN payment_date TEXT;",
-    "ALTER TABLE orders ADD COLUMN payment_method TEXT;"
+    "ALTER TABLE orders ADD COLUMN payment_method TEXT;",
+    "ALTER TABLE customers ADD COLUMN updated_at TEXT;",
+    "ALTER TABLE orders ADD COLUMN updated_at TEXT;",
+    "ALTER TABLE products ADD COLUMN updated_at TEXT;"
   ];
 
   for (const sql of columns) {
@@ -48,6 +64,9 @@ async function runMigrations(client: any) {
 async function getClient() {
   if (!clientInstance) {
     try {
+      // Run auto-backup first
+      autoBackup();
+      
       const { createClient } = await import('@libsql/client');
       const client = createClient({
         url: `file:${dbPath}`,

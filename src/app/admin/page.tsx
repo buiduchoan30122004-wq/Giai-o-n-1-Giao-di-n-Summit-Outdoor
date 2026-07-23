@@ -20,59 +20,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 
-interface Product {
-  id: number;
-  brand: string;
-  name: string;
-  price: number;
-  image_url?: string;
-  description?: string;
-  stock: number;
-  created_at: string;
-}
-
-interface Customer {
-  id: number;
-  name: string;
-  email: string;
-  phone?: string;
-  preferred_brand?: string;
-  experience_level?: string;
-  interests?: string;
-  created_at: string;
-}
-
-interface OrderItem {
-  product_id: number;
-  brand?: string;
-  name?: string;
-  price?: number;
-  quantity: number;
-}
-
-interface Order {
-  id: number;
-  customer_id: number;
-  product_id: number;
-  quantity: number;
-  total_price: number;
-  status: 'pending' | 'confirmed' | 'cancelled';
-  created_at: string;
-  customer_name?: string;
-  customer_email?: string;
-  customer_phone?: string;
-  product_brand?: string;
-  product_name?: string;
-  product_price?: number;
-  address?: string;
-  notes?: string;
-  transaction_id?: string;
-  payment_amount?: number;
-  payment_date?: string;
-  payment_method?: string;
-  order_code?: string;
-  items?: OrderItem[];
-}
+import { Product, Customer, Order } from '@/types';
 
 type TabType = 'products' | 'customers' | 'orders';
 
