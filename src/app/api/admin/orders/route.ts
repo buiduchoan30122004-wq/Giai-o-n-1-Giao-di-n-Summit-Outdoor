@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { queryAll, queryGet, queryRun, transaction } from '@/lib/db';
+import fs from 'fs';
+import path from 'path';
 
 export async function GET() {
   try {
@@ -152,12 +154,59 @@ export async function PUT(req: NextRequest) {
           }
         }
       });
-    } else {
-      // Just update status for all items in the order group
       if (order.order_code) {
         await queryRun('UPDATE orders SET status = ? WHERE order_code = ?', [status, order.order_code]);
+        if (status === 'confirmed') {
+          try {
+            const groupOrders = await queryAll('SELECT * FROM orders WHERE order_code = ?', [order.order_code]);
+            const total = groupOrders.reduce((acc: number, o: any) => acc + (o.total_price || 0), 0);
+            const paymentsFilePath = path.join(process.cwd(), 'src/data/payments.json');
+            const dirPath = path.dirname(paymentsFilePath);
+            if (!fs.existsSync(dirPath)) {
+              fs.mkdirSync(dirPath, { recursive: true });
+            }
+            let payments: any = {};
+            if (fs.existsSync(paymentsFilePath)) {
+              payments = JSON.parse(fs.readFileSync(paymentsFilePath, 'utf-8'));
+            }
+            payments[order.order_code] = {
+              paid: true,
+              transactionId: `MANUAL_${order.id}_${Date.now()}`,
+              amount: total,
+              date: new Date().toISOString(),
+              processedAt: new Date().toISOString()
+            };
+            fs.writeFileSync(paymentsFilePath, JSON.stringify(payments, null, 2), 'utf-8');
+          } catch (err) {
+            console.error('Failed to sync manual confirm with payments.json:', err);
+          }
+        }
       } else {
         await queryRun('UPDATE orders SET status = ? WHERE id = ?', [status, id]);
+        if (status === 'confirmed') {
+          try {
+            const paymentsFilePath = path.join(process.cwd(), 'src/data/payments.json');
+            const dirPath = path.dirname(paymentsFilePath);
+            if (!fs.existsSync(dirPath)) {
+              fs.mkdirSync(dirPath, { recursive: true });
+            }
+            let payments: any = {};
+            if (fs.existsSync(paymentsFilePath)) {
+              payments = JSON.parse(fs.readFileSync(paymentsFilePath, 'utf-8'));
+            }
+            const key = `SUMMIT_MANUAL_${order.id}`;
+            payments[key] = {
+              paid: true,
+              transactionId: `MANUAL_${order.id}_${Date.now()}`,
+              amount: order.total_price || 0,
+              date: new Date().toISOString(),
+              processedAt: new Date().toISOString()
+            };
+            fs.writeFileSync(paymentsFilePath, JSON.stringify(payments, null, 2), 'utf-8');
+          } catch (err) {
+            console.error('Failed to sync manual confirm with payments.json:', err);
+          }
+        }
       }
     }
 

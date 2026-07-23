@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
+import { queryAll } from '@/lib/db';
 
 const paymentsFilePath = path.join(process.cwd(), 'src/data/payments.json');
 
@@ -16,20 +17,39 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    if (!fs.existsSync(paymentsFilePath)) {
-      return NextResponse.json({ paid: false });
+    // 1. Check SQLite database first (source of truth for both Sepay & manual CRM approvals)
+    try {
+      const dbOrders = await queryAll('SELECT * FROM orders WHERE order_code = ?', [orderCode]);
+      if (dbOrders && dbOrders.length > 0) {
+        // If any order item in this group is confirmed, the whole order is paid
+        const isConfirmed = dbOrders.some((o: any) => o.status === 'confirmed');
+        if (isConfirmed) {
+          const firstOrder = dbOrders[0] as any;
+          return NextResponse.json({
+            paid: true,
+            transactionId: firstOrder.transaction_id || `MANUAL_${firstOrder.id}`,
+            amount: firstOrder.payment_amount || firstOrder.total_price || 0,
+            date: firstOrder.payment_date || firstOrder.created_at
+          });
+        }
+      }
+    } catch (dbErr) {
+      console.error('Error querying SQLite database in check-payment:', dbErr);
     }
 
-    const fileContent = fs.readFileSync(paymentsFilePath, 'utf-8');
-    const payments = JSON.parse(fileContent);
+    // 2. Fallback to payments.json
+    if (fs.existsSync(paymentsFilePath)) {
+      const fileContent = fs.readFileSync(paymentsFilePath, 'utf-8');
+      const payments = JSON.parse(fileContent);
 
-    if (payments[orderCode] && payments[orderCode].paid) {
-      return NextResponse.json({
-        paid: true,
-        transactionId: payments[orderCode].transactionId,
-        amount: payments[orderCode].amount,
-        date: payments[orderCode].date
-      });
+      if (payments[orderCode] && payments[orderCode].paid) {
+        return NextResponse.json({
+          paid: true,
+          transactionId: payments[orderCode].transactionId,
+          amount: payments[orderCode].amount,
+          date: payments[orderCode].date
+        });
+      }
     }
 
     return NextResponse.json({ paid: false });
