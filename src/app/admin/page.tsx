@@ -15,7 +15,8 @@ import {
   Home,
   CheckCircle,
   AlertTriangle,
-  FileText
+  FileText,
+  Settings
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -82,6 +83,9 @@ export default function AdminPage() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+  const [googleScriptUrl, setGoogleScriptUrl] = useState('');
+  const [showScriptModal, setShowScriptModal] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -148,6 +152,10 @@ export default function AdminPage() {
   useEffect(() => {
     fetchData();
 
+    if (typeof window !== 'undefined') {
+      setGoogleScriptUrl(localStorage.getItem('google_script_url') || '');
+    }
+
     // Tự động đồng bộ thời gian thực mỗi 10 giây (Real-time polling)
     const interval = setInterval(() => {
       fetchData(true);
@@ -187,11 +195,19 @@ export default function AdminPage() {
 
   // Client-side exporters
   // Client-side exporter to Google Sheets (via TSV Clipboard Copy & sheets.new)
-  const handleExportToGoogleSheets = (type: 'customers' | 'orders') => {
+  // Exporter to Google Sheets via secure proxy and Apps Script Web App
+  const handleExportToGoogleSheets = async (type: 'customers' | 'orders') => {
+    if (!googleScriptUrl) {
+      setShowScriptModal(true);
+      return;
+    }
+
     let headers: string[] = [];
     let rows: any[][] = [];
+    let title = '';
 
     if (type === 'customers') {
+      title = `Summit_Outdoor_Khach_Hang_${new Date().toISOString().slice(0, 10)}`;
       headers = ['ID', 'Họ Tên', 'Email', 'SĐT', 'Thương Hiệu Quan Tâm', 'Trình Độ', 'Phân Loại', 'Ghi Chú / Sở Thích', 'Ngày Đăng Ký'];
       rows = filteredCustomers.map(c => {
         const isWaitlist = c.preferred_brand || c.experience_level;
@@ -209,6 +225,7 @@ export default function AdminPage() {
         ];
       });
     } else {
+      title = `Summit_Outdoor_Don_Hang_${new Date().toISOString().slice(0, 10)}`;
       headers = ['Mã Đơn', 'Khách Hàng', 'SĐT', 'Sản Phẩm', 'Số Lượng', 'Tổng Tiền (VND)', 'Trạng Thái', 'Phương Thức', 'Địa Chỉ', 'Ghi Chú', 'Mã Giao Dịch Sepay', 'Ngày Đặt'];
       rows = filteredOrders.map(o => {
         const productDetails = o.items ? o.items.map(item => `${item.name} (x${item.quantity})`).join('; ') : o.product_name || '';
@@ -230,19 +247,30 @@ export default function AdminPage() {
       });
     }
 
-    // Format as Tab-Separated Values (TSV)
-    const tsvContent = [
-      headers.join('\t'),
-      ...rows.map(row => row.map(val => String(val === null || val === undefined ? '' : val).replace(/\t/g, ' ').replace(/\n/g, ' ')).join('\t'))
-    ].join('\n');
-
-    // Copy to clipboard
-    navigator.clipboard.writeText(tsvContent).then(() => {
-      alert('Đã sao chép dữ liệu bảng thành công! Đang tự động mở một trang Google Sheet mới. Hãy chọn ô A1 và bấm Ctrl+V (hoặc Cmd+V) để dán dữ liệu.');
-      window.open('https://sheets.new', '_blank');
-    }).catch(err => {
-      alert('Lỗi sao chép dữ liệu: ' + err);
-    });
+    setIsExporting(true);
+    try {
+      const res = await fetch('/api/admin/export-sheet', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          scriptUrl: googleScriptUrl,
+          title,
+          headers,
+          rows
+        })
+      });
+      const data = await res.json();
+      if (data.success && data.url) {
+        triggerSuccess('Xuất Google Sheet thành công! Đang mở bảng tính mới...');
+        window.open(data.url, '_blank');
+      } else {
+        alert(data.error || 'Xuất Google Sheet thất bại. Vui lòng kiểm tra lại cấu hình URL Web App.');
+      }
+    } catch (err: any) {
+      alert('Lỗi kết nối khi gửi dữ liệu xuất: ' + err.message);
+    } finally {
+      setIsExporting(false);
+    }
   };
 
   // Product CRUD
@@ -682,12 +710,21 @@ export default function AdminPage() {
                       </button>
                     )}
                   </div>
-                  <div style={{ display: 'flex', gap: '10px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <button 
                       onClick={() => handleExportToGoogleSheets('customers')} 
-                      style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '8px 14px', background: '#10b981', color: '#ffffff', border: 'none', borderRadius: '6px', cursor: 'pointer', fontSize: '13px', fontWeight: '600', transition: 'background 0.2s' }}
+                      disabled={isExporting}
+                      style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '8px 14px', background: '#10b981', color: '#ffffff', border: 'none', borderRadius: '6px', cursor: 'pointer', fontSize: '13px', fontWeight: '600', transition: 'background 0.2s', opacity: isExporting ? 0.7 : 1 }}
                     >
-                      🟢 Xuất Google Sheet
+                      {isExporting ? <Loader2 size={16} className="animate-spin" /> : '🟢'}
+                      <span>Xuất Google Sheet</span>
+                    </button>
+                    <button
+                      onClick={() => setShowScriptModal(true)}
+                      title="Cấu hình Google Sheets"
+                      style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '8px', background: '#f1f5f9', color: '#475569', border: '1px solid #e2e8f0', borderRadius: '6px', cursor: 'pointer', transition: 'all 0.2s' }}
+                    >
+                      <Settings size={16} />
                     </button>
                   </div>
                 </div>
@@ -796,12 +833,21 @@ export default function AdminPage() {
                       </button>
                     )}
                   </div>
-                  <div style={{ display: 'flex', gap: '10px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <button 
                       onClick={() => handleExportToGoogleSheets('orders')} 
-                      style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '8px 14px', background: '#10b981', color: '#ffffff', border: 'none', borderRadius: '6px', cursor: 'pointer', fontSize: '13px', fontWeight: '600', transition: 'background 0.2s' }}
+                      disabled={isExporting}
+                      style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '8px 14px', background: '#10b981', color: '#ffffff', border: 'none', borderRadius: '6px', cursor: 'pointer', fontSize: '13px', fontWeight: '600', transition: 'background 0.2s', opacity: isExporting ? 0.7 : 1 }}
                     >
-                      🟢 Xuất Google Sheet
+                      {isExporting ? <Loader2 size={16} className="animate-spin" /> : '🟢'}
+                      <span>Xuất Google Sheet</span>
+                    </button>
+                    <button
+                      onClick={() => setShowScriptModal(true)}
+                      title="Cấu hình Google Sheets"
+                      style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '8px', background: '#f1f5f9', color: '#475569', border: '1px solid #e2e8f0', borderRadius: '6px', cursor: 'pointer', transition: 'all 0.2s' }}
+                    >
+                      <Settings size={16} />
                     </button>
                   </div>
                 </div>
@@ -1179,6 +1225,115 @@ export default function AdminPage() {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* 4. GOOGLE SHEETS SETUP MODAL */}
+      {showScriptModal && (
+        <div className="modal-backdrop" style={{ zIndex: 1000 }}>
+          <div className="modal-container animate-scale-in" style={{ maxWidth: '650px' }}>
+            <div className="modal-header">
+              <h2>Cấu Hình Kết Nối Google Sheets</h2>
+              <button className="modal-close-btn" onClick={() => setShowScriptModal(false)}>✕</button>
+            </div>
+            <div className="modal-body" style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+              <p style={{ fontSize: '14px', color: '#475569', lineHeight: '1.6' }}>
+                Hệ thống CRM sẽ xuất báo cáo trực tiếp thành file Google Sheets lưu trong Google Drive của bạn (không thông qua bên thứ ba để bảo vệ tuyệt đối thông tin khách hàng).
+              </p>
+              
+              <div style={{ background: '#f8fafc', padding: '15px', borderRadius: '8px', border: '1px solid #e2e8f0', fontSize: '13px' }}>
+                <b style={{ color: '#0f766e', display: 'block', marginBottom: '8px' }}>Hướng dẫn cài đặt trong 20 giây:</b>
+                <ol style={{ paddingLeft: '20px', display: 'flex', flexDirection: 'column', gap: '6px', margin: 0, color: '#334155' }}>
+                  <li>Truy cập đường dẫn: <a href="https://script.new" target="_blank" rel="noreferrer" style={{ color: '#2563eb', fontWeight: 'bold', textDecoration: 'underline' }}>script.new</a> (Trang tạo Google Apps Script mới).</li>
+                  <li>Xóa toàn bộ code cũ và <b>dán đoạn mã Code</b> ở khung bên dưới vào.</li>
+                  <li>Click nút <b>Deploy (Tạm dịch: Triển khai)</b> ở góc trên bên phải &gt; chọn <b>New deployment</b>.</li>
+                  <li>Chọn loại deployment là <b>Web App</b> (click biểu tượng bánh răng).</li>
+                  <li>Cấu hình:
+                    <ul style={{ paddingLeft: '15px', marginTop: '4px' }}>
+                      <li>Execute as (Chạy dưới dạng): <b>Me (Tôi)</b></li>
+                      <li>Who has access (Ai có quyền truy cập): <b>Anyone (Bất kỳ ai)</b></li>
+                    </ul>
+                  </li>
+                  <li>Nhấn nút <b>Deploy</b>, xác thực cấp quyền cho Google tài khoản của bạn, sau đó <b>Copy URL Web App</b> được cấp và dán vào ô cấu hình bên dưới.</li>
+                </ol>
+              </div>
+
+              <div className="form-group">
+                <label style={{ fontWeight: 'bold', fontSize: '13px', color: '#1e293b' }}>Đoạn Mã Code Apps Script (Click để tự động copy):</label>
+                <textarea 
+                  readOnly 
+                  onClick={(e) => {
+                    e.currentTarget.select();
+                    navigator.clipboard.writeText(e.currentTarget.value);
+                    alert('Đã copy đoạn mã Apps Script vào Clipboard!');
+                  }}
+                  style={{ width: '100%', height: '120px', fontFamily: 'monospace', fontSize: '11px', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1', background: '#f1f5f9', cursor: 'pointer' }}
+                  value={`function doPost(e) {
+  try {
+    const data = JSON.parse(e.postData.contents);
+    const title = data.title || "Exported Sheet";
+    const headers = data.headers || [];
+    const rows = data.rows || [];
+    
+    const ss = SpreadsheetApp.create(title);
+    const sheet = ss.getActiveSheet();
+    
+    sheet.appendRow(headers);
+    const headerRange = sheet.getRange(1, 1, 1, headers.length);
+    headerRange.setFontWeight("bold");
+    headerRange.setBackground("#f1f5f9");
+    
+    rows.forEach(row => sheet.appendRow(row));
+    
+    for (let i = 1; i <= headers.length; i++) {
+      sheet.autoResizeColumn(i);
+    }
+    
+    return ContentService.createTextOutput(JSON.stringify({
+      success: true,
+      url: ss.getUrl()
+    })).setMimeType(ContentService.MimeType.JSON);
+  } catch (error) {
+    return ContentService.createTextOutput(JSON.stringify({
+      success: false,
+      error: error.toString()
+    })).setMimeType(ContentService.MimeType.JSON);
+  }
+}`}
+                />
+              </div>
+
+              <div className="form-group">
+                <label style={{ fontWeight: 'bold', fontSize: '13px', color: '#1e293b' }}>Dán URL Web App Google Apps Script của bạn vào đây *</label>
+                <input 
+                  type="url" 
+                  placeholder="https://script.google.com/macros/s/.../exec"
+                  value={googleScriptUrl}
+                  onChange={(e) => setGoogleScriptUrl(e.target.value)}
+                  style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #cbd5e1', fontSize: '13px' }}
+                  required
+                />
+              </div>
+            </div>
+            <div className="modal-footer">
+              <button type="button" className="btn-secondary" onClick={() => setShowScriptModal(false)}>Hủy</button>
+              <button 
+                type="button" 
+                className="btn-primary" 
+                onClick={() => {
+                  if (!googleScriptUrl.startsWith('https://script.google.com/')) {
+                    alert('Đường dẫn Web App Apps Script không hợp lệ. Vui lòng kiểm tra lại.');
+                    return;
+                  }
+                  localStorage.setItem('google_script_url', googleScriptUrl);
+                  setShowScriptModal(false);
+                  triggerSuccess('Đã lưu cấu hình kết nối Google Sheets thành công!');
+                }}
+              >
+                Lưu cấu hình
+              </button>
+            </div>
           </div>
         </div>
       )}
