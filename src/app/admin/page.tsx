@@ -115,8 +115,8 @@ export default function AdminPage() {
   });
 
   // Fetch Data
-  const fetchData = async () => {
-    setIsLoading(true);
+  const fetchData = async (isBackground = false) => {
+    if (!isBackground) setIsLoading(true);
     setErrorMessage(null);
     try {
       const [resProd, resCust, resOrd] = await Promise.all([
@@ -139,12 +139,19 @@ export default function AdminPage() {
     } catch (error) {
       setErrorMessage('Lỗi kết nối với máy chủ API.');
     } finally {
-      setIsLoading(false);
+      if (!isBackground) setIsLoading(false);
     }
   };
 
   useEffect(() => {
     fetchData();
+
+    // Tự động đồng bộ thời gian thực mỗi 10 giây (Real-time polling)
+    const interval = setInterval(() => {
+      fetchData(true);
+    }, 10000);
+
+    return () => clearInterval(interval);
   }, []);
 
   // Alert Handler helper
@@ -418,7 +425,7 @@ export default function AdminPage() {
             <p>Trang quản trị vận hành hệ thống cửa hàng & CRM</p>
           </div>
         </div>
-        <button className="refresh-btn" onClick={fetchData} disabled={isLoading}>
+        <button className="refresh-btn" onClick={() => fetchData()} disabled={isLoading}>
           <RefreshCw size={16} className={isLoading ? 'animate-spin' : ''} />
           <span>Làm mới</span>
         </button>
