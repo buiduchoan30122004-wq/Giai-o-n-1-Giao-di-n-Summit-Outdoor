@@ -57,8 +57,34 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Gửi email chào mừng bằng Resend
-    await sendWelcomeEmail(email, name);
+    // Dọn dẹp các email cũ chưa gửi trong hàng đợi cho email này (nếu có)
+    await queryRun('DELETE FROM email_queue WHERE email = ? AND sent = 0', [email]);
+
+    // Kiểm tra xem email có chứa chữ "test" hay không
+    const isTest = email.toLowerCase().includes('test');
+
+    if (isTest) {
+      // Gửi MỘT LÚC cả 3 email ngay lập tức để test hệ thống
+      const { sendSequenceEmail } = await import('@/lib/email');
+      await sendSequenceEmail(email, name, 1);
+      await sendSequenceEmail(email, name, 2);
+      await sendSequenceEmail(email, name, 3);
+    } else {
+      // Gửi Email 1 ngay lập tức
+      await sendWelcomeEmail(email, name);
+
+      // Lên lịch gửi Email 2 sau đúng 2 ngày
+      await queryRun(
+        "INSERT INTO email_queue (email, name, email_type, scheduled_time) VALUES (?, ?, ?, datetime('now', '+2 days'))",
+        [email, name, 2]
+      );
+
+      // Lên lịch gửi Email 3 sau đúng 3 ngày (đúng 1 ngày sau Email 2)
+      await queryRun(
+        "INSERT INTO email_queue (email, name, email_type, scheduled_time) VALUES (?, ?, ?, datetime('now', '+3 days'))",
+        [email, name, 3]
+      );
+    }
 
     return NextResponse.json({ success: true });
     
