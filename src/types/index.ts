@@ -65,3 +65,14 @@ export interface Order {
   payment_date?: string;
   items?: OrderItem[];
 }
+
+export interface HomepageConfig {
+  id: number;
+  layout_key: string;
+  layout_name: string;
+  is_active: number; // 0 or 1
+  display_order: number;
+  content_value: string; // JSON string or text content
+  created_at?: string;
+  updated_at?: string;
+}

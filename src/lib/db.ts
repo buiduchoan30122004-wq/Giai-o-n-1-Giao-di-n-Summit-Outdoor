@@ -54,7 +54,13 @@ async function runMigrations(client: any) {
     "ALTER TABLE products ADD COLUMN specs TEXT;",
     "ALTER TABLE products ADD COLUMN features TEXT;",
     "ALTER TABLE products ADD COLUMN original_price REAL;",
-    "ALTER TABLE products ADD COLUMN discount TEXT;"
+    "ALTER TABLE products ADD COLUMN discount TEXT;",
+    "CREATE TABLE IF NOT EXISTS homepage_configs (id INTEGER PRIMARY KEY AUTOINCREMENT, layout_key TEXT UNIQUE, layout_name TEXT, is_active INTEGER DEFAULT 1, display_order INTEGER DEFAULT 0, content_value TEXT, created_at TEXT, updated_at TEXT);",
+    "INSERT OR IGNORE INTO homepage_configs (layout_key, layout_name, is_active, display_order, content_value, created_at) VALUES ('hero_banner', 'Banner quảng cáo chính (Hero)', 1, 1, '{\"banners\":[]}', datetime('now'));",
+    "INSERT OR IGNORE INTO homepage_configs (layout_key, layout_name, is_active, display_order, content_value, created_at) VALUES ('best_sellers', 'Sản phẩm bán chạy nhất', 1, 2, '{\"product_ids\":[]}', datetime('now'));",
+    "INSERT OR IGNORE INTO homepage_configs (layout_key, layout_name, is_active, display_order, content_value, created_at) VALUES ('featured_nutrition', 'Dinh dưỡng nổi bật', 1, 3, '{\"product_ids\":[]}', datetime('now'));",
+    "INSERT OR IGNORE INTO homepage_configs (layout_key, layout_name, is_active, display_order, content_value, created_at) VALUES ('special_promotions', 'Chương trình khuyến mãi đặc biệt', 1, 4, '{\"product_ids\":[]}', datetime('now'));",
+    "INSERT OR IGNORE INTO homepage_configs (layout_key, layout_name, is_active, display_order, content_value, created_at) VALUES ('accessories_section', 'Phụ kiện Trail running', 1, 5, '{\"product_ids\":[]}', datetime('now'));"
   ];
 
   for (const sql of columns) {

@@ -21,9 +21,9 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 
-import { Product, Customer, Order } from '@/types';
+import { Product, Customer, Order, HomepageConfig } from '@/types';
 
-type TabType = 'products' | 'customers' | 'orders';
+type TabType = 'products' | 'customers' | 'orders' | 'homepage';
 
 export default function AdminPage() {
   const [activeTab, setActiveTab] = useState<TabType>('products');
@@ -31,6 +31,7 @@ export default function AdminPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [orders, setOrders] = useState<Order[]>([]);
+  const [homepageConfigs, setHomepageConfigs] = useState<HomepageConfig[]>([]);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [googleScriptUrl, setGoogleScriptUrl] = useState('');
@@ -44,6 +45,15 @@ export default function AdminPage() {
   const [productModal, setProductModal] = useState<{ open: boolean; editId?: number }>({ open: false });
   const [customerModal, setCustomerModal] = useState<{ open: boolean; editId?: number }>({ open: false });
   const [orderModal, setOrderModal] = useState<{ open: boolean }>({ open: false });
+  const [homepageModal, setHomepageModal] = useState<{ open: boolean; editConfig?: HomepageConfig }>({ open: false });
+  const [homepageForm, setHomepageForm] = useState({
+    layout_key: '',
+    layout_name: '',
+    is_active: 1,
+    display_order: 0,
+    product_ids: [] as number[],
+    banners: [] as { image_url: string; link_url: string; title: string }[]
+  });
 
   // Forms state
   const [productForm, setProductForm] = useState({
@@ -89,21 +99,24 @@ export default function AdminPage() {
     if (!isBackground) setIsLoading(true);
     setErrorMessage(null);
     try {
-      const [resProd, resCust, resOrd] = await Promise.all([
+      const [resProd, resCust, resOrd, resHome] = await Promise.all([
         fetch('/api/admin/products'),
         fetch('/api/admin/customers'),
-        fetch('/api/admin/orders')
+        fetch('/api/admin/orders'),
+        fetch('/api/admin/homepage')
       ]);
 
       const dataProd = await resProd.json();
       const dataCust = await resCust.json();
       const dataOrd = await resOrd.json();
+      const dataHome = await resHome.json();
 
       if (dataProd.success) setProducts(dataProd.products);
       if (dataCust.success) setCustomers(dataCust.customers);
       if (dataOrd.success) setOrders(dataOrd.orders);
+      if (dataHome.success) setHomepageConfigs(dataHome.configs);
 
-      if (!dataProd.success || !dataCust.success || !dataOrd.success) {
+      if (!dataProd.success || !dataCust.success || !dataOrd.success || !dataHome.success) {
         setErrorMessage('Không thể tải một số dữ liệu từ server.');
       }
     } catch (error) {
@@ -487,6 +500,111 @@ export default function AdminPage() {
     }
   };
 
+  const handleHomepageSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!homepageForm.layout_key || !homepageForm.layout_name) {
+      alert('Vui lòng điền đầy đủ Mã layout và Tên hiển thị.');
+      return;
+    }
+
+    try {
+      const isEdit = homepageModal.editConfig !== undefined;
+      const url = '/api/admin/homepage';
+      const method = isEdit ? 'PUT' : 'POST';
+
+      // Build JSON content value
+      let contentValObj = {};
+      if (homepageForm.layout_key === 'hero_banner') {
+        contentValObj = { banners: homepageForm.banners };
+      } else {
+        contentValObj = { product_ids: homepageForm.product_ids };
+      }
+
+      const payload = {
+        layout_key: homepageForm.layout_key,
+        layout_name: homepageForm.layout_name,
+        is_active: Number(homepageForm.is_active),
+        display_order: Number(homepageForm.display_order),
+        content_value: JSON.stringify(contentValObj)
+      };
+
+      const body = isEdit ? { ...payload, id: homepageModal.editConfig?.id } : payload;
+
+      const res = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        triggerSuccess(isEdit ? 'Cập nhật cấu hình trang chủ thành công!' : 'Thêm layout trang chủ thành công!');
+        setHomepageModal({ open: false });
+        fetchData();
+      } else {
+        alert(data.error || 'Thao tác thất bại.');
+      }
+    } catch (err) {
+      alert('Lỗi kết nối server.');
+    }
+  };
+
+  const handleHomepageEdit = (config: HomepageConfig) => {
+    let productIds: number[] = [];
+    let banners: { image_url: string; link_url: string; title: string }[] = [];
+
+    if (config.content_value) {
+      try {
+        const parsed = JSON.parse(config.content_value);
+        if (config.layout_key === 'hero_banner') {
+          banners = parsed.banners || [];
+        } else {
+          productIds = parsed.product_ids || [];
+        }
+      } catch (e) {
+        console.error('Failed to parse homepage config JSON:', e);
+      }
+    }
+
+    setHomepageForm({
+      layout_key: config.layout_key,
+      layout_name: config.layout_name,
+      is_active: config.is_active,
+      display_order: config.display_order,
+      product_ids: productIds,
+      banners: banners
+    });
+    setHomepageModal({ open: true, editConfig: config });
+  };
+
+  const handleHomepageDelete = async (id: number) => {
+    if (!confirm('Bạn có chắc chắn muốn XÓA layout này khỏi cấu hình trang chủ?')) return;
+    try {
+      const res = await fetch(`/api/admin/homepage?id=${id}`, { method: 'DELETE' });
+      const data = await res.json();
+      if (data.success) {
+        triggerSuccess('Xóa layout trang chủ thành công!');
+        fetchData();
+      } else {
+        alert(data.error || 'Thất bại.');
+      }
+    } catch (err) {
+      alert('Lỗi kết nối.');
+    }
+  };
+
+  const openAddHomepageModal = () => {
+    setHomepageForm({
+      layout_key: '',
+      layout_name: '',
+      is_active: 1,
+      display_order: homepageConfigs.length + 1,
+      product_ids: [],
+      banners: []
+    });
+    setHomepageModal({ open: true });
+  };
+
   const handleOrderDelete = async (id: number) => {
     if (!confirm('Bạn có chắc chắn muốn XÓA đơn hàng này khỏi dữ liệu?')) return;
     try {
@@ -639,6 +757,13 @@ export default function AdminPage() {
           >
             <ShoppingCart size={18} />
             <span>Đơn Hàng</span>
+          </button>
+          <button 
+            className={`tab-btn ${activeTab === 'homepage' ? 'active' : ''}`}
+            onClick={() => setActiveTab('homepage')}
+          >
+            <Settings size={18} />
+            <span>Quản trị trang chủ</span>
           </button>
         </div>
 
@@ -1068,6 +1193,85 @@ export default function AdminPage() {
                           </td>
                         </tr>
                       ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            )}
+
+            {/* 4. HOMEPAGE CONFIG TAB */}
+            {activeTab === 'homepage' && (
+              <div className="data-table-container animate-fade-in">
+                <div className="table-actions-header" style={{ display: 'block', marginBottom: '20px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                    <button className="action-btn-primary" onClick={openAddHomepageModal} style={{ height: '36px', display: 'flex', alignItems: 'center', gap: '6px', backgroundColor: 'var(--accent-primary)', color: '#ffffff' }}>
+                      <Plus size={16} />
+                      <span>Thêm Layout Mới</span>
+                    </button>
+                    <h3 style={{ margin: 0, textTransform: 'uppercase', letterSpacing: '0.02em', fontSize: '15px' }}>Quản Trị Bố Cục Trang Chủ</h3>
+                  </div>
+                </div>
+
+                <table className="admin-table">
+                  <thead>
+                    <tr>
+                      <th style={{ width: '80px' }}>Thứ tự</th>
+                      <th style={{ width: '200px' }}>Mã Layout (Key)</th>
+                      <th style={{ width: '250px' }}>Tên Hiển Thị Layout</th>
+                      <th>Cấu Hình Chi Tiết</th>
+                      <th style={{ width: '130px' }}>Trạng Thái</th>
+                      <th style={{ width: '120px', textAlign: 'right' }}>Hành động</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {homepageConfigs.length === 0 ? (
+                      <tr>
+                        <td colSpan={6} className="empty-row" style={{ textAlign: 'center', padding: '30px', color: 'var(--text-muted)' }}>
+                          Chưa có cấu hình layout trang chủ nào được thiết lập.
+                        </td>
+                      </tr>
+                    ) : (
+                      homepageConfigs.map((config) => {
+                        let contentSummary = 'Trống';
+                        if (config.content_value) {
+                          try {
+                            const parsed = JSON.parse(config.content_value);
+                            if (config.layout_key === 'hero_banner') {
+                              const count = parsed.banners?.length || 0;
+                              contentSummary = `📸 Banner Slider: ${count} hình ảnh quảng cáo`;
+                            } else {
+                              const pCount = parsed.product_ids?.length || 0;
+                              contentSummary = `📦 Sản phẩm hiển thị: ${pCount} sản phẩm đã chọn`;
+                            }
+                          } catch (e) {
+                            contentSummary = 'Dữ liệu không hợp lệ';
+                          }
+                        }
+
+                        return (
+                          <tr key={config.id}>
+                            <td className="font-weight-600 text-center" style={{ fontSize: '15px' }}>{config.display_order}</td>
+                            <td className="font-weight-600 color-accent" style={{ fontFamily: 'monospace' }}>{config.layout_key}</td>
+                            <td className="font-weight-600">{config.layout_name}</td>
+                            <td style={{ color: '#475569', fontSize: '13px' }}>{contentSummary}</td>
+                            <td>
+                              <span className={`status-pill ${config.is_active ? 'confirmed' : 'cancelled'}`} style={{ padding: '4px 10px', borderRadius: '12px', fontSize: '11.5px', fontWeight: 'bold' }}>
+                                {config.is_active ? 'Đang hoạt động' : 'Tạm ẩn'}
+                              </span>
+                            </td>
+                            <td className="text-right">
+                              <div className="cell-actions">
+                                <button className="icon-btn-edit" onClick={() => handleHomepageEdit(config)} title="Chỉnh sửa cấu hình">
+                                  <Edit2 size={14} />
+                                </button>
+                                <button className="icon-btn-delete" onClick={() => handleHomepageDelete(config.id)} title="Xóa layout này">
+                                  <Trash2 size={14} />
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                      })
                     )}
                   </tbody>
                 </table>
@@ -1746,6 +1950,178 @@ export default function AdminPage() {
                 Lưu cấu hình
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* 5. HOMEPAGE LAYOUT CONFIG FORM MODAL */}
+      {homepageModal.open && (
+        <div className="modal-backdrop">
+          <div className="modal-container white-modal animate-scale-in" style={{ maxWidth: '750px' }}>
+            <div className="modal-header">
+              <h2>{homepageModal.editConfig ? 'Cấu Hình Layout Trang Chủ' : 'Thêm Layout Trang Chủ Mới'}</h2>
+              <button className="modal-close-btn" onClick={() => setHomepageModal({ open: false })}>✕</button>
+            </div>
+            <form onSubmit={handleHomepageSubmit}>
+              <div className="modal-body" style={{ maxHeight: '70vh', overflowY: 'auto' }}>
+                <div className="form-group-row">
+                  <div className="form-group">
+                    <label>Mã Layout (Key - Dùng trong code) *</label>
+                    <input 
+                      type="text" 
+                      placeholder="Ví dụ: best_sellers, featured_nutrition" 
+                      value={homepageForm.layout_key} 
+                      onChange={(e) => setHomepageForm({ ...homepageForm, layout_key: e.target.value })}
+                      disabled={homepageModal.editConfig !== undefined}
+                      required
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Tên hiển thị Layout (Nhãn tiếng Việt) *</label>
+                    <input 
+                      type="text" 
+                      placeholder="Ví dụ: Sản phẩm bán chạy nhất" 
+                      value={homepageForm.layout_name} 
+                      onChange={(e) => setHomepageForm({ ...homepageForm, layout_name: e.target.value })}
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className="form-group-row">
+                  <div className="form-group">
+                    <label>Thứ tự hiển thị trang chủ</label>
+                    <input 
+                      type="number" 
+                      min="1"
+                      value={homepageForm.display_order} 
+                      onChange={(e) => setHomepageForm({ ...homepageForm, display_order: parseInt(e.target.value) || 0 })}
+                      required
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Trạng thái kích hoạt</label>
+                    <select 
+                      value={homepageForm.is_active} 
+                      onChange={(e) => setHomepageForm({ ...homepageForm, is_active: parseInt(e.target.value) || 0 })}
+                    >
+                      <option value={1}>Bật hiển thị trên trang chủ</option>
+                      <option value={0}>Tạm ẩn khỏi trang chủ</option>
+                    </select>
+                  </div>
+                </div>
+
+                {/* Section Specific Configuration */}
+                {homepageForm.layout_key === 'hero_banner' ? (
+                  <div style={{ marginTop: '20px', borderTop: '1px solid #e2e8f0', paddingTop: '15px' }}>
+                    <h3 style={{ fontSize: '14px', marginBottom: '12px', color: 'var(--text-primary)' }}>📸 Cấu hình Banner quảng cáo chính (Hero Slides)</h3>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                      {homepageForm.banners.map((banner, idx) => (
+                        <div key={idx} style={{ padding: '12px', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '6px', position: 'relative' }}>
+                          <button 
+                            type="button" 
+                            onClick={() => {
+                              const updated = [...homepageForm.banners];
+                              updated.splice(idx, 1);
+                              setHomepageForm({ ...homepageForm, banners: updated });
+                            }}
+                            style={{ position: 'absolute', top: '8px', right: '8px', color: '#ef4444', fontSize: '12px', fontWeight: 'bold' }}
+                          >
+                            Xóa slide
+                          </button>
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '10px' }}>
+                            <input 
+                              type="text" 
+                              placeholder="Tiêu đề slide quảng cáo" 
+                              value={banner.title} 
+                              onChange={(e) => {
+                                const updated = [...homepageForm.banners];
+                                updated[idx].title = e.target.value;
+                                setHomepageForm({ ...homepageForm, banners: updated });
+                              }}
+                              style={{ width: '100%', padding: '8px', fontSize: '12.5px', border: '1px solid #cbd5e1', borderRadius: '4px' }}
+                            />
+                            <input 
+                              type="text" 
+                              placeholder="URL Hình ảnh banner" 
+                              value={banner.image_url} 
+                              onChange={(e) => {
+                                const updated = [...homepageForm.banners];
+                                updated[idx].image_url = e.target.value;
+                                setHomepageForm({ ...homepageForm, banners: updated });
+                              }}
+                              style={{ width: '100%', padding: '8px', fontSize: '12.5px', border: '1px solid #cbd5e1', borderRadius: '4px' }}
+                            />
+                            <input 
+                              type="text" 
+                              placeholder="URL Đường dẫn liên kết khi click banner" 
+                              value={banner.link_url} 
+                              onChange={(e) => {
+                                const updated = [...homepageForm.banners];
+                                updated[idx].link_url = e.target.value;
+                                setHomepageForm({ ...homepageForm, banners: updated });
+                              }}
+                              style={{ width: '100%', padding: '8px', fontSize: '12.5px', border: '1px solid #cbd5e1', borderRadius: '4px' }}
+                            />
+                          </div>
+                        </div>
+                      ))}
+                      <button 
+                        type="button" 
+                        onClick={() => {
+                          setHomepageForm({ 
+                            ...homepageForm, 
+                            banners: [...homepageForm.banners, { image_url: '', link_url: '', title: '' }] 
+                          });
+                        }}
+                        style={{ padding: '8px 12px', background: '#e2e8f0', color: '#334155', borderRadius: '6px', fontSize: '13px', fontWeight: '600', width: 'fit-content', cursor: 'pointer' }}
+                      >
+                        + Thêm Banner Slide mới
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div style={{ marginTop: '20px', borderTop: '1px solid #e2e8f0', paddingTop: '15px' }}>
+                    <h3 style={{ fontSize: '14px', marginBottom: '6px', color: 'var(--text-primary)' }}>📦 Chọn các Sản phẩm hiển thị trong Layout này:</h3>
+                    <p style={{ fontSize: '12px', color: '#64748b', marginBottom: '12px' }}>Tích chọn những sản phẩm bạn muốn xuất hiện tại layout này trên trang chủ.</p>
+                    <div style={{ maxHeight: '200px', overflowY: 'auto', border: '1px solid #cbd5e1', borderRadius: '6px', padding: '10px', display: 'flex', flexDirection: 'column', gap: '8px', backgroundColor: '#ffffff' }}>
+                      {products.map(p => {
+                        const isChecked = homepageForm.product_ids.includes(p.id);
+                        return (
+                          <label key={p.id} style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '13px', cursor: 'pointer', padding: '4px', borderRadius: '4px', transition: 'background-color 0.2s' }} className="hover-bg-gray">
+                            <input 
+                              type="checkbox" 
+                              checked={isChecked}
+                              onChange={(e) => {
+                                let updatedIds = [...homepageForm.product_ids];
+                                if (e.target.checked) {
+                                  updatedIds.push(p.id);
+                                } else {
+                                  updatedIds = updatedIds.filter(id => id !== p.id);
+                                }
+                                setHomepageForm({ ...homepageForm, product_ids: updatedIds });
+                              }}
+                            />
+                            <span><b>[{p.brand}]</b> {p.name} - <span style={{ color: 'var(--accent-primary)', fontWeight: 'bold' }}>{p.price.toLocaleString('vi-VN')} đ</span></span>
+                          </label>
+                        );
+                      })}
+                    </div>
+                    {homepageForm.product_ids.length > 0 && (
+                      <div style={{ marginTop: '10px', fontSize: '12.5px', color: '#334155' }}>
+                        Đã chọn: <b>{homepageForm.product_ids.length}</b> sản phẩm. Thứ tự ID: <code>{homepageForm.product_ids.join(', ')}</code>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+              <div className="modal-footer">
+                <button type="button" className="btn-secondary" onClick={() => setHomepageModal({ open: false })}>Hủy</button>
+                <button type="submit" className="btn-primary">
+                  {homepageModal.editConfig ? 'Cập Nhật Cấu Hình' : 'Tạo Layout Mới'}
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}
