@@ -128,25 +128,37 @@ export async function PUT(req: NextRequest) {
       return NextResponse.json({ success: false, error: 'Đơn hàng không tồn tại' }, { status: 404 });
     }
 
-    // If status is transitioning to cancelled, restore stock
+    // If status is transitioning to cancelled, restore stock for all items in the order group
     if (status === 'cancelled' && order.status !== 'cancelled') {
+      const items = order.order_code
+        ? await queryAll('SELECT * FROM orders WHERE order_code = ?', [order.order_code])
+        : [order];
+
       await transaction(async (db: any) => {
-        await new Promise<void>((resolve, reject) => {
-          db.run('UPDATE orders SET status = ? WHERE id = ?', [status, id], (err: any) => {
-            if (err) reject(err);
-            else resolve();
+        for (const item of items as any[]) {
+          await new Promise<void>((resolve, reject) => {
+            db.run('UPDATE orders SET status = ? WHERE id = ?', [status, item.id], (err: any) => {
+              if (err) reject(err);
+              else resolve();
+            });
           });
-        });
-        await new Promise<void>((resolve, reject) => {
-          db.run('UPDATE products SET stock = stock + ? WHERE id = ?', [order.quantity, order.product_id], (err: any) => {
-            if (err) reject(err);
-            else resolve();
-          });
-        });
+          if (item.status !== 'cancelled') {
+            await new Promise<void>((resolve, reject) => {
+              db.run('UPDATE products SET stock = stock + ? WHERE id = ?', [item.quantity, item.product_id], (err: any) => {
+                if (err) reject(err);
+                else resolve();
+              });
+            });
+          }
+        }
       });
     } else {
-      // Just update status (e.g. pending -> confirmed)
-      await queryRun('UPDATE orders SET status = ? WHERE id = ?', [status, id]);
+      // Just update status for all items in the order group
+      if (order.order_code) {
+        await queryRun('UPDATE orders SET status = ? WHERE order_code = ?', [status, order.order_code]);
+      } else {
+        await queryRun('UPDATE orders SET status = ? WHERE id = ?', [status, id]);
+      }
     }
 
     return NextResponse.json({ success: true });
@@ -168,25 +180,29 @@ export async function DELETE(req: NextRequest) {
       return NextResponse.json({ success: false, error: 'Đơn hàng không tồn tại' }, { status: 404 });
     }
 
-    // Restock product if the order was deleted and not already cancelled
-    if (order.status !== 'cancelled') {
-      await transaction(async (db: any) => {
+    const items = order.order_code
+      ? await queryAll('SELECT * FROM orders WHERE order_code = ?', [order.order_code])
+      : [order];
+
+    // Restock products for all items in the order group if they were not already cancelled
+    await transaction(async (db: any) => {
+      for (const item of items as any[]) {
         await new Promise<void>((resolve, reject) => {
-          db.run('DELETE FROM orders WHERE id = ?', [id], (err: any) => {
+          db.run('DELETE FROM orders WHERE id = ?', [item.id], (err: any) => {
             if (err) reject(err);
             else resolve();
           });
         });
-        await new Promise<void>((resolve, reject) => {
-          db.run('UPDATE products SET stock = stock + ? WHERE id = ?', [order.quantity, order.product_id], (err: any) => {
-            if (err) reject(err);
-            else resolve();
+        if (item.status !== 'cancelled') {
+          await new Promise<void>((resolve, reject) => {
+            db.run('UPDATE products SET stock = stock + ? WHERE id = ?', [item.quantity, item.product_id], (err: any) => {
+              if (err) reject(err);
+              else resolve();
+            });
           });
-        });
-      });
-    } else {
-      await queryRun('DELETE FROM orders WHERE id = ?', [id]);
-    }
+        }
+      }
+    });
 
     return NextResponse.json({ success: true });
   } catch (error: any) {

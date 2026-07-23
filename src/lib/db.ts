@@ -1,6 +1,11 @@
 import path from 'path';
+import fs from 'fs';
 
-const dbPath = path.join(process.cwd(), 'brain.db');
+const isVps = fs.existsSync('/var/www/summit-outdoor');
+const dbPath = isVps 
+  ? '/var/www/summit-outdoor/brain.db' 
+  : path.join(process.cwd(), 'brain.db');
+
 let clientInstance: any = null;
 
 async function runMigrations(client: any) {
