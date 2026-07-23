@@ -154,6 +154,8 @@ export async function PUT(req: NextRequest) {
           }
         }
       });
+    } else {
+      // Just update status for all items in the order group
       if (order.order_code) {
         await queryRun('UPDATE orders SET status = ? WHERE order_code = ?', [status, order.order_code]);
         if (status === 'confirmed') {
