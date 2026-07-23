@@ -186,175 +186,63 @@ export default function AdminPage() {
   });
 
   // Client-side exporters
-  const handleExportToCsv = (type: 'customers' | 'orders') => {
+  // Client-side exporter to Google Sheets (via TSV Clipboard Copy & sheets.new)
+  const handleExportToGoogleSheets = (type: 'customers' | 'orders') => {
     let headers: string[] = [];
     let rows: any[][] = [];
-    let title = '';
 
     if (type === 'customers') {
-      title = 'Danh_sach_khach_hang';
-      headers = ['ID', 'Họ Tên', 'Email', 'SĐT', 'Thương Hiệu Quan Tâm', 'Trình Độ', 'Ghi Chú', 'Ngày Tạo'];
-      rows = filteredCustomers.map(c => [
-        c.id,
-        c.name,
-        c.email,
-        c.phone || '',
-        c.preferred_brand || '',
-        c.experience_level || '',
-        c.interests || '',
-        new Date(c.created_at).toLocaleDateString('vi-VN')
-      ]);
+      headers = ['ID', 'Họ Tên', 'Email', 'SĐT', 'Thương Hiệu Quan Tâm', 'Trình Độ', 'Phân Loại', 'Ghi Chú / Sở Thích', 'Ngày Đăng Ký'];
+      rows = filteredCustomers.map(c => {
+        const isWaitlist = c.preferred_brand || c.experience_level;
+        const typeText = isWaitlist ? 'Waitlist (Popup)' : 'Mua Hàng (Checkout)';
+        return [
+          c.id,
+          c.name,
+          c.email,
+          c.phone || '',
+          c.preferred_brand || '',
+          c.experience_level || '',
+          typeText,
+          c.interests || '',
+          new Date(c.created_at).toLocaleDateString('vi-VN')
+        ];
+      });
     } else {
-      title = 'Danh_sach_don_hang';
-      headers = ['Mã Đơn', 'Khách Hàng', 'SĐT', 'Sản Phẩm', 'Số Lượng', 'Tổng Tiền (VND)', 'Trạng Thái', 'Địa Chỉ', 'Ghi Chú', 'Mã Giao Dịch Sepay', 'Số Tiền Thực Nhận', 'Ngày Thanh Toán', 'Ngày Đặt'];
+      headers = ['Mã Đơn', 'Khách Hàng', 'SĐT', 'Sản Phẩm', 'Số Lượng', 'Tổng Tiền (VND)', 'Trạng Thái', 'Phương Thức', 'Địa Chỉ', 'Ghi Chú', 'Mã Giao Dịch Sepay', 'Ngày Đặt'];
       rows = filteredOrders.map(o => {
         const productDetails = o.items ? o.items.map(item => `${item.name} (x${item.quantity})`).join('; ') : o.product_name || '';
+        const statusText = o.status === 'confirmed' ? (o.payment_method === 'cod' ? 'Đang giao hàng (COD)' : 'Đã thanh toán') : (o.status === 'cancelled' ? 'Đã hủy' : 'Chờ thanh toán');
         return [
           o.order_code || `ORD-${o.id}`,
           o.customer_name || '',
           o.customer_phone || '',
           productDetails,
-          o.quantity,
+          o.quantity || 1,
           o.total_price,
-          o.status === 'confirmed' ? (o.payment_method === 'cod' ? 'Đang giao hàng (COD)' : 'Đã thanh toán') : (o.status === 'cancelled' ? 'Đã hủy' : 'Chờ thanh toán'),
+          statusText,
+          o.payment_method === 'cod' ? 'COD' : 'QR Ngân hàng',
           o.address || '',
           o.notes || '',
           o.transaction_id || '',
-          o.payment_amount || '',
-          o.payment_date || '',
           new Date(o.created_at).toLocaleDateString('vi-VN')
         ];
       });
     }
 
-    let csvContent = "\ufeff"; // UTF-8 BOM
-    csvContent += headers.join(",") + "\n";
-    rows.forEach(row => {
-      csvContent += row.map(val => {
-        const text = String(val === null || val === undefined ? '' : val).replace(/"/g, '""');
-        return `"${text}"`;
-      }).join(",") + "\n";
+    // Format as Tab-Separated Values (TSV)
+    const tsvContent = [
+      headers.join('\t'),
+      ...rows.map(row => row.map(val => String(val === null || val === undefined ? '' : val).replace(/\t/g, ' ').replace(/\n/g, ' ')).join('\t'))
+    ].join('\n');
+
+    // Copy to clipboard
+    navigator.clipboard.writeText(tsvContent).then(() => {
+      alert('Đã sao chép dữ liệu bảng thành công! Đang tự động mở một trang Google Sheet mới. Hãy chọn ô A1 và bấm Ctrl+V (hoặc Cmd+V) để dán dữ liệu.');
+      window.open('https://sheets.new', '_blank');
+    }).catch(err => {
+      alert('Lỗi sao chép dữ liệu: ' + err);
     });
-
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `${title}_${new Date().toISOString().slice(0,10)}.csv`;
-    link.click();
-  };
-
-  const handleExportToDoc = (type: 'customers' | 'orders') => {
-    let title = '';
-    let tableHtml = '';
-
-    if (type === 'customers') {
-      title = 'Báo Cáo Danh Sách Khách Hàng';
-      tableHtml = `
-        <table style="border-collapse: collapse; width: 100%; font-size: 11px;">
-          <thead>
-            <tr style="background-color: #1e3a8a; color: #ffffff; font-weight: bold;">
-              <th style="border: 1px solid #d1d5db; padding: 6px;">ID</th>
-              <th style="border: 1px solid #d1d5db; padding: 6px;">Họ Tên</th>
-              <th style="border: 1px solid #d1d5db; padding: 6px;">Email</th>
-              <th style="border: 1px solid #d1d5db; padding: 6px;">SĐT</th>
-              <th style="border: 1px solid #d1d5db; padding: 6px;">Hãng Yêu Thích</th>
-              <th style="border: 1px solid #d1d5db; padding: 6px;">Trình Độ</th>
-              <th style="border: 1px solid #d1d5db; padding: 6px;">Phân Loại</th>
-              <th style="border: 1px solid #d1d5db; padding: 6px;">Ngày Đăng Ký</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${filteredCustomers.map(c => {
-              const isWaitlist = c.preferred_brand || c.experience_level;
-              const typeText = isWaitlist ? 'Waitlist (Popup)' : 'Mua Hàng (Checkout)';
-              return `
-                <tr>
-                  <td style="border: 1px solid #d1d5db; padding: 6px; text-align: center;">#${c.id}</td>
-                  <td style="border: 1px solid #d1d5db; padding: 6px; font-weight: bold;">${c.name}</td>
-                  <td style="border: 1px solid #d1d5db; padding: 6px;">${c.email}</td>
-                  <td style="border: 1px solid #d1d5db; padding: 6px;">${c.phone || '-'}</td>
-                  <td style="border: 1px solid #d1d5db; padding: 6px;">${c.preferred_brand || '-'}</td>
-                  <td style="border: 1px solid #d1d5db; padding: 6px;">${c.experience_level || '-'}</td>
-                  <td style="border: 1px solid #d1d5db; padding: 6px; font-weight: bold; color: ${isWaitlist ? '#10b981' : '#2563eb'};">${typeText}</td>
-                  <td style="border: 1px solid #d1d5db; padding: 6px; text-align: center;">${new Date(c.created_at).toLocaleDateString('vi-VN')}</td>
-                </tr>
-              `;
-            }).join('')}
-          </tbody>
-        </table>
-      `;
-    } else {
-      title = 'Báo Cáo Danh Sách Đơn Hàng';
-      tableHtml = `
-        <table style="border-collapse: collapse; width: 100%; font-size: 11px;">
-          <thead>
-            <tr style="background-color: #0f766e; color: #ffffff; font-weight: bold;">
-              <th style="border: 1px solid #d1d5db; padding: 6px;">Mã Đơn</th>
-              <th style="border: 1px solid #d1d5db; padding: 6px;">Khách Hàng</th>
-              <th style="border: 1px solid #d1d5db; padding: 6px;">Thông Tin Mua</th>
-              <th style="border: 1px solid #d1d5db; padding: 6px;">Tổng Tiền</th>
-              <th style="border: 1px solid #d1d5db; padding: 6px;">Trạng Thái</th>
-              <th style="border: 1px solid #d1d5db; padding: 6px;">Địa Chỉ / Giao Dịch</th>
-              <th style="border: 1px solid #d1d5db; padding: 6px;">Ngày Đặt</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${filteredOrders.map(o => {
-              const productDetails = o.items ? o.items.map(item => `${item.name} (x${item.quantity})`).join('<br/>') : o.product_name || '';
-              const statusText = o.status === 'confirmed' ? (o.payment_method === 'cod' ? 'Đang giao hàng (COD)' : 'Đã thanh toán') : (o.status === 'cancelled' ? 'Đã hủy' : 'Chờ thanh toán');
-              const paymentDetails = o.status === 'confirmed' && o.transaction_id ? `GD: ${o.transaction_id}<br/>Nhận: ${o.payment_amount ? Number(o.payment_amount).toLocaleString('vi-VN') + 'đ' : ''}` : '-';
-              return `
-                <tr>
-                  <td style="border: 1px solid #d1d5db; padding: 6px; font-weight: bold; text-align: center;">${o.order_code || `ORD-${o.id}`}</td>
-                  <td style="border: 1px solid #d1d5db; padding: 6px;">
-                    <b>${o.customer_name}</b><br/>
-                    SĐT: ${o.customer_phone || '-'}
-                  </td>
-                  <td style="border: 1px solid #d1d5db; padding: 6px;">${productDetails}</td>
-                  <td style="border: 1px solid #d1d5db; padding: 6px; font-weight: bold; color: #e11d48;">${Number(o.total_price).toLocaleString('vi-VN')}đ</td>
-                  <td style="border: 1px solid #d1d5db; padding: 6px;">${statusText}</td>
-                  <td style="border: 1px solid #d1d5db; padding: 6px; font-size: 10px;">
-                    Địa chỉ: ${o.address || '-'}<br/>
-                    Thanh toán: ${o.payment_method === 'cod' ? 'COD' : 'QR Ngân hàng'}<br/>
-                    ${paymentDetails}
-                  </td>
-                  <td style="border: 1px solid #d1d5db; padding: 6px; text-align: center;">${new Date(o.created_at).toLocaleDateString('vi-VN')}</td>
-                </tr>
-              `;
-            }).join('')}
-          </tbody>
-        </table>
-      `;
-    }
-
-    const docContent = `
-      <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
-      <head>
-        <title>${title}</title>
-        <style>
-          body { font-family: 'Segoe UI', Arial, sans-serif; padding: 20px; }
-          h2 { color: #1e3a8a; text-align: center; margin-bottom: 5px; }
-          table { border-collapse: collapse; width: 100%; font-size: 11px; margin-top: 15px; }
-          th, td { border: 1px solid #cbd5e1; padding: 6px; text-align: left; }
-        </style>
-      </head>
-      <body>
-        <h2>${title.toUpperCase()}</h2>
-        <p style="text-align: center; margin-top: 0; font-size: 11px; color: #64748b;">
-          <i>Ngày xuất báo cáo: ${new Date().toLocaleDateString('vi-VN')} ${new Date().toLocaleTimeString('vi-VN')}</i>
-        </p>
-        ${tableHtml}
-      </body>
-      </html>
-    `;
-
-    const blob = new Blob(['\ufeff' + docContent], { type: 'application/msword' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `${title.toLowerCase().replace(/ /g, '_')}_${new Date().toISOString().slice(0,10)}.doc`;
-    link.click();
   };
 
   // Product CRUD
@@ -772,14 +660,18 @@ export default function AdminPage() {
                       type="date" 
                       value={startDate} 
                       onChange={(e) => setStartDate(e.target.value)} 
-                      style={{ padding: '6px 10px', borderRadius: '6px', border: '1px solid #cbd5e1', fontSize: '13px', outline: 'none' }}
+                      onClick={(e) => { try { e.currentTarget.showPicker(); } catch (err) {} }}
+                      onFocus={(e) => { try { e.currentTarget.showPicker(); } catch (err) {} }}
+                      style={{ padding: '6px 10px', borderRadius: '6px', border: '1px solid #cbd5e1', fontSize: '13px', outline: 'none', cursor: 'pointer' }}
                     />
                     <span style={{ fontSize: '13px', color: '#94a3b8' }}>đến</span>
                     <input 
                       type="date" 
                       value={endDate} 
                       onChange={(e) => setEndDate(e.target.value)} 
-                      style={{ padding: '6px 10px', borderRadius: '6px', border: '1px solid #cbd5e1', fontSize: '13px', outline: 'none' }}
+                      onClick={(e) => { try { e.currentTarget.showPicker(); } catch (err) {} }}
+                      onFocus={(e) => { try { e.currentTarget.showPicker(); } catch (err) {} }}
+                      style={{ padding: '6px 10px', borderRadius: '6px', border: '1px solid #cbd5e1', fontSize: '13px', outline: 'none', cursor: 'pointer' }}
                     />
                     {(startDate || endDate) && (
                       <button 
@@ -792,16 +684,10 @@ export default function AdminPage() {
                   </div>
                   <div style={{ display: 'flex', gap: '10px' }}>
                     <button 
-                      onClick={() => handleExportToDoc('customers')} 
-                      style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '8px 14px', background: '#1e3a8a', color: '#ffffff', border: 'none', borderRadius: '6px', cursor: 'pointer', fontSize: '13px', fontWeight: '600', transition: 'background 0.2s' }}
+                      onClick={() => handleExportToGoogleSheets('customers')} 
+                      style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '8px 14px', background: '#10b981', color: '#ffffff', border: 'none', borderRadius: '6px', cursor: 'pointer', fontSize: '13px', fontWeight: '600', transition: 'background 0.2s' }}
                     >
-                      📄 Xuất Word (.doc)
-                    </button>
-                    <button 
-                      onClick={() => handleExportToCsv('customers')} 
-                      style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '8px 14px', background: '#0f766e', color: '#ffffff', border: 'none', borderRadius: '6px', cursor: 'pointer', fontSize: '13px', fontWeight: '600', transition: 'background 0.2s' }}
-                    >
-                      📊 Xuất Excel (.csv)
+                      🟢 Xuất Google Sheet
                     </button>
                   </div>
                 </div>
@@ -888,14 +774,18 @@ export default function AdminPage() {
                       type="date" 
                       value={startDate} 
                       onChange={(e) => setStartDate(e.target.value)} 
-                      style={{ padding: '6px 10px', borderRadius: '6px', border: '1px solid #cbd5e1', fontSize: '13px', outline: 'none' }}
+                      onClick={(e) => { try { e.currentTarget.showPicker(); } catch (err) {} }}
+                      onFocus={(e) => { try { e.currentTarget.showPicker(); } catch (err) {} }}
+                      style={{ padding: '6px 10px', borderRadius: '6px', border: '1px solid #cbd5e1', fontSize: '13px', outline: 'none', cursor: 'pointer' }}
                     />
                     <span style={{ fontSize: '13px', color: '#94a3b8' }}>đến</span>
                     <input 
                       type="date" 
                       value={endDate} 
                       onChange={(e) => setEndDate(e.target.value)} 
-                      style={{ padding: '6px 10px', borderRadius: '6px', border: '1px solid #cbd5e1', fontSize: '13px', outline: 'none' }}
+                      onClick={(e) => { try { e.currentTarget.showPicker(); } catch (err) {} }}
+                      onFocus={(e) => { try { e.currentTarget.showPicker(); } catch (err) {} }}
+                      style={{ padding: '6px 10px', borderRadius: '6px', border: '1px solid #cbd5e1', fontSize: '13px', outline: 'none', cursor: 'pointer' }}
                     />
                     {(startDate || endDate) && (
                       <button 
@@ -908,16 +798,10 @@ export default function AdminPage() {
                   </div>
                   <div style={{ display: 'flex', gap: '10px' }}>
                     <button 
-                      onClick={() => handleExportToDoc('orders')} 
-                      style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '8px 14px', background: '#1e3a8a', color: '#ffffff', border: 'none', borderRadius: '6px', cursor: 'pointer', fontSize: '13px', fontWeight: '600', transition: 'background 0.2s' }}
+                      onClick={() => handleExportToGoogleSheets('orders')} 
+                      style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '8px 14px', background: '#10b981', color: '#ffffff', border: 'none', borderRadius: '6px', cursor: 'pointer', fontSize: '13px', fontWeight: '600', transition: 'background 0.2s' }}
                     >
-                      📄 Xuất Word (.doc)
-                    </button>
-                    <button 
-                      onClick={() => handleExportToCsv('orders')} 
-                      style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '8px 14px', background: '#0f766e', color: '#ffffff', border: 'none', borderRadius: '6px', cursor: 'pointer', fontSize: '13px', fontWeight: '600', transition: 'background 0.2s' }}
-                    >
-                      📊 Xuất Excel (.csv)
+                      🟢 Xuất Google Sheet
                     </button>
                   </div>
                 </div>
