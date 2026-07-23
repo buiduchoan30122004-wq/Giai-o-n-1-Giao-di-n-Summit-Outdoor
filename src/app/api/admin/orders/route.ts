@@ -3,7 +3,7 @@ import { queryAll, queryGet, queryRun, transaction } from '@/lib/db';
 
 export async function GET() {
   try {
-    const orders = await queryAll(`
+    const rawOrders = await queryAll(`
       SELECT 
         o.id, o.customer_id, o.product_id, o.quantity, o.total_price, o.status, o.created_at, o.order_code,
         o.address, o.notes, o.transaction_id, o.payment_amount, o.payment_date, o.payment_method,
@@ -14,6 +14,45 @@ export async function GET() {
       LEFT JOIN products p ON o.product_id = p.id
       ORDER BY o.id DESC
     `);
+
+    // Group items by order_code (or fallback to id if null)
+    const groupedMap = new Map();
+    for (const row of rawOrders as any[]) {
+      const key = row.order_code || `ID_${row.id}`;
+      if (!groupedMap.has(key)) {
+        groupedMap.set(key, {
+          id: row.id,
+          customer_id: row.customer_id,
+          status: row.status,
+          created_at: row.created_at,
+          order_code: row.order_code,
+          address: row.address,
+          notes: row.notes,
+          transaction_id: row.transaction_id,
+          payment_amount: row.payment_amount,
+          payment_date: row.payment_date,
+          payment_method: row.payment_method,
+          customer_name: row.customer_name,
+          customer_email: row.customer_email,
+          customer_phone: row.customer_phone,
+          total_price: 0,
+          quantity: 0,
+          items: []
+        });
+      }
+      const order = groupedMap.get(key);
+      order.total_price += row.total_price;
+      order.quantity += row.quantity;
+      order.items.push({
+        product_id: row.product_id,
+        brand: row.product_brand,
+        name: row.product_name,
+        price: row.product_price,
+        quantity: row.quantity
+      });
+    }
+
+    const orders = Array.from(groupedMap.values());
     return NextResponse.json({ success: true, orders });
   } catch (error: any) {
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });

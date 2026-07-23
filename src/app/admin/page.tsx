@@ -41,6 +41,14 @@ interface Customer {
   created_at: string;
 }
 
+interface OrderItem {
+  product_id: number;
+  brand?: string;
+  name?: string;
+  price?: number;
+  quantity: number;
+}
+
 interface Order {
   id: number;
   customer_id: number;
@@ -61,6 +69,8 @@ interface Order {
   payment_amount?: number;
   payment_date?: string;
   payment_method?: string;
+  order_code?: string;
+  items?: OrderItem[];
 }
 
 type TabType = 'products' | 'customers' | 'orders';
@@ -646,13 +656,29 @@ export default function AdminPage() {
                             </div>
                           </td>
                           <td>
-                            <div className="table-user-cell">
-                              <span className="font-weight-600">{ord.product_name || 'Sản phẩm bị xóa'}</span>
-                              <span className="text-small color-accent">{ord.product_brand || ''}</span>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                              {ord.items && ord.items.length > 0 ? (
+                                (() => {
+                                  const items = ord.items;
+                                  return items.map((item, idx) => (
+                                    <div key={idx} className="table-user-cell" style={{ borderBottom: idx < items.length - 1 ? '1px dashed #e5e7eb' : 'none', paddingBottom: idx < items.length - 1 ? '4px' : '0' }}>
+                                      <span className="font-weight-600" style={{ fontSize: '13px' }}>
+                                        {item.name || 'Sản phẩm bị xóa'} <span style={{ color: '#e11d48', fontWeight: 'bold' }}>x{item.quantity}</span>
+                                      </span>
+                                      <span className="text-small color-accent" style={{ fontSize: '11px' }}>{item.brand || ''}</span>
+                                    </div>
+                                  ));
+                                })()
+                              ) : (
+                                <div className="table-user-cell">
+                                  <span className="font-weight-600">{ord.product_name || 'Sản phẩm bị xóa'}</span>
+                                  <span className="text-small color-accent">{ord.product_brand || ''}</span>
+                                </div>
+                              )}
                             </div>
                           </td>
                           <td className="text-center font-weight-600">{ord.quantity}</td>
-                          <td className="font-weight-600 color-accent">${ord.total_price.toFixed(2)}</td>
+                          <td className="font-weight-600 color-accent">{ord.total_price ? Number(ord.total_price).toLocaleString('vi-VN') + 'đ' : '0đ'}</td>
                           <td>
                             <div>
                               <span className={`status-pill ${ord.status}`}>
