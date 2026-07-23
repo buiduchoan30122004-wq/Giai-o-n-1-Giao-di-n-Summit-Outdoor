@@ -328,8 +328,7 @@ export async function sendThankYouEmail(toEmail: string, fullName: string, order
         <div style="font-family: Arial, sans-serif; line-height: 1.6; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 8px;">
           ${EMAIL_HEADER_HTML}
           <h2 style="color: #c2410c; text-align: center; margin-bottom: 20px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Chân thành cảm ơn bạn!</h2>
-          <p>Xin chào <strong>${fullName}</strong>,</p>
-          <p>Chúng tôi xin chân thành cảm ơn bạn đã tin tưởng lựa chọn mua sắm thiết bị chạy bộ địa hình và leo núi tại <strong>Summit Outdoor</strong> cho hành trình sắp tới của mình.</p>
+          <p>Chào <strong>${fullName}</strong>, chúng tôi biết bạn có rất nhiều sự lựa chọn ngoài kia, cảm ơn vì đã tin tưởng đồng hành cùng <strong>Summit Outdoor</strong>.</p>
           
           <p>Đơn hàng của bạn với mã số <strong style="color: #c2410c;">#${orderCode}</strong> đã được bộ phận quản trị duyệt thành công và đang được chuẩn bị đóng gói cẩn thận để gửi đến bạn nhanh nhất có thể.</p>
 
