@@ -80,6 +80,8 @@ export default function AdminPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [orders, setOrders] = useState<Order[]>([]);
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -158,6 +160,201 @@ export default function AdminPage() {
   const triggerSuccess = (msg: string) => {
     setSuccessMessage(msg);
     setTimeout(() => setSuccessMessage(null), 3000);
+  };
+
+  // Filtered arrays based on selected date range
+  const filteredCustomers = customers.filter(c => {
+    if (!c.created_at) return true;
+    const date = new Date(c.created_at);
+    const start = startDate ? new Date(startDate) : null;
+    const end = endDate ? new Date(endDate) : null;
+    
+    if (start) { start.setHours(0, 0, 0, 0); if (date < start) return false; }
+    if (end) { end.setHours(23, 59, 59, 999); if (date > end) return false; }
+    return true;
+  });
+
+  const filteredOrders = orders.filter(o => {
+    if (!o.created_at) return true;
+    const date = new Date(o.created_at);
+    const start = startDate ? new Date(startDate) : null;
+    const end = endDate ? new Date(endDate) : null;
+    
+    if (start) { start.setHours(0, 0, 0, 0); if (date < start) return false; }
+    if (end) { end.setHours(23, 59, 59, 999); if (date > end) return false; }
+    return true;
+  });
+
+  // Client-side exporters
+  const handleExportToCsv = (type: 'customers' | 'orders') => {
+    let headers: string[] = [];
+    let rows: any[][] = [];
+    let title = '';
+
+    if (type === 'customers') {
+      title = 'Danh_sach_khach_hang';
+      headers = ['ID', 'Họ Tên', 'Email', 'SĐT', 'Thương Hiệu Quan Tâm', 'Trình Độ', 'Ghi Chú', 'Ngày Tạo'];
+      rows = filteredCustomers.map(c => [
+        c.id,
+        c.name,
+        c.email,
+        c.phone || '',
+        c.preferred_brand || '',
+        c.experience_level || '',
+        c.interests || '',
+        new Date(c.created_at).toLocaleDateString('vi-VN')
+      ]);
+    } else {
+      title = 'Danh_sach_don_hang';
+      headers = ['Mã Đơn', 'Khách Hàng', 'SĐT', 'Sản Phẩm', 'Số Lượng', 'Tổng Tiền (VND)', 'Trạng Thái', 'Địa Chỉ', 'Ghi Chú', 'Mã Giao Dịch Sepay', 'Số Tiền Thực Nhận', 'Ngày Thanh Toán', 'Ngày Đặt'];
+      rows = filteredOrders.map(o => {
+        const productDetails = o.items ? o.items.map(item => `${item.name} (x${item.quantity})`).join('; ') : o.product_name || '';
+        return [
+          o.order_code || `ORD-${o.id}`,
+          o.customer_name || '',
+          o.customer_phone || '',
+          productDetails,
+          o.quantity,
+          o.total_price,
+          o.status === 'confirmed' ? (o.payment_method === 'cod' ? 'Đang giao hàng (COD)' : 'Đã thanh toán') : (o.status === 'cancelled' ? 'Đã hủy' : 'Chờ thanh toán'),
+          o.address || '',
+          o.notes || '',
+          o.transaction_id || '',
+          o.payment_amount || '',
+          o.payment_date || '',
+          new Date(o.created_at).toLocaleDateString('vi-VN')
+        ];
+      });
+    }
+
+    let csvContent = "\ufeff"; // UTF-8 BOM
+    csvContent += headers.join(",") + "\n";
+    rows.forEach(row => {
+      csvContent += row.map(val => {
+        const text = String(val === null || val === undefined ? '' : val).replace(/"/g, '""');
+        return `"${text}"`;
+      }).join(",") + "\n";
+    });
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${title}_${new Date().toISOString().slice(0,10)}.csv`;
+    link.click();
+  };
+
+  const handleExportToDoc = (type: 'customers' | 'orders') => {
+    let title = '';
+    let tableHtml = '';
+
+    if (type === 'customers') {
+      title = 'Báo Cáo Danh Sách Khách Hàng';
+      tableHtml = `
+        <table style="border-collapse: collapse; width: 100%; font-size: 11px;">
+          <thead>
+            <tr style="background-color: #1e3a8a; color: #ffffff; font-weight: bold;">
+              <th style="border: 1px solid #d1d5db; padding: 6px;">ID</th>
+              <th style="border: 1px solid #d1d5db; padding: 6px;">Họ Tên</th>
+              <th style="border: 1px solid #d1d5db; padding: 6px;">Email</th>
+              <th style="border: 1px solid #d1d5db; padding: 6px;">SĐT</th>
+              <th style="border: 1px solid #d1d5db; padding: 6px;">Hãng Yêu Thích</th>
+              <th style="border: 1px solid #d1d5db; padding: 6px;">Trình Độ</th>
+              <th style="border: 1px solid #d1d5db; padding: 6px;">Phân Loại</th>
+              <th style="border: 1px solid #d1d5db; padding: 6px;">Ngày Đăng Ký</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${filteredCustomers.map(c => {
+              const isWaitlist = c.preferred_brand || c.experience_level;
+              const typeText = isWaitlist ? 'Waitlist (Popup)' : 'Mua Hàng (Checkout)';
+              return `
+                <tr>
+                  <td style="border: 1px solid #d1d5db; padding: 6px; text-align: center;">#${c.id}</td>
+                  <td style="border: 1px solid #d1d5db; padding: 6px; font-weight: bold;">${c.name}</td>
+                  <td style="border: 1px solid #d1d5db; padding: 6px;">${c.email}</td>
+                  <td style="border: 1px solid #d1d5db; padding: 6px;">${c.phone || '-'}</td>
+                  <td style="border: 1px solid #d1d5db; padding: 6px;">${c.preferred_brand || '-'}</td>
+                  <td style="border: 1px solid #d1d5db; padding: 6px;">${c.experience_level || '-'}</td>
+                  <td style="border: 1px solid #d1d5db; padding: 6px; font-weight: bold; color: ${isWaitlist ? '#10b981' : '#2563eb'};">${typeText}</td>
+                  <td style="border: 1px solid #d1d5db; padding: 6px; text-align: center;">${new Date(c.created_at).toLocaleDateString('vi-VN')}</td>
+                </tr>
+              `;
+            }).join('')}
+          </tbody>
+        </table>
+      `;
+    } else {
+      title = 'Báo Cáo Danh Sách Đơn Hàng';
+      tableHtml = `
+        <table style="border-collapse: collapse; width: 100%; font-size: 11px;">
+          <thead>
+            <tr style="background-color: #0f766e; color: #ffffff; font-weight: bold;">
+              <th style="border: 1px solid #d1d5db; padding: 6px;">Mã Đơn</th>
+              <th style="border: 1px solid #d1d5db; padding: 6px;">Khách Hàng</th>
+              <th style="border: 1px solid #d1d5db; padding: 6px;">Thông Tin Mua</th>
+              <th style="border: 1px solid #d1d5db; padding: 6px;">Tổng Tiền</th>
+              <th style="border: 1px solid #d1d5db; padding: 6px;">Trạng Thái</th>
+              <th style="border: 1px solid #d1d5db; padding: 6px;">Địa Chỉ / Giao Dịch</th>
+              <th style="border: 1px solid #d1d5db; padding: 6px;">Ngày Đặt</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${filteredOrders.map(o => {
+              const productDetails = o.items ? o.items.map(item => `${item.name} (x${item.quantity})`).join('<br/>') : o.product_name || '';
+              const statusText = o.status === 'confirmed' ? (o.payment_method === 'cod' ? 'Đang giao hàng (COD)' : 'Đã thanh toán') : (o.status === 'cancelled' ? 'Đã hủy' : 'Chờ thanh toán');
+              const paymentDetails = o.status === 'confirmed' && o.transaction_id ? `GD: ${o.transaction_id}<br/>Nhận: ${o.payment_amount ? Number(o.payment_amount).toLocaleString('vi-VN') + 'đ' : ''}` : '-';
+              return `
+                <tr>
+                  <td style="border: 1px solid #d1d5db; padding: 6px; font-weight: bold; text-align: center;">${o.order_code || `ORD-${o.id}`}</td>
+                  <td style="border: 1px solid #d1d5db; padding: 6px;">
+                    <b>${o.customer_name}</b><br/>
+                    SĐT: ${o.customer_phone || '-'}
+                  </td>
+                  <td style="border: 1px solid #d1d5db; padding: 6px;">${productDetails}</td>
+                  <td style="border: 1px solid #d1d5db; padding: 6px; font-weight: bold; color: #e11d48;">${Number(o.total_price).toLocaleString('vi-VN')}đ</td>
+                  <td style="border: 1px solid #d1d5db; padding: 6px;">${statusText}</td>
+                  <td style="border: 1px solid #d1d5db; padding: 6px; font-size: 10px;">
+                    Địa chỉ: ${o.address || '-'}<br/>
+                    Thanh toán: ${o.payment_method === 'cod' ? 'COD' : 'QR Ngân hàng'}<br/>
+                    ${paymentDetails}
+                  </td>
+                  <td style="border: 1px solid #d1d5db; padding: 6px; text-align: center;">${new Date(o.created_at).toLocaleDateString('vi-VN')}</td>
+                </tr>
+              `;
+            }).join('')}
+          </tbody>
+        </table>
+      `;
+    }
+
+    const docContent = `
+      <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+      <head>
+        <title>${title}</title>
+        <style>
+          body { font-family: 'Segoe UI', Arial, sans-serif; padding: 20px; }
+          h2 { color: #1e3a8a; text-align: center; margin-bottom: 5px; }
+          table { border-collapse: collapse; width: 100%; font-size: 11px; margin-top: 15px; }
+          th, td { border: 1px solid #cbd5e1; padding: 6px; text-align: left; }
+        </style>
+      </head>
+      <body>
+        <h2>${title.toUpperCase()}</h2>
+        <p style="text-align: center; margin-top: 0; font-size: 11px; color: #64748b;">
+          <i>Ngày xuất báo cáo: ${new Date().toLocaleDateString('vi-VN')} ${new Date().toLocaleTimeString('vi-VN')}</i>
+        </p>
+        ${tableHtml}
+      </body>
+      </html>
+    `;
+
+    const blob = new Blob(['\ufeff' + docContent], { type: 'application/msword' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${title.toLowerCase().replace(/ /g, '_')}_${new Date().toISOString().slice(0,10)}.doc`;
+    link.click();
   };
 
   // Product CRUD
@@ -560,11 +757,53 @@ export default function AdminPage() {
             {activeTab === 'customers' && (
               <div className="data-table-container">
                 <div className="table-actions-header">
-                  <h3>Danh Sách Khách Hàng</h3>
+                  <h3>Danh Sách Khách Hàng (Tất Cả)</h3>
                   <button className="action-btn-primary" onClick={openAddCustomerModal}>
                     <Plus size={16} />
                     <span>Thêm Khách Hàng</span>
                   </button>
+                </div>
+
+                {/* Filter and Export Bar */}
+                <div className="filter-export-bar" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: '15px', padding: '15px', background: '#f8fafc', borderRadius: '8px', marginBottom: '15px', border: '1px solid #e2e8f0' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <span style={{ fontSize: '13px', fontWeight: '600', color: '#475569' }}>Lọc theo ngày:</span>
+                    <input 
+                      type="date" 
+                      value={startDate} 
+                      onChange={(e) => setStartDate(e.target.value)} 
+                      style={{ padding: '6px 10px', borderRadius: '6px', border: '1px solid #cbd5e1', fontSize: '13px', outline: 'none' }}
+                    />
+                    <span style={{ fontSize: '13px', color: '#94a3b8' }}>đến</span>
+                    <input 
+                      type="date" 
+                      value={endDate} 
+                      onChange={(e) => setEndDate(e.target.value)} 
+                      style={{ padding: '6px 10px', borderRadius: '6px', border: '1px solid #cbd5e1', fontSize: '13px', outline: 'none' }}
+                    />
+                    {(startDate || endDate) && (
+                      <button 
+                        onClick={() => { setStartDate(''); setEndDate(''); }} 
+                        style={{ padding: '6px 12px', background: '#e2e8f0', color: '#475569', border: 'none', borderRadius: '6px', cursor: 'pointer', fontSize: '12px', fontWeight: '500' }}
+                      >
+                        Xoá lọc
+                      </button>
+                    )}
+                  </div>
+                  <div style={{ display: 'flex', gap: '10px' }}>
+                    <button 
+                      onClick={() => handleExportToDoc('customers')} 
+                      style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '8px 14px', background: '#1e3a8a', color: '#ffffff', border: 'none', borderRadius: '6px', cursor: 'pointer', fontSize: '13px', fontWeight: '600', transition: 'background 0.2s' }}
+                    >
+                      📄 Xuất Word (.doc)
+                    </button>
+                    <button 
+                      onClick={() => handleExportToCsv('customers')} 
+                      style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '8px 14px', background: '#0f766e', color: '#ffffff', border: 'none', borderRadius: '6px', cursor: 'pointer', fontSize: '13px', fontWeight: '600', transition: 'background 0.2s' }}
+                    >
+                      📊 Xuất Excel (.csv)
+                    </button>
+                  </div>
                 </div>
 
                 <table className="admin-table">
@@ -576,37 +815,54 @@ export default function AdminPage() {
                       <th>SĐT</th>
                       <th>Hãng yêu thích</th>
                       <th>Trình độ</th>
+                      <th>Phân loại</th>
                       <th>Sở thích</th>
                       <th className="text-right">Hành động</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {customers.length === 0 ? (
+                    {filteredCustomers.length === 0 ? (
                       <tr>
-                        <td colSpan={8} className="empty-row">Không tìm thấy khách hàng nào.</td>
+                        <td colSpan={9} className="empty-row">Không tìm thấy khách hàng nào.</td>
                       </tr>
                     ) : (
-                      customers.map((cust) => (
-                        <tr key={cust.id}>
-                          <td>#{cust.id}</td>
-                          <td className="font-weight-600">{cust.name}</td>
-                          <td className="color-accent">{cust.email}</td>
-                          <td>{cust.phone || '-'}</td>
-                          <td><span className="brand-tag">{cust.preferred_brand || '-'}</span></td>
-                          <td>{cust.experience_level || '-'}</td>
-                          <td className="table-cell-desc" title={cust.interests}>{cust.interests || '-'}</td>
-                          <td className="text-right">
-                            <div className="cell-actions">
-                              <button className="icon-btn-edit" onClick={() => handleCustomerEdit(cust)}>
-                                <Edit2 size={14} />
-                              </button>
-                              <button className="icon-btn-delete" onClick={() => handleCustomerDelete(cust.id)}>
-                                <Trash2 size={14} />
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-                      ))
+                      filteredCustomers.map((cust) => {
+                        const isWaitlist = cust.preferred_brand || cust.experience_level;
+                        return (
+                          <tr key={cust.id}>
+                            <td>#{cust.id}</td>
+                            <td className="font-weight-600">{cust.name}</td>
+                            <td className="color-accent">{cust.email}</td>
+                            <td>{cust.phone || '-'}</td>
+                            <td><span className="brand-tag">{cust.preferred_brand || '-'}</span></td>
+                            <td>{cust.experience_level || '-'}</td>
+                            <td>
+                              <span style={{ 
+                                display: 'inline-block',
+                                padding: '3px 8px',
+                                borderRadius: '4px',
+                                fontSize: '11px',
+                                fontWeight: 'bold',
+                                color: '#ffffff',
+                                backgroundColor: isWaitlist ? '#10b981' : '#2563eb'
+                              }}>
+                                {isWaitlist ? 'Waitlist (Popup)' : 'Mua hàng (Checkout)'}
+                              </span>
+                            </td>
+                            <td className="table-cell-desc" title={cust.interests}>{cust.interests || '-'}</td>
+                            <td className="text-right">
+                              <div className="cell-actions">
+                                <button className="icon-btn-edit" onClick={() => handleCustomerEdit(cust)}>
+                                  <Edit2 size={14} />
+                                </button>
+                                <button className="icon-btn-delete" onClick={() => handleCustomerDelete(cust.id)}>
+                                  <Trash2 size={14} />
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                      })
                     )}
                   </tbody>
                 </table>
@@ -624,6 +880,48 @@ export default function AdminPage() {
                   </button>
                 </div>
 
+                {/* Filter and Export Bar */}
+                <div className="filter-export-bar" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: '15px', padding: '15px', background: '#f8fafc', borderRadius: '8px', marginBottom: '15px', border: '1px solid #e2e8f0' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <span style={{ fontSize: '13px', fontWeight: '600', color: '#475569' }}>Lọc theo ngày:</span>
+                    <input 
+                      type="date" 
+                      value={startDate} 
+                      onChange={(e) => setStartDate(e.target.value)} 
+                      style={{ padding: '6px 10px', borderRadius: '6px', border: '1px solid #cbd5e1', fontSize: '13px', outline: 'none' }}
+                    />
+                    <span style={{ fontSize: '13px', color: '#94a3b8' }}>đến</span>
+                    <input 
+                      type="date" 
+                      value={endDate} 
+                      onChange={(e) => setEndDate(e.target.value)} 
+                      style={{ padding: '6px 10px', borderRadius: '6px', border: '1px solid #cbd5e1', fontSize: '13px', outline: 'none' }}
+                    />
+                    {(startDate || endDate) && (
+                      <button 
+                        onClick={() => { setStartDate(''); setEndDate(''); }} 
+                        style={{ padding: '6px 12px', background: '#e2e8f0', color: '#475569', border: 'none', borderRadius: '6px', cursor: 'pointer', fontSize: '12px', fontWeight: '500' }}
+                      >
+                        Xoá lọc
+                      </button>
+                    )}
+                  </div>
+                  <div style={{ display: 'flex', gap: '10px' }}>
+                    <button 
+                      onClick={() => handleExportToDoc('orders')} 
+                      style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '8px 14px', background: '#1e3a8a', color: '#ffffff', border: 'none', borderRadius: '6px', cursor: 'pointer', fontSize: '13px', fontWeight: '600', transition: 'background 0.2s' }}
+                    >
+                      📄 Xuất Word (.doc)
+                    </button>
+                    <button 
+                      onClick={() => handleExportToCsv('orders')} 
+                      style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '8px 14px', background: '#0f766e', color: '#ffffff', border: 'none', borderRadius: '6px', cursor: 'pointer', fontSize: '13px', fontWeight: '600', transition: 'background 0.2s' }}
+                    >
+                      📊 Xuất Excel (.csv)
+                    </button>
+                  </div>
+                </div>
+
                 <table className="admin-table">
                   <thead>
                     <tr>
@@ -638,12 +936,12 @@ export default function AdminPage() {
                     </tr>
                   </thead>
                   <tbody>
-                    {orders.length === 0 ? (
+                    {filteredOrders.length === 0 ? (
                       <tr>
                         <td colSpan={8} className="empty-row">Chưa có đơn đặt hàng nào trong hệ thống.</td>
                       </tr>
                     ) : (
-                      orders.map((ord) => (
+                      filteredOrders.map((ord) => (
                         <tr key={ord.id}>
                           <td className="font-weight-600">ORD-{ord.id}</td>
                           <td>
