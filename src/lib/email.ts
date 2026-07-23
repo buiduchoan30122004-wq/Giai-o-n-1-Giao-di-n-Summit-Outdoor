@@ -16,6 +16,14 @@ try {
 // Domain gửi mặc định sau khi đã xác thực domain riêng
 const FROM_EMAIL = 'Summit Outdoor <no-reply@summitoutdoor.io.vn>';
 
+// Header HTML dùng chung có chứa Logo và Tên thương hiệu
+const EMAIL_HEADER_HTML = `
+  <div style="text-align: center; margin-bottom: 25px; border-bottom: 2px solid #f3f4f6; padding-bottom: 20px;">
+    <img src="https://summitoutdoor.io.vn/icon.svg" alt="Summit Outdoor Logo" width="50" height="50" style="display: inline-block; vertical-align: middle; border-radius: 50%;" />
+    <span style="font-size: 22px; font-weight: bold; color: #111; vertical-align: middle; margin-left: 10px; letter-spacing: 1px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">SUMMIT OUTDOOR</span>
+  </div>
+`;
+
 /**
  * Gửi email theo chuỗi chăm sóc khách hàng tự động (Email 1, 2, 3)
  */
@@ -33,7 +41,8 @@ export async function sendSequenceEmail(toEmail: string, fullName: string, email
       subject = 'Chào mừng bạn đến với Summit Outdoor + Voucher 5% của bạn đây! 🏔️';
       htmlContent = `
         <div style="font-family: Arial, sans-serif; line-height: 1.6; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 8px;">
-          <h2 style="color: #c2410c; text-align: center; margin-bottom: 20px;">Chào mừng bạn đến với Summit Outdoor!</h2>
+          ${EMAIL_HEADER_HTML}
+          <h2 style="color: #c2410c; text-align: center; margin-bottom: 20px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Chào mừng bạn đến với Summit Outdoor!</h2>
           <p>Chào bạn,</p>
           <p>Cảm ơn bạn đã đăng ký tham gia cộng đồng <strong>Summit Outdoor</strong> – nơi tụ hội của những người đam mê chạy bộ địa hình và hoạt động ngoài trời thực thụ.</p>
           <p>Chúng tôi hiểu rằng chạy trail (chạy địa hình) không chỉ là một môn thể thao, mà là một hành trình khám phá giới hạn bản thân giữa thiên nhiên. Tại Summit Outdoor, chúng tôi không đơn thuần là bán giày hay phụ kiện; chúng tôi là những người trực tiếp trải nghiệm, kiểm thử thiết bị trên từng cung đường dốc, bùn lầy hay đá sỏi để mang lại cho bạn những đánh giá chân thực và thiết bị phù hợp nhất.</p>
@@ -67,7 +76,8 @@ export async function sendSequenceEmail(toEmail: string, fullName: string, email
       subject = '3 lỗi nhỏ dễ gây bầm móng chân khi chạy trail (Và cách xử lý thực tế) 👣';
       htmlContent = `
         <div style="font-family: Arial, sans-serif; line-height: 1.6; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 8px;">
-          <h2 style="color: #c2410c; text-align: center; margin-bottom: 20px;">3 lỗi nhỏ dễ gây bầm móng chân khi chạy trail</h2>
+          ${EMAIL_HEADER_HTML}
+          <h2 style="color: #c2410c; text-align: center; margin-bottom: 20px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">3 lỗi nhỏ dễ gây bầm móng chân khi chạy trail</h2>
           <p>Chào bạn,</p>
           <p>Có một thực tế khá "đau đớn" mà rất nhiều runner gặp phải khi chuyển từ chạy đường nhựa (road) sang chạy địa hình (trail): <strong>bầm đen hoặc rụng móng chân sau các buổi chạy dài, đặc biệt là sau khi đổ dốc.</strong></p>
           <p>Nhiều người nghĩ đó là điều bình thường của chạy bộ. Nhưng thực tế, lỗi này hoàn toàn có thể phòng tránh nếu bạn hiểu rõ nguyên nhân.</p>
@@ -101,7 +111,8 @@ export async function sendSequenceEmail(toEmail: string, fullName: string, email
       subject = 'Sẵn sàng cho cung đường trail tiếp theo? Gợi ý 3 mẫu giày tốt nhất cho người mới 👟';
       htmlContent = `
         <div style="font-family: Arial, sans-serif; line-height: 1.6; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 8px;">
-          <h2 style="color: #c2410c; text-align: center; margin-bottom: 20px;">Sẵn sàng cho cung đường trail tiếp theo?</h2>
+          ${EMAIL_HEADER_HTML}
+          <h2 style="color: #c2410c; text-align: center; margin-bottom: 20px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Sẵn sàng cho cung đường trail tiếp theo?</h2>
           <p>Chào bạn,</p>
           <p>Nếu bạn đang lên kế hoạch cho một giải chạy trail sắp tới hoặc đơn giản là muốn đổi gió cuối tuần tại các cung đường rừng, một đôi giày trail chuyên dụng là trang bị tối quan trọng để bảo vệ bạn khỏi trơn trượt và chấn thương.</p>
           <p>Không có đôi giày tốt nhất cho tất cả mọi người, chỉ có đôi giày phù hợp nhất với bàn chân và cung đường của bạn. Dưới đây là phân tích ưu và nhược điểm khách quan của 3 dòng giày trail được cộng đồng runner đánh giá cao nhất hiện nay để bạn tham khảo:</p>
@@ -208,7 +219,8 @@ export async function sendOrderConfirmationEmail(
       subject: `Xác nhận đơn hàng thành công #${orderCode} - Summit Outdoor`,
       html: `
         <div style="font-family: Arial, sans-serif; line-height: 1.6; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 8px;">
-          <h2 style="color: #16a34a; text-align: center;">Đặt hàng thành công!</h2>
+          ${EMAIL_HEADER_HTML}
+          <h2 style="color: #16a34a; text-align: center; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Đặt hàng thành công!</h2>
           <p>Xin chào <strong>${fullName}</strong>,</p>
           <p>Cảm ơn bạn đã tin tưởng mua sắm tại Summit Outdoor. Đơn hàng của bạn đã được ghi nhận thành công và đang được chuẩn bị đóng gói.</p>
           
