@@ -748,7 +748,21 @@ export default function AdminPage() {
                           </td>
                           <td className="font-weight-600 color-accent">{prod.brand}</td>
                           <td className="font-weight-600">{prod.name}</td>
-                          <td>${prod.price.toFixed(2)}</td>
+                          <td>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                              <span style={{ fontWeight: 'bold' }}>{prod.price ? prod.price.toLocaleString('vi-VN') : '0'} đ</span>
+                              {prod.original_price && prod.original_price > prod.price ? (
+                                <span style={{ textDecoration: 'line-through', fontSize: '11px', color: 'var(--text-muted)' }}>
+                                  {prod.original_price.toLocaleString('vi-VN')} đ
+                                </span>
+                              ) : null}
+                              {prod.discount ? (
+                                <span style={{ fontSize: '11px', color: 'var(--accent-primary)', fontWeight: '600' }}>
+                                  Giảm {prod.discount}
+                                </span>
+                              ) : null}
+                            </div>
+                          </td>
                           <td>
                             <span className={`stock-badge ${prod.stock <= 3 ? 'low-stock' : 'in-stock'}`}>
                               {prod.stock} cái
@@ -1100,11 +1114,12 @@ export default function AdminPage() {
 
                 <div className="form-group-row">
                   <div className="form-group">
-                    <label>Giá tiền ($) *</label>
+                    <label>Giá bán thực tế (VNĐ) *</label>
                     <input 
                       type="number" 
-                      step="0.01"
+                      step="1"
                       min="0"
+                      placeholder="Ví dụ: 3200000"
                       value={productForm.price} 
                       onChange={(e) => setProductForm({ ...productForm, price: parseFloat(e.target.value) || 0 })}
                       required
@@ -1124,21 +1139,21 @@ export default function AdminPage() {
 
                 <div className="form-group-row">
                   <div className="form-group">
-                    <label>Giá gốc ($ / đ)</label>
+                    <label>Giá gốc trước giảm (VNĐ)</label>
                     <input 
                       type="number" 
-                      step="0.01"
+                      step="1"
                       min="0"
-                      placeholder="Ví dụ: 180" 
+                      placeholder="Ví dụ: 3800000" 
                       value={productForm.original_price} 
                       onChange={(e) => setProductForm({ ...productForm, original_price: parseFloat(e.target.value) || 0 })}
                     />
                   </div>
                   <div className="form-group">
-                    <label>Giảm giá (Ví dụ: 10% hoặc $15)</label>
+                    <label>Giảm giá (Ví dụ: 10% hoặc 200k)</label>
                     <input 
                       type="text" 
-                      placeholder="Ví dụ: 10%, $15" 
+                      placeholder="Ví dụ: 10% hoặc 200k" 
                       value={productForm.discount} 
                       onChange={(e) => setProductForm({ ...productForm, discount: e.target.value })}
                     />
@@ -1581,7 +1596,7 @@ export default function AdminPage() {
                     <option value="" disabled>-- Chọn sản phẩm --</option>
                     {products.map(p => (
                       <option key={p.id} value={p.id}>
-                        {p.brand} - {p.name} (Tồn kho: {p.stock} cái | Giá: ${p.price.toFixed(2)})
+                        {p.brand} - {p.name} (Tồn kho: {p.stock} cái | Giá: {p.price ? p.price.toLocaleString('vi-VN') : '0'} đ)
                       </option>
                     ))}
                   </select>
