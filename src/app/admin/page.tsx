@@ -1738,6 +1738,21 @@ export default function AdminPage() {
       {/* Styled JSX for responsive, gorgeous glassmorphism UI */}
       <style jsx>{`
         .admin-layout {
+          --bg-primary: #ffffff;
+          --bg-secondary: #f8fafc;
+          --bg-tertiary: #f1f5f9;
+          --text-primary: #0f172a;
+          --text-secondary: #475569;
+          --text-muted: #94a3b8;
+          --text-accent: #e11d48;
+          --accent-primary: #e11d48;
+          --accent-hover: #be123c;
+          --border-color: #e2e8f0;
+          --radius-sm: 6px;
+          --radius-md: 10px;
+          --radius-lg: 16px;
+          --font-sans: var(--font-inter), -apple-system, sans-serif;
+
           min-height: 100vh;
           background-color: var(--bg-primary);
           color: var(--text-primary);
