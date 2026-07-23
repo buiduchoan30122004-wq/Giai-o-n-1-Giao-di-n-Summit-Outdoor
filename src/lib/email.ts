@@ -13,9 +13,8 @@ try {
   console.error('Failed to initialize Resend SDK:', e);
 }
 
-// Domain gửi mặc định cho môi trường test của Resend.
-// Khi đã xác thực domain riêng (ví dụ: summitoutdoor.io.vn), bạn hãy đổi sang email của domain đó.
-const FROM_EMAIL = 'Summit Outdoor <onboarding@resend.dev>';
+// Domain gửi mặc định sau khi đã xác thực domain riêng
+const FROM_EMAIL = 'Summit Outdoor <no-reply@summitoutdoor.io.vn>';
 
 /**
  * Gửi email chào mừng khi đăng ký nhận tin bản tin / tư vấn (Newsletter)
