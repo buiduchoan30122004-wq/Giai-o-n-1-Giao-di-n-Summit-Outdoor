@@ -143,7 +143,7 @@ export default function Chatbot() {
     return filtered.slice(0, 4);
   };
 
-  const handleRecommendationSubmit = (data: RecommendationData) => {
+  const handleRecommendationSubmit = async (data: RecommendationData) => {
     setIsRecommendOpen(false);
 
     // Show a summary message in chat as User
@@ -163,6 +163,28 @@ export default function Chatbot() {
       ...prev,
       { sender: 'user', text: summaryText }
     ]);
+
+    // Send customer details to CRM database
+    try {
+      if (data.name && data.email) {
+        await fetch('/api/subscribe', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name: data.name,
+            email: data.email,
+            phone: data.phone || '',
+            preferred_brand: data.current_brand || '',
+            experience_level: data.experience || '',
+            interests: `Sản phẩm: ${data.product_type}. Cự ly: ${data.distance}. Địa hình: ${data.terrain}. Size: ${data.shoe_size || 'Không'}. Vấn đề chân: ${data.foot_issue.join(', ')}`
+          }),
+        });
+      }
+    } catch (err) {
+      console.error('Failed to auto-subscribe recommendation popup customer:', err);
+    }
 
     // Set generating/loading state
     setIsGenerating(true);
