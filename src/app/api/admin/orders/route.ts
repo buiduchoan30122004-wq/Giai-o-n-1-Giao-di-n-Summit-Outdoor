@@ -180,12 +180,13 @@ export async function PUT(req: NextRequest) {
             };
             fs.writeFileSync(paymentsFilePath, JSON.stringify(payments, null, 2), 'utf-8');
 
-            // Gửi email xác nhận đặt hàng thành công qua Resend
+            // Gửi email xác nhận đặt hàng & email cảm ơn mua hàng qua Resend
             try {
-              const { sendOrderConfirmationByCode } = await import('@/lib/email');
+              const { sendOrderConfirmationByCode, sendThankYouEmailByCode } = await import('@/lib/email');
               await sendOrderConfirmationByCode(order.order_code);
+              await sendThankYouEmailByCode(order.order_code);
             } catch (mailError) {
-              console.error('Failed to send order confirmation email via CRM manual approval:', mailError);
+              console.error('Failed to send order confirmation/thank you email via CRM manual approval:', mailError);
             }
           } catch (err) {
             console.error('Failed to sync manual confirm with payments.json:', err);

@@ -87,12 +87,13 @@ export async function POST(request: NextRequest) {
         [id, transferAmount, transactionDate, orderCode]
       );
       
-      // Gửi email xác nhận đặt hàng thành công qua Resend
+      // Gửi email xác nhận đặt hàng & email cảm ơn mua hàng qua Resend
       try {
-        const { sendOrderConfirmationByCode } = await import('@/lib/email');
+        const { sendOrderConfirmationByCode, sendThankYouEmailByCode } = await import('@/lib/email');
         await sendOrderConfirmationByCode(orderCode);
+        await sendThankYouEmailByCode(orderCode);
       } catch (mailError) {
-        console.error('Failed to send order confirmation email via sepay webhook:', mailError);
+        console.error('Failed to send order confirmation/thank you email via sepay webhook:', mailError);
       }
     } catch (dbError) {
       console.error('Failed to update order status in local SQLite database:', dbError);

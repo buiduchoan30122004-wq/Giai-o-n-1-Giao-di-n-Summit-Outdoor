@@ -132,7 +132,7 @@ export async function sendSequenceEmail(toEmail: string, fullName: string, email
           <div style="margin-top: 20px; border-bottom: 1px solid #eee; padding-bottom: 15px;">
             <h3 style="color: #c2410c; margin-bottom: 5px;">3. Nike Pegasus Trail 4 – Sự linh hoạt giữa Road và Trail</h3>
             <p style="margin: 5px 0;"><strong>🟢 Ưu điểm:</strong> Thiết kế lai (hybrid) linh hoạt. Đệm React êm ái và bám đường nhựa tốt, giúp bạn thoải mái chạy từ nhà ra tới chân đường trail. Thiết kế thời trang, dễ phối đồ hàng ngày.</p>
-            <p style="margin: 5px 0; color: #991b1b;"><strong>🔴 Nhược điểm:</strong> Gai đế nông hơn nên khả năng bám đường đất bùn nhão hoặc đá ướt trơn trượt kém hơn hẳn so với Salomon và Hoka. Không khuyến nghị dùng cho các cung đường địa hình quá phức tạp hoặc mùa mưa.</p>
+            <p style="margin: 5px 0; color: #991b1b;"><strong>🔴 Nhược điểm:</strong> Gai đế nông hơn nên khả năng bám đường đất bùn nhão hoặc đá ướt trơn trượt kém hơn hẳn so với Salomon and Hoka. Không khuyến nghị dùng cho các cung đường địa hình quá phức tạp hoặc mùa mưa.</p>
           </div>
 
           <div style="background-color: #fff7ed; border: 1px dashed #c2410c; padding: 15px; text-align: center; border-radius: 6px; margin: 25px 0;">
@@ -306,6 +306,95 @@ export async function sendOrderConfirmationByCode(orderCode: string) {
     return await sendOrderConfirmationEmail(toEmail, fullName, orderCode, items, totalPrice);
   } catch (err: any) {
     console.error(`Failed to send order confirmation for code ${orderCode}:`, err);
+    return { success: false, error: err.message };
+  }
+}
+
+/**
+ * Gửi email cảm ơn khách hàng đã mua hàng tại Summit Outdoor
+ */
+export async function sendThankYouEmail(toEmail: string, fullName: string, orderCode: string) {
+  if (!resend) {
+    console.warn('Skipping sendThankYouEmail: Resend SDK is not initialized.');
+    return { success: false, error: 'Resend SDK is not initialized' };
+  }
+
+  try {
+    const { data, error } = await resend.emails.send({
+      from: FROM_EMAIL,
+      to: [toEmail],
+      subject: `Cảm ơn bạn đã mua hàng tại Summit Outdoor! 🏔️ (Đơn hàng #${orderCode})`,
+      html: `
+        <div style="font-family: Arial, sans-serif; line-height: 1.6; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 8px;">
+          ${EMAIL_HEADER_HTML}
+          <h2 style="color: #c2410c; text-align: center; margin-bottom: 20px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Chân thành cảm ơn bạn!</h2>
+          <p>Xin chào <strong>${fullName}</strong>,</p>
+          <p>Chúng tôi xin chân thành cảm ơn bạn đã tin tưởng lựa chọn mua sắm thiết bị chạy bộ địa hình và leo núi tại <strong>Summit Outdoor</strong> cho hành trình sắp tới của mình.</p>
+          
+          <p>Đơn hàng của bạn với mã số <strong style="color: #c2410c;">#${orderCode}</strong> đã được bộ phận quản trị duyệt thành công và đang được chuẩn bị đóng gói cẩn thận để gửi đến bạn nhanh nhất có thể.</p>
+
+          <h3 style="color: #444; border-bottom: 1px solid #eee; padding-bottom: 8px; margin-top: 25px;">Một số lưu ý nhỏ dành cho bạn:</h3>
+          <ul style="padding-left: 20px;">
+            <li style="margin-bottom: 10px;"><strong>Kiểm tra hàng:</strong> Khi nhận hàng, bạn vui lòng kiểm tra kỹ sản phẩm, tem mác và thử size ngay tại chỗ để đảm bảo thiết bị hoàn hảo nhất.</li>
+            <li style="margin-bottom: 10px;"><strong>Đổi size miễn phí:</strong> Đừng quên chính sách hỗ trợ đổi size miễn phí tận nhà trong vòng 7 ngày nếu giày hay quần áo của bạn bị rộng hoặc chật.</li>
+            <li style="margin-bottom: 10px;"><strong>Vệ sinh giày:</strong> Đối với giày trail, tránh phơi trực tiếp dưới ánh nắng gay gắt hoặc dùng máy sấy nóng để giữ keo đế giày luôn bền bỉ.</li>
+          </ul>
+
+          <p>Nếu bạn cần bất kỳ hỗ trợ nào về vận chuyển hoặc tư vấn kỹ thuật sử dụng sản phẩm, đừng ngần ngại chat với chatbot 24/7 của chúng tôi hoặc liên hệ trực tiếp qua số hotline hỗ trợ.</p>
+          
+          <p style="margin-top: 30px; text-align: center;">
+            <a href="https://summitoutdoor.io.vn/" style="background-color: #c2410c; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; font-weight: bold; display: inline-block;">Ghé thăm Summit Outdoor</a>
+          </p>
+
+          <p>Chúc bạn có những chuyến đi thật trọn vẹn và an toàn!</p>
+          <hr style="border: none; border-top: 1px solid #eee; margin-top: 30px;"/>
+          <p style="font-size: 12px; color: #888; text-align: center;">Thân mến,<br/><strong>Đội ngũ Summit Outdoor</strong></p>
+        </div>
+      `,
+    });
+
+    if (error) {
+      console.error('Error sending thank you email:', error);
+      return { success: false, error };
+    }
+
+    return { success: true, data };
+  } catch (err: any) {
+    console.error('Failed to send thank you email:', err);
+    return { success: false, error: err.message };
+  }
+}
+
+/**
+ * Tra cứu thông tin khách hàng từ mã đơn hàng và gửi email cảm ơn mua hàng
+ */
+export async function sendThankYouEmailByCode(orderCode: string) {
+  try {
+    const rawOrders = await queryAll(`
+      SELECT c.name as customer_name, c.email as customer_email
+      FROM orders o
+      JOIN customers c ON o.customer_id = c.id
+      WHERE o.order_code = ?
+      LIMIT 1
+    `, [orderCode]);
+
+    if (!rawOrders || rawOrders.length === 0) {
+      console.warn(`No orders found for code: ${orderCode} to send thank you email.`);
+      return { success: false, error: 'Order not found' };
+    }
+
+    const customer = rawOrders[0] as any;
+    const toEmail = customer.customer_email;
+    const fullName = customer.customer_name;
+
+    if (!toEmail) {
+      console.warn(`Customer email is empty for order: ${orderCode}. Skipping thank you email.`);
+      return { success: false, error: 'Customer email not found' };
+    }
+
+    return await sendThankYouEmail(toEmail, fullName, orderCode);
+  } catch (err: any) {
+    console.error(`Failed to send thank you email for code ${orderCode}:`, err);
     return { success: false, error: err.message };
   }
 }
