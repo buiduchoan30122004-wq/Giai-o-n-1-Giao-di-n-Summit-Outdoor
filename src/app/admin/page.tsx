@@ -60,6 +60,7 @@ interface Order {
   transaction_id?: string;
   payment_amount?: number;
   payment_date?: string;
+  payment_method?: string;
 }
 
 type TabType = 'products' | 'customers' | 'orders';
@@ -656,15 +657,20 @@ export default function AdminPage() {
                             <div>
                               <span className={`status-pill ${ord.status}`}>
                                 {ord.status === 'pending' ? 'Chờ thanh toán' : ''}
-                                {ord.status === 'confirmed' ? 'Đã thanh toán' : ''}
+                                {ord.status === 'confirmed' ? (ord.payment_method === 'cod' ? 'Đang giao hàng (COD)' : 'Đã thanh toán') : ''}
                                 {ord.status === 'cancelled' ? 'Đã hủy' : ''}
                               </span>
-                              {ord.status === 'confirmed' && ord.transaction_id && (
-                                <div style={{ marginTop: '4px', fontSize: '11px', display: 'flex', flexDirection: 'column', gap: '1px', color: '#6b7280' }}>
-                                  <span>💳 GD: {ord.transaction_id}</span>
-                                  <span>💰 Nhận: {ord.payment_amount ? Number(ord.payment_amount).toLocaleString('vi-VN') + 'đ' : ''}</span>
-                                </div>
-                              )}
+                              <div style={{ marginTop: '4px', fontSize: '11px', display: 'flex', flexDirection: 'column', gap: '1.5px', color: '#6b7280' }}>
+                                <span style={{ fontWeight: '500', color: '#374151' }}>
+                                  {ord.payment_method === 'cod' ? '💵 COD (Thanh toán khi nhận)' : '🏦 Chuyển khoản QR'}
+                                </span>
+                                {ord.status === 'confirmed' && ord.transaction_id && (
+                                  <>
+                                    <span>💳 GD: {ord.transaction_id}</span>
+                                    <span>💰 Nhận: {ord.payment_amount ? Number(ord.payment_amount).toLocaleString('vi-VN') + 'đ' : ''}</span>
+                                  </>
+                                )}
+                              </div>
                             </div>
                           </td>
                           <td>{new Date(ord.created_at).toLocaleDateString('vi-VN')}</td>

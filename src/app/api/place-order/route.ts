@@ -51,12 +51,12 @@ export async function POST(req: NextRequest) {
       }
 
       const totalItemPrice = itemPrice * item.quantity;
-      const initialStatus = 'pending';
+      const initialStatus = paymentMethod === 'cod' ? 'confirmed' : 'pending';
 
-      // 3. Save order record with shipping details & order_code
+      // 3. Save order record with shipping details, payment method & order_code
       await queryRun(
-        'INSERT INTO orders (customer_id, product_id, quantity, total_price, status, order_code, address, notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-        [customerId, dbProductId, item.quantity, totalItemPrice, initialStatus, orderCode, address || '', notes || '']
+        'INSERT INTO orders (customer_id, product_id, quantity, total_price, status, order_code, address, notes, payment_method) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        [customerId, dbProductId, item.quantity, totalItemPrice, initialStatus, orderCode, address || '', notes || '', paymentMethod || 'qr']
       );
 
       // 4. Deduct stock in DB
