@@ -517,10 +517,6 @@ export default function AdminPage() {
       {/* Header Panel */}
       <header className="admin-header">
         <div className="header-left">
-          <Link href="/" className="back-home-btn">
-            <Home size={16} />
-            <span>Trở lại Agent</span>
-          </Link>
           <div className="header-title-container" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
               <polygon points="13,6 3,24 23,24" fill="#e11d48" />
