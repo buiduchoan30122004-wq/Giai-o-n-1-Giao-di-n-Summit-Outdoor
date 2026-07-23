@@ -640,7 +640,7 @@ export default function AdminPage() {
                   <h3>Danh Sách Sản Phẩm</h3>
                   <button className="action-btn-primary" onClick={openAddProductModal}>
                     <Plus size={16} />
-                    <span>Thêm Sản Phẩm</span>
+                    <span>Thêm Sản Phẩm Mới</span>
                   </button>
                 </div>
 
@@ -993,7 +993,7 @@ export default function AdminPage() {
       {/* 1. PRODUCT FORM MODAL */}
       {productModal.open && (
         <div className="modal-backdrop">
-          <div className="modal-container animate-scale-in">
+          <div className="modal-container white-modal animate-scale-in">
             <div className="modal-header">
               <h2>{productModal.editId ? 'Chỉnh Sửa Sản Phẩm' : 'Thêm Sản Phẩm Mới'}</h2>
               <button className="modal-close-btn" onClick={() => setProductModal({ open: false })}>✕</button>
@@ -1057,10 +1057,10 @@ export default function AdminPage() {
                       style={{
                         width: '100%',
                         padding: '10px 12px',
-                        backgroundColor: 'var(--bg-secondary)',
-                        border: '1px solid var(--border-color)',
+                        backgroundColor: '#ffffff',
+                        border: '1px solid #d1d5db',
                         borderRadius: 'var(--radius-sm)',
-                        color: 'var(--text-primary)',
+                        color: '#111827',
                         fontSize: '13.5px',
                         outline: 'none'
                       }}
@@ -1114,74 +1114,226 @@ export default function AdminPage() {
                   />
                 </div>
 
-                <div className="form-group-row">
-                  <div className="form-group">
-                    <label>Màu sắc khả dụng (Phân tách bởi dấu phẩy)</label>
-                    <input 
-                      type="text" 
-                      placeholder="Ví dụ: Đen, Trắng, Xám, Đỏ, Vàng" 
-                      value={productForm.available_colors} 
-                      onChange={(e) => setProductForm({ ...productForm, available_colors: e.target.value })}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label>Kích cỡ khả dụng (Phân tách bởi dấu phẩy)</label>
-                    <input 
-                      type="text" 
-                      placeholder="Ví dụ: US 8, US 8.5, US 9, US 10" 
-                      value={productForm.available_sizes} 
-                      onChange={(e) => setProductForm({ ...productForm, available_sizes: e.target.value })}
-                    />
-                  </div>
-                </div>
+                {/* 1. DYNAMIC COLOR & SIZE LABELS ACCORDING TO SELECTED CATEGORY */}
+                {(() => {
+                  const cat = productForm.category;
+                  let colorLabel = 'Màu sắc khả dụng (Phân tách bởi dấu phẩy)';
+                  let colorPlaceholder = 'Ví dụ: Đen, Trắng, Xám, Đỏ, Vàng';
+                  let sizeLabel = 'Kích cỡ khả dụng (Phân tách bởi dấu phẩy)';
+                  let sizePlaceholder = 'Ví dụ: US 8, US 8.5, US 9, US 10';
 
-                <div style={{ margin: '15px 0 10px 0', borderTop: '1px solid var(--border-color)', paddingTop: '15px' }}>
-                  <h4 style={{ fontSize: '13.5px', fontWeight: '600', marginBottom: '12px', color: 'var(--text-accent)' }}>Thông Số Kỹ Thuật (Specs)</h4>
-                  <div className="form-group-row" style={{ marginBottom: '8px' }}>
-                    <div className="form-group">
-                      <label>Đệm gót (Cushioning)</label>
-                      <input 
-                        type="text" 
-                        value={productForm.specs_cushioning} 
-                        onChange={(e) => setProductForm({ ...productForm, specs_cushioning: e.target.value })}
-                      />
+                  if (cat === 'trail' || cat === 'hiking' || cat === 'women' || cat === 'sale') {
+                    colorLabel = 'Màu sắc khả dụng (Ví dụ: Đen, Trắng, Bản chân bè, Chân thon)';
+                    colorPlaceholder = 'Ví dụ: Đen, Trắng, Chân bè, Chân thon';
+                    sizeLabel = 'Kích cỡ khả dụng (US size)';
+                    sizePlaceholder = 'Ví dụ: US 7.5, US 8, US 8.5, US 9, US 9.5';
+                  } else if (cat === 'nutrition') {
+                    colorLabel = 'Hương vị khả dụng (Phân tách bởi dấu phẩy)';
+                    colorPlaceholder = 'Ví dụ: Dâu chuối, Việt quất, Táo, Sô cô la';
+                    sizeLabel = 'Quy cách đóng gói & Kích thước (Phân tách bởi dấu phẩy)';
+                    sizePlaceholder = 'Ví dụ: Gói lẻ 32g, Hộp 24 gói, Gói to 60g';
+                  } else if (cat === 'accessories') {
+                    colorLabel = 'Màu sắc khả dụng (Phân tách bởi dấu phẩy)';
+                    colorPlaceholder = 'Ví dụ: Đen, Xám, Đỏ, Cam';
+                    sizeLabel = 'Kích thước / Phân loại phụ kiện (Phân tách bởi dấu phẩy)';
+                    sizePlaceholder = 'Ví dụ: Màn hình 1.4 inch, Dung tích 500ml, Size M/L';
+                  }
+
+                  return (
+                    <div className="form-group-row">
+                      <div className="form-group">
+                        <label>{colorLabel}</label>
+                        <input 
+                          type="text" 
+                          placeholder={colorPlaceholder}
+                          value={productForm.available_colors} 
+                          onChange={(e) => setProductForm({ ...productForm, available_colors: e.target.value })}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label>{sizeLabel}</label>
+                        <input 
+                          type="text" 
+                          placeholder={sizePlaceholder}
+                          value={productForm.available_sizes} 
+                          onChange={(e) => setProductForm({ ...productForm, available_sizes: e.target.value })}
+                        />
+                      </div>
                     </div>
-                    <div className="form-group">
-                      <label>Hỗ trợ lực (Support)</label>
-                      <input 
-                        type="text" 
-                        value={productForm.specs_support} 
-                        onChange={(e) => setProductForm({ ...productForm, specs_support: e.target.value })}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label>Độ chênh lệch gót-mũi (Drop)</label>
-                      <input 
-                        type="text" 
-                        value={productForm.specs_drop} 
-                        onChange={(e) => setProductForm({ ...productForm, specs_drop: e.target.value })}
-                      />
-                    </div>
-                  </div>
-                  <div className="form-group-row">
-                    <div className="form-group">
-                      <label>Trọng lượng (Weight)</label>
-                      <input 
-                        type="text" 
-                        value={productForm.specs_weight} 
-                        onChange={(e) => setProductForm({ ...productForm, specs_weight: e.target.value })}
-                      />
-                    </div>
-                    <div className="form-group" style={{ flex: '2' }}>
-                      <label>Địa hình khuyên dùng (Terrain)</label>
-                      <input 
-                        type="text" 
-                        value={productForm.specs_terrain} 
-                        onChange={(e) => setProductForm({ ...productForm, specs_terrain: e.target.value })}
-                      />
-                    </div>
-                  </div>
-                </div>
+                  );
+                })()}
+
+                {/* 2. DYNAMIC SPECS ACCORDING TO SELECTED CATEGORY */}
+                {(() => {
+                  const cat = productForm.category;
+                  
+                  if (cat === 'trail' || cat === 'hiking' || cat === 'women' || cat === 'sale') {
+                    return (
+                      <div style={{ margin: '15px 0 10px 0', borderTop: '1px solid #e5e7eb', paddingTop: '15px' }}>
+                        <h4 style={{ fontSize: '13.5px', fontWeight: '600', marginBottom: '12px', color: '#059669' }}>Thông Số Kỹ Thuật Giày (Specs)</h4>
+                        <div className="form-group-row" style={{ marginBottom: '8px' }}>
+                          <div className="form-group">
+                            <label>Đệm gót (Cushioning)</label>
+                            <input 
+                              type="text" 
+                              placeholder="Ví dụ: Đệm dày, Đệm vừa"
+                              value={productForm.specs_cushioning} 
+                              onChange={(e) => setProductForm({ ...productForm, specs_cushioning: e.target.value })}
+                            />
+                          </div>
+                          <div className="form-group">
+                            <label>Hỗ trợ lực (Support)</label>
+                            <input 
+                              type="text" 
+                              placeholder="Ví dụ: Hỗ trợ lực đẩy, Trung tính"
+                              value={productForm.specs_support} 
+                              onChange={(e) => setProductForm({ ...productForm, specs_support: e.target.value })}
+                            />
+                          </div>
+                          <div className="form-group">
+                            <label>Độ chênh lệch gót-mũi (Drop)</label>
+                            <input 
+                              type="text" 
+                              placeholder="Ví dụ: 8mm, 4mm, 0mm"
+                              value={productForm.specs_drop} 
+                              onChange={(e) => setProductForm({ ...productForm, specs_drop: e.target.value })}
+                            />
+                          </div>
+                        </div>
+                        <div className="form-group-row">
+                          <div className="form-group">
+                            <label>Trọng lượng (Weight)</label>
+                            <input 
+                              type="text" 
+                              placeholder="Ví dụ: 286g, 310g"
+                              value={productForm.specs_weight} 
+                              onChange={(e) => setProductForm({ ...productForm, specs_weight: e.target.value })}
+                            />
+                          </div>
+                          <div className="form-group" style={{ flex: '2' }}>
+                            <label>Địa hình khuyên dùng (Terrain)</label>
+                            <input 
+                              type="text" 
+                              placeholder="Ví dụ: Địa hình kỹ thuật, Đường mòn hỗn hợp"
+                              value={productForm.specs_terrain} 
+                              onChange={(e) => setProductForm({ ...productForm, specs_terrain: e.target.value })}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  } else if (cat === 'nutrition') {
+                    return (
+                      <div style={{ margin: '15px 0 10px 0', borderTop: '1px solid #e5e7eb', paddingTop: '15px' }}>
+                        <h4 style={{ fontSize: '13.5px', fontWeight: '600', marginBottom: '12px', color: '#059669' }}>Thông Số Dinh Dưỡng (Specs)</h4>
+                        <div className="form-group-row" style={{ marginBottom: '8px' }}>
+                          <div className="form-group">
+                            <label>Năng lượng (Calories)</label>
+                            <input 
+                              type="text" 
+                              placeholder="Ví dụ: 100 kcal, 120 kcal"
+                              value={productForm.specs_cushioning} 
+                              onChange={(e) => setProductForm({ ...productForm, specs_cushioning: e.target.value })}
+                            />
+                          </div>
+                          <div className="form-group">
+                            <label>Carbohydrate (Carbs)</label>
+                            <input 
+                              type="text" 
+                              placeholder="Ví dụ: 22g, 30g"
+                              value={productForm.specs_support} 
+                              onChange={(e) => setProductForm({ ...productForm, specs_support: e.target.value })}
+                            />
+                          </div>
+                          <div className="form-group">
+                            <label>Natri / Điện giải (Sodium)</label>
+                            <input 
+                              type="text" 
+                              placeholder="Ví dụ: 60mg, 125mg"
+                              value={productForm.specs_drop} 
+                              onChange={(e) => setProductForm({ ...productForm, specs_drop: e.target.value })}
+                            />
+                          </div>
+                        </div>
+                        <div className="form-group-row">
+                          <div className="form-group">
+                            <label>Hàm lượng Caffeine</label>
+                            <input 
+                              type="text" 
+                              placeholder="Ví dụ: 35mg, Không Caffeine"
+                              value={productForm.specs_weight} 
+                              onChange={(e) => setProductForm({ ...productForm, specs_weight: e.target.value })}
+                            />
+                          </div>
+                          <div className="form-group" style={{ flex: '2' }}>
+                            <label>Khuyên dùng / Mục đích sử dụng</label>
+                            <input 
+                              type="text" 
+                              placeholder="Ví dụ: Dùng trước/trong khi chạy, Cung cấp năng lượng nhanh"
+                              value={productForm.specs_terrain} 
+                              onChange={(e) => setProductForm({ ...productForm, specs_terrain: e.target.value })}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  } else { // accessories
+                    return (
+                      <div style={{ margin: '15px 0 10px 0', borderTop: '1px solid #e5e7eb', paddingTop: '15px' }}>
+                        <h4 style={{ fontSize: '13.5px', fontWeight: '600', marginBottom: '12px', color: '#059669' }}>Thông Số Phụ Kiện (Specs)</h4>
+                        <div className="form-group-row" style={{ marginBottom: '8px' }}>
+                          <div className="form-group">
+                            <label>Chất liệu (Material)</label>
+                            <input 
+                              type="text" 
+                              placeholder="Ví dụ: Silicone, Nylon chống nước, Nhôm"
+                              value={productForm.specs_cushioning} 
+                              onChange={(e) => setProductForm({ ...productForm, specs_cushioning: e.target.value })}
+                            />
+                          </div>
+                          <div className="form-group">
+                            <label>Kích thước / Dung tích (Volume/Size)</label>
+                            <input 
+                              type="text" 
+                              placeholder="Ví dụ: Màn hình 1.4 inch, Dung tích 500ml"
+                              value={productForm.specs_support} 
+                              onChange={(e) => setProductForm({ ...productForm, specs_support: e.target.value })}
+                            />
+                          </div>
+                          <div className="form-group">
+                            <label>Trọng lượng phụ kiện (Weight)</label>
+                            <input 
+                              type="text" 
+                              placeholder="Ví dụ: 52g, 150g"
+                              value={productForm.specs_drop} 
+                              onChange={(e) => setProductForm({ ...productForm, specs_drop: e.target.value })}
+                            />
+                          </div>
+                        </div>
+                        <div className="form-group-row">
+                          <div className="form-group">
+                            <label>Tính năng đặc biệt</label>
+                            <input 
+                              type="text" 
+                              placeholder="Ví dụ: Đo nhịp tim, Pin 14 ngày, Còi cứu hộ"
+                              value={productForm.specs_weight} 
+                              onChange={(e) => setProductForm({ ...productForm, specs_weight: e.target.value })}
+                            />
+                          </div>
+                          <div className="form-group" style={{ flex: '2' }}>
+                            <label>Khuyên dùng / Mục đích sử dụng</label>
+                            <input 
+                              type="text" 
+                              placeholder="Ví dụ: Chạy bộ ban đêm, Đựng nước cự ly dài"
+                              value={productForm.specs_terrain} 
+                              onChange={(e) => setProductForm({ ...productForm, specs_terrain: e.target.value })}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  }
+                })()}
 
                 <div className="form-group">
                   <label>Mô tả chi tiết sản phẩm</label>
@@ -1906,6 +2058,53 @@ export default function AdminPage() {
           backdrop-filter: blur(4px);
           padding: 20px;
         }
+        /* White modal theme */
+        .white-modal {
+          background-color: #ffffff !important;
+          color: #1f2937 !important;
+          border: none !important;
+          border-radius: 16px !important;
+          box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+          max-width: 650px !important;
+        }
+        .white-modal .modal-header {
+          background-color: #f9fafb !important;
+          border-bottom: 1px solid #e5e7eb !important;
+          color: #111827 !important;
+        }
+        .white-modal .modal-header h2 {
+          color: #111827 !important;
+        }
+        .white-modal .modal-close-btn {
+          color: #9ca3af !important;
+        }
+        .white-modal .modal-close-btn:hover {
+          color: #111827 !important;
+        }
+        .white-modal .form-group label {
+          color: #4b5563 !important;
+        }
+        .white-modal input, .white-modal select, .white-modal textarea {
+          background-color: #ffffff !important;
+          border: 1px solid #d1d5db !important;
+          color: #111827 !important;
+        }
+        .white-modal input:focus, .white-modal select:focus, .white-modal textarea:focus {
+          border-color: #059669 !important;
+        }
+        .white-modal .modal-footer {
+          background-color: #f9fafb !important;
+          border-top: 1px solid #e5e7eb !important;
+        }
+        .white-modal .btn-secondary {
+          border-color: #d1d5db !important;
+          color: #4b5563 !important;
+        }
+        .white-modal .btn-secondary:hover {
+          border-color: #9ca3af !important;
+          color: #111827 !important;
+        }
+
         .modal-container {
           background-color: var(--bg-secondary);
           border: 1px solid var(--border-color);
