@@ -1502,6 +1502,7 @@ export default function AdminPage() {
           text-align: left;
           border-bottom: 1px solid var(--border-color);
           font-size: 13.5px;
+          vertical-align: middle;
         }
         .admin-table th {
           background-color: var(--bg-tertiary);
@@ -1510,6 +1511,7 @@ export default function AdminPage() {
           text-transform: uppercase;
           font-size: 11px;
           letter-spacing: 0.05em;
+          white-space: nowrap;
         }
         .admin-table tr:hover td {
           background-color: #ffffff02;
@@ -1606,6 +1608,7 @@ export default function AdminPage() {
           justify-content: flex-end;
           align-items: center;
           gap: 6px;
+          flex-wrap: nowrap;
         }
         .icon-btn-edit, .icon-btn-delete {
           width: 30px;
@@ -1617,6 +1620,7 @@ export default function AdminPage() {
           justify-content: center;
           cursor: pointer;
           transition: all 0.2s;
+          flex-shrink: 0;
         }
         .icon-btn-edit { background-color: var(--bg-tertiary); color: var(--text-secondary); }
         .icon-btn-edit:hover { border-color: var(--text-accent); color: var(--text-accent); }
@@ -1637,6 +1641,8 @@ export default function AdminPage() {
           border-radius: var(--radius-sm);
           cursor: pointer;
           transition: all 0.2s;
+          white-space: nowrap;
+          flex-shrink: 0;
         }
         .btn-manual-confirm:hover {
           background-color: #047857;
@@ -1654,6 +1660,8 @@ export default function AdminPage() {
           border-radius: var(--radius-sm);
           cursor: pointer;
           transition: all 0.2s;
+          white-space: nowrap;
+          flex-shrink: 0;
         }
         .btn-cancel-order:hover {
           background-color: #7f1d1d;
