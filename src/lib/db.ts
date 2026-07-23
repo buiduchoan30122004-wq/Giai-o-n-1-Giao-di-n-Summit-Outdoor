@@ -3,14 +3,41 @@ import path from 'path';
 const dbPath = path.join(process.cwd(), 'brain.db');
 let clientInstance: any = null;
 
+async function runMigrations(client: any) {
+  const columns = [
+    "ALTER TABLE orders ADD COLUMN order_code TEXT;",
+    "ALTER TABLE orders ADD COLUMN address TEXT;",
+    "ALTER TABLE orders ADD COLUMN notes TEXT;",
+    "ALTER TABLE orders ADD COLUMN transaction_id TEXT;",
+    "ALTER TABLE orders ADD COLUMN payment_amount REAL;",
+    "ALTER TABLE orders ADD COLUMN payment_date TEXT;",
+    "ALTER TABLE orders ADD COLUMN payment_method TEXT;"
+  ];
+
+  for (const sql of columns) {
+    try {
+      await client.execute(sql);
+      console.log(`Database self-migration query executed: ${sql}`);
+    } catch (e: any) {
+      // Ignore duplicate column/table errors
+      if (!e.message.includes('duplicate column') && !e.message.includes('already exists') && !e.message.includes('duplicate')) {
+        console.warn(`Database migration warning for "${sql}":`, e.message);
+      }
+    }
+  }
+}
+
 // Lazy load @libsql/client to prevent server crash on startup if native bindings fail in target environment
 async function getClient() {
   if (!clientInstance) {
     try {
       const { createClient } = await import('@libsql/client');
-      clientInstance = createClient({
+      const client = createClient({
         url: `file:${dbPath}`,
       });
+      // Run self-healing schema migrations
+      await runMigrations(client);
+      clientInstance = client;
     } catch (error) {
       console.error('CRITICAL: Failed to load @libsql/client.', error);
       throw new Error('Database client is not available in this environment.');
