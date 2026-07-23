@@ -655,18 +655,22 @@ export default function AdminPage() {
               <div className="data-table-container">
                 <div className="table-actions-header" style={{ display: 'block', marginBottom: '20px' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-                    <h3 style={{ margin: 0 }}>Danh Sách Sản Phẩm</h3>
+                    <button className="action-btn-primary" onClick={openAddProductModal} style={{ height: '36px', display: 'flex', alignItems: 'center', gap: '6px', backgroundColor: 'var(--accent-primary)', color: '#ffffff' }}>
+                      <Plus size={16} />
+                      <span>Thêm Sản Phẩm Mới</span>
+                    </button>
+                    <h3 style={{ margin: 0, textTransform: 'uppercase', letterSpacing: '0.02em', fontSize: '15px' }}>Danh Sách Sản Phẩm</h3>
                   </div>
                   
                   {/* Horizontal Category Filter Pills */}
                   <div className="category-tabs-container" style={{
                     display: 'flex',
-                    justifyContent: 'space-between',
+                    justifyContent: 'flex-start',
                     alignItems: 'center',
                     borderBottom: '1px solid var(--border-color)',
                     paddingBottom: '14px',
                     flexWrap: 'wrap',
-                    gap: '12px'
+                    gap: '8px'
                   }}>
                     <div className="category-pills" style={{
                       display: 'flex',
@@ -702,10 +706,6 @@ export default function AdminPage() {
                         </button>
                       ))}
                     </div>
-                    <button className="action-btn-primary" onClick={openAddProductModal} style={{ height: '36px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                      <Plus size={16} />
-                      <span>Thêm Sản Phẩm Mới</span>
-                    </button>
                   </div>
                 </div>
 
@@ -1994,13 +1994,14 @@ export default function AdminPage() {
           vertical-align: middle;
         }
         .admin-table th {
-          background-color: var(--bg-tertiary);
-          color: var(--text-secondary);
-          font-weight: 600;
+          background-color: var(--accent-primary) !important;
+          color: #ffffff !important;
+          font-weight: 700;
           text-transform: uppercase;
-          font-size: 11px;
+          font-size: 11.5px;
           letter-spacing: 0.05em;
           white-space: nowrap;
+          border-bottom: none !important;
         }
         .admin-table tr:hover td {
           background-color: #ffffff02;
