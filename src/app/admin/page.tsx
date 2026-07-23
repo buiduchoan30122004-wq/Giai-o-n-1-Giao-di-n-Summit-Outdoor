@@ -585,32 +585,32 @@ export default function AdminPage() {
 
       {/* Dashboard Sub-Info Bar */}
       <section className="stats-container">
-        <div className="stat-card">
-          <div className="stat-icon p-color"><Package size={24} /></div>
+        <div className="stat-card prod-categories-card">
+          <div className="stat-icon"><Package size={24} /></div>
           <div className="stat-info">
             <span className="stat-value">{products.length}</span>
-            <span className="stat-label">Danh mục Sản Phẩm</span>
+            <span className="stat-label">Mẫu sản phẩm</span>
           </div>
         </div>
-        <div className="stat-card">
-          <div className="stat-icon p-color" style={{ backgroundColor: '#ecfdf5', color: '#10b981' }}><Layers size={24} /></div>
+        <div className="stat-card prod-stock-card">
+          <div className="stat-icon"><Layers size={24} /></div>
           <div className="stat-info">
             <span className="stat-value">{products.reduce((acc, p) => acc + (p.stock || 0), 0)}</span>
-            <span className="stat-label">Tổng Tồn Kho (Mặt hàng)</span>
+            <span className="stat-label">Tổng tồn kho</span>
           </div>
         </div>
-        <div className="stat-card">
-          <div className="stat-icon c-color"><Users size={24} /></div>
+        <div className="stat-card customers-card">
+          <div className="stat-icon"><Users size={24} /></div>
           <div className="stat-info">
              <span className="stat-value">{customers.length}</span>
-             <span className="stat-label">Khách Hàng (Hệ Thống)</span>
+             <span className="stat-label">Khách hàng</span>
           </div>
         </div>
-        <div className="stat-card">
-          <div className="stat-icon o-color"><ShoppingCart size={24} /></div>
+        <div className="stat-card orders-card">
+          <div className="stat-icon"><ShoppingCart size={24} /></div>
           <div className="stat-info">
             <span className="stat-value">{orders.length}</span>
-            <span className="stat-label">Đơn Hàng</span>
+            <span className="stat-label">Đơn hàng</span>
           </div>
         </div>
       </section>
@@ -1849,49 +1849,82 @@ export default function AdminPage() {
         /* Quick stats widget */
         .stats-container {
           display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 16px;
-          margin-bottom: 24px;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 20px;
+          margin-bottom: 28px;
         }
-        @media (max-width: 768px) {
+        @media (max-width: 1024px) {
+          .stats-container {
+            grid-template-columns: repeat(2, 1fr);
+          }
+        }
+        @media (max-width: 580px) {
           .stats-container {
             grid-template-columns: 1fr;
           }
         }
         .stat-card {
-          background-color: var(--bg-secondary);
-          border: 1px solid var(--border-color);
-          border-radius: var(--radius-md);
-          padding: 16px 20px;
+          border-radius: 12px;
+          padding: 20px 24px;
           display: flex;
           align-items: center;
-          gap: 16px;
+          gap: 20px;
+          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+          transition: transform 0.2s, box-shadow 0.2s;
+          cursor: pointer;
+        }
+        .stat-card:hover {
+          transform: translateY(-3px);
+          box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+        }
+        .stat-card.prod-categories-card {
+          background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+          border: 1px solid #e2e8f0;
+        }
+        .stat-card.prod-stock-card {
+          background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+          border: 1px solid #a7f3d0;
+        }
+        .stat-card.customers-card {
+          background: linear-gradient(135deg, #eff6ff, #dbeafe);
+          border: 1px solid #bfdbfe;
+        }
+        .stat-card.orders-card {
+          background: linear-gradient(135deg, #fff1f2, #ffe4e6);
+          border: 1px solid #fecdd3;
         }
         .stat-icon {
-          width: 48px;
-          height: 48px;
-          border-radius: var(--radius-sm);
+          width: 52px;
+          height: 52px;
+          border-radius: 10px;
           display: flex;
           align-items: center;
           justify-content: center;
-          color: white;
+          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
         }
-        .p-color { background-color: rgba(21, 128, 61, 0.2); color: #22c55e; }
-        .c-color { background-color: rgba(59, 130, 246, 0.2); color: #3b82f6; }
-        .o-color { background-color: rgba(245, 158, 11, 0.2); color: #f59e0b; }
+        .prod-categories-card .stat-icon { background-color: #64748b; color: #ffffff; }
+        .prod-stock-card .stat-icon { background-color: #10b981; color: #ffffff; }
+        .customers-card .stat-icon { background-color: #3b82f6; color: #ffffff; }
+        .orders-card .stat-icon { background-color: #f43f5e; color: #ffffff; }
         .stat-info {
           display: flex;
           flex-direction: column;
+          gap: 2px;
         }
         .stat-value {
-          font-size: 20px;
-          font-weight: 700;
+          font-size: 26px;
+          font-weight: 800;
+          line-height: 1.1;
         }
+        .prod-categories-card .stat-value { color: #334155; }
+        .prod-stock-card .stat-value { color: #065f46; }
+        .customers-card .stat-value { color: #1e40af; }
+        .orders-card .stat-value { color: #9f1239; }
         .stat-label {
           font-size: 11px;
-          color: var(--text-muted);
+          color: #64748b;
           text-transform: uppercase;
-          font-weight: 600;
+          font-weight: 700;
           letter-spacing: 0.05em;
         }
 
