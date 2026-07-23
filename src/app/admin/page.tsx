@@ -528,8 +528,8 @@ export default function AdminPage() {
         <div className="stat-card">
           <div className="stat-icon c-color"><Users size={24} /></div>
           <div className="stat-info">
-            <span className="stat-value">{customers.length}</span>
-            <span className="stat-label">Khách Hàng (Waitlist)</span>
+             <span className="stat-value">{customers.length}</span>
+             <span className="stat-label">Khách Hàng (Hệ Thống)</span>
           </div>
         </div>
         <div className="stat-card">
