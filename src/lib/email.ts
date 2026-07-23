@@ -1,8 +1,17 @@
 import { Resend } from 'resend';
 import { queryAll } from './db';
 
-// Khởi tạo Resend instance với API Key từ biến môi trường
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Khởi tạo Resend instance an toàn
+let resend: Resend | null = null;
+try {
+  if (process.env.RESEND_API_KEY) {
+    resend = new Resend(process.env.RESEND_API_KEY);
+  } else {
+    console.warn('RESEND_API_KEY is not defined in environment variables. Email functions will be skipped.');
+  }
+} catch (e) {
+  console.error('Failed to initialize Resend SDK:', e);
+}
 
 // Domain gửi mặc định cho môi trường test của Resend.
 // Khi đã xác thực domain riêng (ví dụ: summitoutdoor.io.vn), bạn hãy đổi sang email của domain đó.
@@ -12,6 +21,11 @@ const FROM_EMAIL = 'Summit Outdoor <onboarding@resend.dev>';
  * Gửi email chào mừng khi đăng ký nhận tin bản tin / tư vấn (Newsletter)
  */
 export async function sendWelcomeEmail(toEmail: string, fullName: string) {
+  if (!resend) {
+    console.warn('Skipping sendWelcomeEmail: Resend SDK is not initialized.');
+    return { success: false, error: 'Resend SDK is not initialized' };
+  }
+
   try {
     const { data, error } = await resend.emails.send({
       from: FROM_EMAIL,
@@ -59,6 +73,11 @@ export async function sendOrderConfirmationEmail(
   items: Array<{ name: string; brand?: string; quantity: number; price: number }>,
   totalPrice: number
 ) {
+  if (!resend) {
+    console.warn('Skipping sendOrderConfirmationEmail: Resend SDK is not initialized.');
+    return { success: false, error: 'Resend SDK is not initialized' };
+  }
+
   try {
     const itemsHtml = items
       .map(
