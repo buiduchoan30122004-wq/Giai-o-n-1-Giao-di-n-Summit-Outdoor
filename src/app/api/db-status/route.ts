@@ -63,6 +63,12 @@ export async function GET(req: NextRequest) {
       const customersCount = await queryAll('SELECT COUNT(*) as count FROM customers');
       reports.readSuccess = true;
       reports.customersCount = customersCount;
+      
+      const customersList = await queryAll('SELECT * FROM customers ORDER BY id DESC LIMIT 20');
+      reports.customersList = customersList;
+
+      const ordersList = await queryAll('SELECT * FROM orders ORDER BY id DESC LIMIT 20');
+      reports.ordersList = ordersList;
     } catch (e: any) {
       reports.readSuccess = false;
       reports.readError = e.message;
