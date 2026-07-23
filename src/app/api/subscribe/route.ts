@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { queryRun } from '@/lib/db';
+import { queryGet, queryRun } from '@/lib/db';
 
 export async function POST(request: NextRequest) {
   try {
@@ -15,18 +15,46 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Thiếu tên hoặc email khách hàng' }, { status: 400 });
     }
 
-    // Insert subscriber into local SQLite database (customers table)
-    await queryRun(
-      `INSERT INTO customers (name, email, phone, preferred_brand, experience_level, interests) VALUES (?, ?, ?, ?, ?, ?)`,
-      [
-        name,
-        email,
-        phone || '',
-        preferred_brand || '',
-        experience_level || '',
-        interests || ''
-      ]
-    );
+    // Check if customer email already exists
+    const existing: any = await queryGet('SELECT id, interests FROM customers WHERE email = ?', [email]);
+    
+    if (existing) {
+      // Append new interests if not already present
+      let updatedInterests = existing.interests || '';
+      if (interests) {
+        if (updatedInterests && !updatedInterests.includes(interests)) {
+          updatedInterests = `${updatedInterests} | ${interests}`;
+        } else if (!updatedInterests) {
+          updatedInterests = interests;
+        }
+      }
+
+      // Update existing customer info
+      await queryRun(
+        `UPDATE customers SET name = ?, phone = ?, preferred_brand = ?, experience_level = ?, interests = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?`,
+        [
+          name,
+          phone || '',
+          preferred_brand || '',
+          experience_level || '',
+          updatedInterests,
+          existing.id
+        ]
+      );
+    } else {
+      // Insert new subscriber
+      await queryRun(
+        `INSERT INTO customers (name, email, phone, preferred_brand, experience_level, interests) VALUES (?, ?, ?, ?, ?, ?)`,
+        [
+          name,
+          email,
+          phone || '',
+          preferred_brand || '',
+          experience_level || '',
+          interests || ''
+        ]
+      );
+    }
 
     return NextResponse.json({ success: true });
     
