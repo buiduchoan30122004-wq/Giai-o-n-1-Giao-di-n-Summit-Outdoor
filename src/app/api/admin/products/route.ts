@@ -12,13 +12,25 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   try {
-    const { brand, name, price, image_url, description, stock } = await req.json();
+    const { 
+      brand, name, price, image_url, description, stock,
+      category, status, subtitle, thumbnails, available_colors, available_sizes, specs, features
+    } = await req.json();
+    
     if (!brand || !name || price === undefined || stock === undefined) {
       return NextResponse.json({ success: false, error: 'Thiếu thông tin bắt buộc' }, { status: 400 });
     }
+    
     const result = await queryRun(
-      `INSERT INTO products (brand, name, price, image_url, description, stock) VALUES (?, ?, ?, ?, ?, ?)`,
-      [brand, name, price, image_url || '', description || '', stock]
+      `INSERT INTO products (
+        brand, name, price, image_url, description, stock,
+        category, status, subtitle, thumbnails, available_colors, available_sizes, specs, features, updated_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)`,
+      [
+        brand, name, price, image_url || '', description || '', stock,
+        category || '', status || '', subtitle || '', thumbnails || '',
+        available_colors || '', available_sizes || '', specs || '', features || ''
+      ]
     );
     return NextResponse.json({ success: true, id: result.lastID });
   } catch (error: any) {
@@ -28,13 +40,27 @@ export async function POST(req: NextRequest) {
 
 export async function PUT(req: NextRequest) {
   try {
-    const { id, brand, name, price, image_url, description, stock } = await req.json();
+    const { 
+      id, brand, name, price, image_url, description, stock,
+      category, status, subtitle, thumbnails, available_colors, available_sizes, specs, features
+    } = await req.json();
+    
     if (!id || !brand || !name || price === undefined || stock === undefined) {
       return NextResponse.json({ success: false, error: 'Thiếu thông tin bắt buộc' }, { status: 400 });
     }
+    
     await queryRun(
-      `UPDATE products SET brand = ?, name = ?, price = ?, image_url = ?, description = ?, stock = ? WHERE id = ?`,
-      [brand, name, price, image_url || '', description || '', stock, id]
+      `UPDATE products SET 
+        brand = ?, name = ?, price = ?, image_url = ?, description = ?, stock = ?,
+        category = ?, status = ?, subtitle = ?, thumbnails = ?, available_colors = ?, available_sizes = ?, specs = ?, features = ?,
+        updated_at = CURRENT_TIMESTAMP
+       WHERE id = ?`,
+      [
+        brand, name, price, image_url || '', description || '', stock,
+        category || '', status || '', subtitle || '', thumbnails || '',
+        available_colors || '', available_sizes || '', specs || '', features || '',
+        id
+      ]
     );
     return NextResponse.json({ success: true });
   } catch (error: any) {

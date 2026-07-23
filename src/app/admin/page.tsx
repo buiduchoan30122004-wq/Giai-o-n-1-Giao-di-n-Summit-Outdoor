@@ -50,7 +50,19 @@ export default function AdminPage() {
     price: 0,
     image_url: '',
     description: '',
-    stock: 10
+    stock: 10,
+    category: 'trail',
+    status: '',
+    subtitle: '',
+    thumbnails: '',
+    available_colors: 'Đen, Trắng, Xám, Đỏ, Xanh dương',
+    available_sizes: 'US 7.5, US 8, US 8.5, US 9, US 9.5, US 10, US 10.5, US 11, US 12',
+    specs_cushioning: 'Chưa cập nhật',
+    specs_support: 'Chưa cập nhật',
+    specs_drop: 'Chưa cập nhật',
+    specs_weight: 'Chưa cập nhật',
+    specs_terrain: 'Chưa cập nhật',
+    features: ''
   });
 
   const [customerForm, setCustomerForm] = useState({
@@ -221,7 +233,33 @@ export default function AdminPage() {
       const isEdit = productModal.editId !== undefined;
       const url = '/api/admin/products';
       const method = isEdit ? 'PUT' : 'POST';
-      const body = isEdit ? { ...productForm, id: productModal.editId } : productForm;
+
+      const specsObj = {
+        cushioning: productForm.specs_cushioning || 'Chưa cập nhật',
+        support: productForm.specs_support || 'Chưa cập nhật',
+        drop: productForm.specs_drop || 'Chưa cập nhật',
+        weight: productForm.specs_weight || 'Chưa cập nhật',
+        terrain: productForm.specs_terrain || 'Chưa cập nhật'
+      };
+
+      const payload = {
+        brand: productForm.brand,
+        name: productForm.name,
+        price: productForm.price,
+        image_url: productForm.image_url,
+        description: productForm.description,
+        stock: productForm.stock,
+        category: productForm.category,
+        status: productForm.status,
+        subtitle: productForm.subtitle,
+        thumbnails: productForm.thumbnails,
+        available_colors: productForm.available_colors,
+        available_sizes: productForm.available_sizes,
+        specs: JSON.stringify(specsObj),
+        features: productForm.features
+      };
+
+      const body = isEdit ? { ...payload, id: productModal.editId } : payload;
 
       const res = await fetch(url, {
         method,
@@ -243,13 +281,44 @@ export default function AdminPage() {
   };
 
   const handleProductEdit = (product: Product) => {
+    let cushioning = 'Chưa cập nhật';
+    let support = 'Chưa cập nhật';
+    let drop = 'Chưa cập nhật';
+    let weight = 'Chưa cập nhật';
+    let terrain = 'Chưa cập nhật';
+    
+    if (product.specs) {
+      try {
+        const parsed = JSON.parse(product.specs);
+        cushioning = parsed.cushioning || cushioning;
+        support = parsed.support || support;
+        drop = parsed.drop || drop;
+        weight = parsed.weight || weight;
+        terrain = parsed.terrain || terrain;
+      } catch (e) {
+        console.error('Failed to parse product specs JSON:', e);
+      }
+    }
+
     setProductForm({
       brand: product.brand,
       name: product.name,
       price: product.price,
       image_url: product.image_url || '',
       description: product.description || '',
-      stock: product.stock
+      stock: product.stock,
+      category: product.category || 'trail',
+      status: product.status || '',
+      subtitle: product.subtitle || '',
+      thumbnails: product.thumbnails || '',
+      available_colors: product.available_colors || '',
+      available_sizes: product.available_sizes || '',
+      specs_cushioning: cushioning,
+      specs_support: support,
+      specs_drop: drop,
+      specs_weight: weight,
+      specs_terrain: terrain,
+      features: product.features || ''
     });
     setProductModal({ open: true, editId: product.id });
   };
@@ -427,7 +496,26 @@ export default function AdminPage() {
   };
 
   const openAddProductModal = () => {
-    setProductForm({ brand: '', name: '', price: 0, image_url: '', description: '', stock: 10 });
+    setProductForm({
+      brand: '',
+      name: '',
+      price: 0,
+      image_url: '',
+      description: '',
+      stock: 10,
+      category: 'trail',
+      status: '',
+      subtitle: '',
+      thumbnails: '',
+      available_colors: 'Đen, Trắng, Xám, Đỏ, Xanh dương',
+      available_sizes: 'US 7.5, US 8, US 8.5, US 9, US 9.5, US 10, US 10.5, US 11, US 12',
+      specs_cushioning: 'Chưa cập nhật',
+      specs_support: 'Chưa cập nhật',
+      specs_drop: 'Chưa cập nhật',
+      specs_weight: 'Chưa cập nhật',
+      specs_terrain: 'Chưa cập nhật',
+      features: ''
+    });
     setProductModal({ open: true });
   };
 
@@ -911,7 +999,7 @@ export default function AdminPage() {
               <button className="modal-close-btn" onClick={() => setProductModal({ open: false })}>✕</button>
             </div>
             <form onSubmit={handleProductSubmit}>
-              <div className="modal-body">
+              <div className="modal-body" style={{ maxHeight: '70vh', overflowY: 'auto' }}>
                 <div className="form-group-row">
                   <div className="form-group">
                     <label>Thương hiệu *</label>
@@ -959,8 +1047,55 @@ export default function AdminPage() {
                   </div>
                 </div>
 
+                <div className="form-group-row">
+                  <div className="form-group">
+                    <label>Danh mục *</label>
+                    <select 
+                      value={productForm.category} 
+                      onChange={(e) => setProductForm({ ...productForm, category: e.target.value })}
+                      required
+                      style={{
+                        width: '100%',
+                        padding: '10px 12px',
+                        backgroundColor: 'var(--bg-secondary)',
+                        border: '1px solid var(--border-color)',
+                        borderRadius: 'var(--radius-sm)',
+                        color: 'var(--text-primary)',
+                        fontSize: '13.5px',
+                        outline: 'none'
+                      }}
+                    >
+                      <option value="trail">Giày chạy Trail (Trail Running)</option>
+                      <option value="hiking">Giày leo núi (Hiking)</option>
+                      <option value="nutrition">Dinh dưỡng (Nutrition)</option>
+                      <option value="accessories">Phụ kiện (Accessories)</option>
+                      <option value="women">Bộ sưu tập Nữ (Women)</option>
+                      <option value="sale">Khuyến mãi (Sale)</option>
+                    </select>
+                  </div>
+                  <div className="form-group">
+                    <label>Trạng thái nhãn (Status)</label>
+                    <input 
+                      type="text" 
+                      placeholder="Ví dụ: New, Hot, Sale (hoặc trống)" 
+                      value={productForm.status} 
+                      onChange={(e) => setProductForm({ ...productForm, status: e.target.value })}
+                    />
+                  </div>
+                </div>
+
                 <div className="form-group">
-                  <label>Đường dẫn ảnh sản phẩm (Unsplash / URL)</label>
+                  <label>Tiêu đề phụ (Subtitle)</label>
+                  <input 
+                    type="text" 
+                    placeholder="Ví dụ: Giày chạy địa hình chuyên nghiệp - Unisex" 
+                    value={productForm.subtitle} 
+                    onChange={(e) => setProductForm({ ...productForm, subtitle: e.target.value })}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>Đường dẫn ảnh sản phẩm chính (Unsplash / URL)</label>
                   <input 
                     type="text" 
                     placeholder="Đường dẫn https://images.unsplash.com/..." 
@@ -970,12 +1105,101 @@ export default function AdminPage() {
                 </div>
 
                 <div className="form-group">
+                  <label>Danh sách ảnh phụ (Thumbnails) - Phân tách bởi dấu phẩy</label>
+                  <textarea 
+                    rows={2}
+                    placeholder="Đường dẫn ảnh 1, Đường dẫn ảnh 2, Đường dẫn ảnh 3..." 
+                    value={productForm.thumbnails} 
+                    onChange={(e) => setProductForm({ ...productForm, thumbnails: e.target.value })}
+                  />
+                </div>
+
+                <div className="form-group-row">
+                  <div className="form-group">
+                    <label>Màu sắc khả dụng (Phân tách bởi dấu phẩy)</label>
+                    <input 
+                      type="text" 
+                      placeholder="Ví dụ: Đen, Trắng, Xám, Đỏ, Vàng" 
+                      value={productForm.available_colors} 
+                      onChange={(e) => setProductForm({ ...productForm, available_colors: e.target.value })}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Kích cỡ khả dụng (Phân tách bởi dấu phẩy)</label>
+                    <input 
+                      type="text" 
+                      placeholder="Ví dụ: US 8, US 8.5, US 9, US 10" 
+                      value={productForm.available_sizes} 
+                      onChange={(e) => setProductForm({ ...productForm, available_sizes: e.target.value })}
+                    />
+                  </div>
+                </div>
+
+                <div style={{ margin: '15px 0 10px 0', borderTop: '1px solid var(--border-color)', paddingTop: '15px' }}>
+                  <h4 style={{ fontSize: '13.5px', fontWeight: '600', marginBottom: '12px', color: 'var(--text-accent)' }}>Thông Số Kỹ Thuật (Specs)</h4>
+                  <div className="form-group-row" style={{ marginBottom: '8px' }}>
+                    <div className="form-group">
+                      <label>Đệm gót (Cushioning)</label>
+                      <input 
+                        type="text" 
+                        value={productForm.specs_cushioning} 
+                        onChange={(e) => setProductForm({ ...productForm, specs_cushioning: e.target.value })}
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label>Hỗ trợ lực (Support)</label>
+                      <input 
+                        type="text" 
+                        value={productForm.specs_support} 
+                        onChange={(e) => setProductForm({ ...productForm, specs_support: e.target.value })}
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label>Độ chênh lệch gót-mũi (Drop)</label>
+                      <input 
+                        type="text" 
+                        value={productForm.specs_drop} 
+                        onChange={(e) => setProductForm({ ...productForm, specs_drop: e.target.value })}
+                      />
+                    </div>
+                  </div>
+                  <div className="form-group-row">
+                    <div className="form-group">
+                      <label>Trọng lượng (Weight)</label>
+                      <input 
+                        type="text" 
+                        value={productForm.specs_weight} 
+                        onChange={(e) => setProductForm({ ...productForm, specs_weight: e.target.value })}
+                      />
+                    </div>
+                    <div className="form-group" style={{ flex: '2' }}>
+                      <label>Địa hình khuyên dùng (Terrain)</label>
+                      <input 
+                        type="text" 
+                        value={productForm.specs_terrain} 
+                        onChange={(e) => setProductForm({ ...productForm, specs_terrain: e.target.value })}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="form-group">
                   <label>Mô tả chi tiết sản phẩm</label>
                   <textarea 
-                    rows={4}
-                    placeholder="Mô tả công nghệ giày, độ bám, độ drop, trải nghiệm thực tế..." 
+                    rows={3}
+                    placeholder="Mô tả công nghệ sản phẩm, chất liệu, trải nghiệm thực tế..." 
                     value={productForm.description} 
                     onChange={(e) => setProductForm({ ...productForm, description: e.target.value })}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>Đặc điểm nổi bật (Features) - Phân tách bởi dấu phẩy hoặc xuống dòng</label>
+                  <textarea 
+                    rows={2}
+                    placeholder="Ví dụ: Đế ngoài Contagrip® bám cực tốt, Lớp màng chống nước GORE-TEX..." 
+                    value={productForm.features} 
+                    onChange={(e) => setProductForm({ ...productForm, features: e.target.value })}
                   />
                 </div>
               </div>

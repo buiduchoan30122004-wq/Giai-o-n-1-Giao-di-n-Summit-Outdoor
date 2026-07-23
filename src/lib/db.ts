@@ -44,7 +44,15 @@ async function runMigrations(client: any) {
     "ALTER TABLE orders ADD COLUMN payment_method TEXT;",
     "ALTER TABLE customers ADD COLUMN updated_at TEXT;",
     "ALTER TABLE orders ADD COLUMN updated_at TEXT;",
-    "ALTER TABLE products ADD COLUMN updated_at TEXT;"
+    "ALTER TABLE products ADD COLUMN updated_at TEXT;",
+    "ALTER TABLE products ADD COLUMN category TEXT;",
+    "ALTER TABLE products ADD COLUMN status TEXT;",
+    "ALTER TABLE products ADD COLUMN subtitle TEXT;",
+    "ALTER TABLE products ADD COLUMN thumbnails TEXT;",
+    "ALTER TABLE products ADD COLUMN available_colors TEXT;",
+    "ALTER TABLE products ADD COLUMN available_sizes TEXT;",
+    "ALTER TABLE products ADD COLUMN specs TEXT;",
+    "ALTER TABLE products ADD COLUMN features TEXT;"
   ];
 
   for (const sql of columns) {

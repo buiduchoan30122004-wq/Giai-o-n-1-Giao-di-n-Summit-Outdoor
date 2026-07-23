@@ -8,6 +8,14 @@ export interface Product {
   stock: number;
   created_at?: string;
   updated_at?: string;
+  category?: string;
+  status?: string;
+  subtitle?: string;
+  thumbnails?: string;
+  available_colors?: string;
+  available_sizes?: string;
+  specs?: string;
+  features?: string;
 }
 
 export interface Customer {
