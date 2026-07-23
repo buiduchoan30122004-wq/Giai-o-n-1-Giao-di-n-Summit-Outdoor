@@ -16,6 +16,8 @@ export interface Product {
   available_sizes?: string;
   specs?: string;
   features?: string;
+  original_price?: number;
+  discount?: string;
 }
 
 export interface Customer {

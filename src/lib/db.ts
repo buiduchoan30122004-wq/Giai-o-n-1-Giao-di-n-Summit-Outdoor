@@ -52,7 +52,9 @@ async function runMigrations(client: any) {
     "ALTER TABLE products ADD COLUMN available_colors TEXT;",
     "ALTER TABLE products ADD COLUMN available_sizes TEXT;",
     "ALTER TABLE products ADD COLUMN specs TEXT;",
-    "ALTER TABLE products ADD COLUMN features TEXT;"
+    "ALTER TABLE products ADD COLUMN features TEXT;",
+    "ALTER TABLE products ADD COLUMN original_price REAL;",
+    "ALTER TABLE products ADD COLUMN discount TEXT;"
   ];
 
   for (const sql of columns) {

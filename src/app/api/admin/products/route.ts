@@ -14,7 +14,8 @@ export async function POST(req: NextRequest) {
   try {
     const { 
       brand, name, price, image_url, description, stock,
-      category, status, subtitle, thumbnails, available_colors, available_sizes, specs, features
+      category, status, subtitle, thumbnails, available_colors, available_sizes, specs, features,
+      original_price, discount
     } = await req.json();
     
     if (!brand || !name || price === undefined || stock === undefined) {
@@ -24,12 +25,13 @@ export async function POST(req: NextRequest) {
     const result = await queryRun(
       `INSERT INTO products (
         brand, name, price, image_url, description, stock,
-        category, status, subtitle, thumbnails, available_colors, available_sizes, specs, features, updated_at
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)`,
+        category, status, subtitle, thumbnails, available_colors, available_sizes, specs, features, original_price, discount, updated_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)`,
       [
         brand, name, price, image_url || '', description || '', stock,
         category || '', status || '', subtitle || '', thumbnails || '',
-        available_colors || '', available_sizes || '', specs || '', features || ''
+        available_colors || '', available_sizes || '', specs || '', features || '',
+        original_price || 0, discount || ''
       ]
     );
     return NextResponse.json({ success: true, id: result.lastID });
@@ -42,7 +44,8 @@ export async function PUT(req: NextRequest) {
   try {
     const { 
       id, brand, name, price, image_url, description, stock,
-      category, status, subtitle, thumbnails, available_colors, available_sizes, specs, features
+      category, status, subtitle, thumbnails, available_colors, available_sizes, specs, features,
+      original_price, discount
     } = await req.json();
     
     if (!id || !brand || !name || price === undefined || stock === undefined) {
@@ -53,12 +56,14 @@ export async function PUT(req: NextRequest) {
       `UPDATE products SET 
         brand = ?, name = ?, price = ?, image_url = ?, description = ?, stock = ?,
         category = ?, status = ?, subtitle = ?, thumbnails = ?, available_colors = ?, available_sizes = ?, specs = ?, features = ?,
+        original_price = ?, discount = ?,
         updated_at = CURRENT_TIMESTAMP
        WHERE id = ?`,
       [
         brand, name, price, image_url || '', description || '', stock,
         category || '', status || '', subtitle || '', thumbnails || '',
         available_colors || '', available_sizes || '', specs || '', features || '',
+        original_price || 0, discount || '',
         id
       ]
     );

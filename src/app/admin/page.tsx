@@ -16,7 +16,8 @@ import {
   CheckCircle,
   AlertTriangle,
   FileText,
-  Settings
+  Settings,
+  Layers
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -63,7 +64,9 @@ export default function AdminPage() {
     specs_drop: 'Chưa cập nhật',
     specs_weight: 'Chưa cập nhật',
     specs_terrain: 'Chưa cập nhật',
-    features: ''
+    features: '',
+    original_price: 0,
+    discount: ''
   });
 
   const [customerForm, setCustomerForm] = useState({
@@ -257,7 +260,9 @@ export default function AdminPage() {
         available_colors: productForm.available_colors,
         available_sizes: productForm.available_sizes,
         specs: JSON.stringify(specsObj),
-        features: productForm.features
+        features: productForm.features,
+        original_price: productForm.original_price || 0,
+        discount: productForm.discount || ''
       };
 
       const body = isEdit ? { ...payload, id: productModal.editId } : payload;
@@ -319,7 +324,9 @@ export default function AdminPage() {
       specs_drop: drop,
       specs_weight: weight,
       specs_terrain: terrain,
-      features: product.features || ''
+      features: product.features || '',
+      original_price: product.original_price || 0,
+      discount: product.discount || ''
     });
     setProductModal({ open: true, editId: product.id });
   };
@@ -515,7 +522,9 @@ export default function AdminPage() {
       specs_drop: 'Chưa cập nhật',
       specs_weight: 'Chưa cập nhật',
       specs_terrain: 'Chưa cập nhật',
-      features: ''
+      features: '',
+      original_price: 0,
+      discount: ''
     });
     setProductModal({ open: true });
   };
@@ -580,7 +589,14 @@ export default function AdminPage() {
           <div className="stat-icon p-color"><Package size={24} /></div>
           <div className="stat-info">
             <span className="stat-value">{products.length}</span>
-            <span className="stat-label">Sản Phẩm</span>
+            <span className="stat-label">Danh mục Sản Phẩm</span>
+          </div>
+        </div>
+        <div className="stat-card">
+          <div className="stat-icon p-color" style={{ backgroundColor: '#ecfdf5', color: '#10b981' }}><Layers size={24} /></div>
+          <div className="stat-info">
+            <span className="stat-value">{products.reduce((acc, p) => acc + (p.stock || 0), 0)}</span>
+            <span className="stat-label">Tổng Tồn Kho (Mặt hàng)</span>
           </div>
         </div>
         <div className="stat-card">
@@ -1102,6 +1118,29 @@ export default function AdminPage() {
                       value={productForm.stock} 
                       onChange={(e) => setProductForm({ ...productForm, stock: parseInt(e.target.value) || 0 })}
                       required
+                    />
+                  </div>
+                </div>
+
+                <div className="form-group-row">
+                  <div className="form-group">
+                    <label>Giá gốc ($ / đ)</label>
+                    <input 
+                      type="number" 
+                      step="0.01"
+                      min="0"
+                      placeholder="Ví dụ: 180" 
+                      value={productForm.original_price} 
+                      onChange={(e) => setProductForm({ ...productForm, original_price: parseFloat(e.target.value) || 0 })}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Giảm giá (Ví dụ: 10% hoặc $15)</label>
+                    <input 
+                      type="text" 
+                      placeholder="Ví dụ: 10%, $15" 
+                      value={productForm.discount} 
+                      onChange={(e) => setProductForm({ ...productForm, discount: e.target.value })}
                     />
                   </div>
                 </div>
