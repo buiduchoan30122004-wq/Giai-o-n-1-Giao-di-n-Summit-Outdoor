@@ -26,6 +26,7 @@ type TabType = 'products' | 'customers' | 'orders';
 
 export default function AdminPage() {
   const [activeTab, setActiveTab] = useState<TabType>('products');
+  const [selectedProductCategory, setSelectedProductCategory] = useState<string>('all');
   const [products, setProducts] = useState<Product[]>([]);
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [orders, setOrders] = useState<Order[]>([]);
@@ -636,12 +637,60 @@ export default function AdminPage() {
             {/* 1. PRODUCTS TAB */}
             {activeTab === 'products' && (
               <div className="data-table-container">
-                <div className="table-actions-header">
-                  <h3>Danh Sách Sản Phẩm</h3>
-                  <button className="action-btn-primary" onClick={openAddProductModal}>
-                    <Plus size={16} />
-                    <span>Thêm Sản Phẩm Mới</span>
-                  </button>
+                <div className="table-actions-header" style={{ display: 'block', marginBottom: '20px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                    <h3 style={{ margin: 0 }}>Danh Sách Sản Phẩm</h3>
+                  </div>
+                  
+                  {/* Horizontal Category Filter Pills */}
+                  <div className="category-tabs-container" style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    borderBottom: '1px solid var(--border-color)',
+                    paddingBottom: '14px',
+                    flexWrap: 'wrap',
+                    gap: '12px'
+                  }}>
+                    <div className="category-pills" style={{
+                      display: 'flex',
+                      gap: '8px',
+                      flexWrap: 'wrap'
+                    }}>
+                      {[
+                        { id: 'all', label: 'Tất cả sản phẩm' },
+                        { id: 'trail', label: '👟 Giày Trail' },
+                        { id: 'hiking', label: '🥾 Giày Hiking' },
+                        { id: 'nutrition', label: '⚡ Dinh dưỡng' },
+                        { id: 'accessories', label: '🎒 Phụ kiện' },
+                        { id: 'women', label: '👩 Bộ sưu tập Nữ' },
+                        { id: 'sale', label: '🏷️ Khuyến mãi' }
+                      ].map(tab => (
+                        <button
+                          key={tab.id}
+                          type="button"
+                          onClick={() => setSelectedProductCategory(tab.id)}
+                          style={{
+                            padding: '6px 14px',
+                            borderRadius: '20px',
+                            fontSize: '13px',
+                            fontWeight: '600',
+                            cursor: 'pointer',
+                            transition: 'all 0.2s',
+                            backgroundColor: selectedProductCategory === tab.id ? 'var(--accent-primary)' : 'var(--bg-secondary)',
+                            color: selectedProductCategory === tab.id ? '#ffffff' : 'var(--text-secondary)',
+                            border: selectedProductCategory === tab.id ? '1px solid var(--accent-primary)' : '1px solid var(--border-color)'
+                          }}
+                        >
+                          {tab.label}
+                        </button>
+                      ))}
+                    </div>
+                    <button className="action-btn-primary" onClick={openAddProductModal} style={{ height: '36px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <Plus size={16} />
+                      <span>Thêm Sản Phẩm Mới</span>
+                    </button>
+                  </div>
                 </div>
 
                 <table className="admin-table">
@@ -657,12 +706,22 @@ export default function AdminPage() {
                     </tr>
                   </thead>
                   <tbody>
-                    {products.length === 0 ? (
-                      <tr>
-                        <td colSpan={7} className="empty-row">Chưa có sản phẩm nào. Nhấp để thêm sản phẩm đầu tiên!</td>
-                      </tr>
-                    ) : (
-                      products.map((prod) => (
+                    {(() => {
+                      const filteredProducts = selectedProductCategory === 'all'
+                        ? products
+                        : products.filter(p => p.category === selectedProductCategory);
+                        
+                      if (filteredProducts.length === 0) {
+                        return (
+                          <tr>
+                            <td colSpan={7} className="empty-row" style={{ textAlign: 'center', padding: '30px', color: 'var(--text-muted)' }}>
+                              Không tìm thấy sản phẩm nào trong danh mục này.
+                            </td>
+                          </tr>
+                        );
+                      }
+                      
+                      return filteredProducts.map((prod) => (
                         <tr key={prod.id}>
                           <td>
                             {prod.image_url ? (
@@ -691,8 +750,8 @@ export default function AdminPage() {
                             </div>
                           </td>
                         </tr>
-                      ))
-                    )}
+                      ));
+                    })()}
                   </tbody>
                 </table>
               </div>
