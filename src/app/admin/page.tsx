@@ -533,9 +533,18 @@ export default function AdminPage() {
             <Home size={16} />
             <span>Trở lại Agent</span>
           </Link>
-          <div className="header-title-container">
-            <h1>Summit Outdoor Admin</h1>
-            <p>Trang quản trị vận hành hệ thống cửa hàng & CRM</p>
+          <div className="header-title-container" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <polygon points="13,6 3,24 23,24" fill="#e11d48" />
+              <polygon points="21,11 13,24 29,24" fill="#0f172a" />
+              <polygon points="13,24 16,19 18,24" fill="#ffffff" />
+            </svg>
+            <div>
+              <h1 style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '20px', fontWeight: 'bold', margin: 0, color: '#0f172a' }}>
+                SUMMIT<span style={{ color: '#e11d48' }}>OUTDOOR</span> ADMIN
+              </h1>
+              <p style={{ margin: 0, fontSize: '12px', color: '#64748b' }}>Trang quản trị vận hành hệ thống cửa hàng & CRM</p>
+            </div>
           </div>
         </div>
         <button className="refresh-btn" onClick={() => fetchData()} disabled={isLoading}>

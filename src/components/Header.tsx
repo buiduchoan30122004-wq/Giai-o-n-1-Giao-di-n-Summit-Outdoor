@@ -1,11 +1,17 @@
 "use client";
 
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import styles from './components.module.css';
 import React, { useState, useEffect } from 'react';
 
 export default function Header() {
+  const pathname = usePathname();
   const [cartCount, setCartCount] = useState(0);
+
+  if (pathname && pathname.startsWith('/admin')) {
+    return null;
+  }
 
   useEffect(() => {
     const updateCartCount = () => {

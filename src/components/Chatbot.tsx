@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from 'react';
+import { usePathname } from 'next/navigation';
 import styles from './Chatbot.module.css';
 import Link from 'next/link';
 import RecommendationPopup, { RecommendationData } from './RecommendationPopup';
@@ -15,9 +16,14 @@ interface Message {
 }
 
 export default function Chatbot() {
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [isRecommendOpen, setIsRecommendOpen] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
+
+  if (pathname && pathname.startsWith('/admin')) {
+    return null;
+  }
   const [messages, setMessages] = useState<Message[]>([
     {
       sender: 'bot',
