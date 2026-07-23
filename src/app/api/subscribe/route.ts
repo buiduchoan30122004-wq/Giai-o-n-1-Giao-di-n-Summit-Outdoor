@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { queryGet, queryRun } from '@/lib/db';
+import { sendWelcomeEmail } from '@/lib/email';
 
 export async function POST(request: NextRequest) {
   try {
@@ -55,6 +56,9 @@ export async function POST(request: NextRequest) {
         ]
       );
     }
+
+    // Gửi email chào mừng bằng Resend
+    await sendWelcomeEmail(email, name);
 
     return NextResponse.json({ success: true });
     

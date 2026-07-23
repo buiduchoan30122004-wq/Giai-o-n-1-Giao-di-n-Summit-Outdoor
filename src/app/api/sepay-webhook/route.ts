@@ -86,6 +86,14 @@ export async function POST(request: NextRequest) {
         "UPDATE orders SET status = 'confirmed', transaction_id = ?, payment_amount = ?, payment_date = ? WHERE order_code = ?",
         [id, transferAmount, transactionDate, orderCode]
       );
+      
+      // Gửi email xác nhận đặt hàng thành công qua Resend
+      try {
+        const { sendOrderConfirmationByCode } = await import('@/lib/email');
+        await sendOrderConfirmationByCode(orderCode);
+      } catch (mailError) {
+        console.error('Failed to send order confirmation email via sepay webhook:', mailError);
+      }
     } catch (dbError) {
       console.error('Failed to update order status in local SQLite database:', dbError);
     }
