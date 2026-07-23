@@ -194,14 +194,8 @@ export default function AdminPage() {
   });
 
   // Client-side exporters
-  // Client-side exporter to Google Sheets (via TSV Clipboard Copy & sheets.new)
-  // Exporter to Google Sheets via secure proxy and Apps Script Web App
-  const handleExportToGoogleSheets = async (type: 'customers' | 'orders') => {
-    if (!googleScriptUrl) {
-      setShowScriptModal(true);
-      return;
-    }
-
+  // Exporter to Excel (via CSV with UTF-8 BOM for perfect Vietnamese support in Excel)
+  const handleExportToExcel = (type: 'customers' | 'orders') => {
     let headers: string[] = [];
     let rows: any[][] = [];
     let title = '';
@@ -247,30 +241,24 @@ export default function AdminPage() {
       });
     }
 
-    setIsExporting(true);
-    try {
-      const res = await fetch('/api/admin/export-sheet', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          scriptUrl: googleScriptUrl,
-          title,
-          headers,
-          rows
-        })
-      });
-      const data = await res.json();
-      if (data.success && data.url) {
-        triggerSuccess('Xuất Google Sheet thành công! Đang mở bảng tính mới...');
-        window.open(data.url, '_blank');
-      } else {
-        alert(data.error || 'Xuất Google Sheet thất bại. Vui lòng kiểm tra lại cấu hình URL Web App.');
-      }
-    } catch (err: any) {
-      alert('Lỗi kết nối khi gửi dữ liệu xuất: ' + err.message);
-    } finally {
-      setIsExporting(false);
-    }
+    const BOM = '\uFEFF';
+    const csvContent = BOM + [
+      headers.join(','),
+      ...rows.map(row => row.map(val => {
+        const strVal = String(val === null || val === undefined ? '' : val);
+        return `"${strVal.replace(/"/g, '""')}"`;
+      }).join(','))
+    ].join('\n');
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `${title}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    triggerSuccess('Đã xuất file Excel thành công!');
   };
 
   // Product CRUD
@@ -719,21 +707,12 @@ export default function AdminPage() {
                       </button>
                     )}
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <div style={{ display: 'flex', gap: '10px' }}>
                     <button 
-                      onClick={() => handleExportToGoogleSheets('customers')} 
-                      disabled={isExporting}
-                      style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '8px 14px', background: '#10b981', color: '#ffffff', border: 'none', borderRadius: '6px', cursor: 'pointer', fontSize: '13px', fontWeight: '600', transition: 'background 0.2s', opacity: isExporting ? 0.7 : 1 }}
+                      onClick={() => handleExportToExcel('customers')} 
+                      style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '8px 14px', background: '#10b981', color: '#ffffff', border: 'none', borderRadius: '6px', cursor: 'pointer', fontSize: '13px', fontWeight: '600', transition: 'background 0.2s' }}
                     >
-                      {isExporting ? <Loader2 size={16} className="animate-spin" /> : '🟢'}
-                      <span>Xuất Google Sheet</span>
-                    </button>
-                    <button
-                      onClick={() => setShowScriptModal(true)}
-                      title="Cấu hình Google Sheets"
-                      style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '8px', background: '#f1f5f9', color: '#475569', border: '1px solid #e2e8f0', borderRadius: '6px', cursor: 'pointer', transition: 'all 0.2s' }}
-                    >
-                      <Settings size={16} />
+                      🟢 Xuất Excel
                     </button>
                   </div>
                 </div>
@@ -842,21 +821,12 @@ export default function AdminPage() {
                       </button>
                     )}
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <div style={{ display: 'flex', gap: '10px' }}>
                     <button 
-                      onClick={() => handleExportToGoogleSheets('orders')} 
-                      disabled={isExporting}
-                      style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '8px 14px', background: '#10b981', color: '#ffffff', border: 'none', borderRadius: '6px', cursor: 'pointer', fontSize: '13px', fontWeight: '600', transition: 'background 0.2s', opacity: isExporting ? 0.7 : 1 }}
+                      onClick={() => handleExportToExcel('orders')} 
+                      style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '8px 14px', background: '#10b981', color: '#ffffff', border: 'none', borderRadius: '6px', cursor: 'pointer', fontSize: '13px', fontWeight: '600', transition: 'background 0.2s' }}
                     >
-                      {isExporting ? <Loader2 size={16} className="animate-spin" /> : '🟢'}
-                      <span>Xuất Google Sheet</span>
-                    </button>
-                    <button
-                      onClick={() => setShowScriptModal(true)}
-                      title="Cấu hình Google Sheets"
-                      style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '8px', background: '#f1f5f9', color: '#475569', border: '1px solid #e2e8f0', borderRadius: '6px', cursor: 'pointer', transition: 'all 0.2s' }}
-                    >
-                      <Settings size={16} />
+                      🟢 Xuất Excel
                     </button>
                   </div>
                 </div>
