@@ -6,6 +6,7 @@ import { createClient } from '@libsql/client';
 import { Resend } from 'resend';
 import path from 'path';
 import dotenv from 'dotenv';
+import { randomUUID } from 'crypto';
 
 dotenv.config();
 
@@ -417,18 +418,109 @@ function createMcpServer() {
   return mcpServer;
 }
 
-// Streamable-HTTP Connection Handler
-app.all('/mcp', async (req, res) => {
-  log("Incoming streamable-http request");
+// Registry to hold active transports by session ID
+const transports = {};
+
+// POST route handler
+app.post('/mcp', async (req, res) => {
+  const sessionId = req.headers['mcp-session-id'];
+  if (sessionId) {
+    log(`Received POST request for session: ${sessionId}`);
+  } else {
+    log(`Incoming raw POST request body: ${JSON.stringify(req.body)}`);
+  }
+
   try {
-    const transport = new StreamableHTTPServerTransport(req, res);
-    const mcpServer = createMcpServer();
-    await mcpServer.connect(transport);
-    log("Connected client via streamable-http");
-  } catch (err) {
-    log(`Connection failed: ${err.message}`);
+    let transport;
+    if (sessionId && transports[sessionId]) {
+      transport = transports[sessionId];
+    } else if (!sessionId && req.body && req.body.method === 'initialize') {
+      // Create a fresh transport for the new session
+      transport = new StreamableHTTPServerTransport({
+        sessionIdGenerator: () => randomUUID(),
+        onsessioninitialized: (sid) => {
+          log(`Session initialized with ID: ${sid}`);
+          transports[sid] = transport;
+        }
+      });
+
+      transport.onclose = () => {
+        const sid = transport.sessionId;
+        if (sid && transports[sid]) {
+          log(`Transport closed for session ${sid}, removing from registry`);
+          delete transports[sid];
+        }
+      };
+
+      // Create a dedicated server instance for this session and connect it
+      const server = createMcpServer();
+      await server.connect(transport);
+      
+      // Let the transport handle the initialization request
+      await transport.handleRequest(req, res, req.body);
+      return;
+    } else {
+      log("Bad Request: missing session ID or not an initialize request");
+      res.status(400).json({
+        jsonrpc: '2.0',
+        error: { code: -32000, message: 'Bad Request: No valid session ID provided' },
+        id: null
+      });
+      return;
+    }
+
+    // Handle standard tool calls using the existing session's transport
+    await transport.handleRequest(req, res, req.body);
+  } catch (error) {
+    log(`Error handling POST request: ${error.message}`);
     if (!res.headersSent) {
-      res.status(500).send("MCP Connection failed");
+      res.status(500).json({
+        jsonrpc: '2.0',
+        error: { code: -32603, message: `Internal server error: ${error.message}` },
+        id: null
+      });
+    }
+  }
+});
+
+// GET route handler (used to establish the SSE stream)
+app.get('/mcp', async (req, res) => {
+  const sessionId = req.headers['mcp-session-id'] || req.query['mcp-session-id'];
+  if (!sessionId || !transports[sessionId]) {
+    log(`GET request failed: invalid or missing session ID (${sessionId})`);
+    res.status(400).send('Invalid or missing session ID');
+    return;
+  }
+
+  log(`Establishing SSE stream for session: ${sessionId}`);
+  try {
+    const transport = transports[sessionId];
+    await transport.handleRequest(req, res);
+  } catch (error) {
+    log(`Error establishing SSE stream for session ${sessionId}: ${error.message}`);
+    if (!res.headersSent) {
+      res.status(500).send('Error establishing SSE stream');
+    }
+  }
+});
+
+// DELETE route handler (used to close session)
+app.delete('/mcp', async (req, res) => {
+  const sessionId = req.headers['mcp-session-id'] || req.query['mcp-session-id'];
+  if (!sessionId || !transports[sessionId]) {
+    log(`DELETE request failed: invalid or missing session ID (${sessionId})`);
+    res.status(400).send('Invalid or missing session ID');
+    return;
+  }
+
+  log(`Received session termination request for session: ${sessionId}`);
+  try {
+    const transport = transports[sessionId];
+    await transport.handleRequest(req, res);
+  } catch (error) {
+    log(`Error terminating session ${sessionId}: ${error.message}`);
+    if (!res.headersSent) {
+      res.status(500).send('Error processing session termination');
     }
   }
 });
@@ -443,4 +535,19 @@ const PORT = 3001;
 app.listen(PORT, '127.0.0.1', () => {
   log(`Summit Outdoor MCP HTTP Server running on http://127.0.0.1:${PORT}/mcp`);
   log(`Database target path: ${dbPath}`);
+});
+
+// Clean up on exit
+process.on('SIGINT', async () => {
+  log('Shutting down server...');
+  for (const sid in transports) {
+    try {
+      log(`Closing session transport: ${sid}`);
+      await transports[sid].close();
+      delete transports[sid];
+    } catch (err) {
+      log(`Error closing session ${sid}: ${err.message}`);
+    }
+  }
+  process.exit(0);
 });
