@@ -66,6 +66,36 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // 5. Notify via Telegram
+    try {
+      const { sendTelegramNotification } = await import('@/lib/telegram');
+      
+      const itemsText = cartItems
+        .map((item: any) => `  + [${item.brand}] ${item.name} x${item.quantity} (${item.price})`)
+        .join('\n');
+      
+      const totalPrice = cartItems.reduce((acc: number, item: any) => {
+        const parsePrice = (priceStr: string) => {
+          return parseInt(priceStr.replace(/\./g, '').replace('đ', '')) || 0;
+        };
+        return acc + (parsePrice(item.price) * item.quantity);
+      }, 0);
+
+      const message = `<b>🔔 ĐƠN HÀNG MỚI PHÁT SINH</b>\n\n` +
+        `• <b>Mã đơn:</b> #${orderCode}\n` +
+        `• <b>Khách hàng:</b> ${name} (${phone})\n` +
+        `• <b>Email:</b> ${email}\n` +
+        `• <b>Địa chỉ:</b> ${address || 'N/A'}\n` +
+        `• <b>Tổng tiền:</b> <b>${totalPrice.toLocaleString('vi-VN')} đ</b>\n` +
+        `• <b>Thanh toán:</b> ${paymentMethod === 'cod' ? 'COD (Đã xác nhận tự động)' : 'Chuyển khoản (Đang chờ thanh toán)'}\n\n` +
+        `<b>Danh sách sản phẩm:</b>\n${itemsText}\n\n` +
+        (paymentMethod !== 'cod' ? `💡 <i>Để duyệt nhanh đơn này, hãy chat với GoClaw: "Duyệt đơn ${orderCode}"</i>` : '');
+      
+      await sendTelegramNotification(message);
+    } catch (telegramError) {
+      console.error('Failed to send Telegram order notification:', telegramError);
+    }
+
     return NextResponse.json({ success: true, orderCode });
 
   } catch (error: any) {

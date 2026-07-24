@@ -95,6 +95,21 @@ export async function POST(request: NextRequest) {
       } catch (mailError) {
         console.error('Failed to send order confirmation/thank you email via sepay webhook:', mailError);
       }
+
+      // Thông báo nhận tiền qua Telegram
+      try {
+        const { sendTelegramNotification } = await import('@/lib/telegram');
+        const message = `<b>💰 ĐÃ NHẬN THANH TOÁN TỰ ĐỘNG</b>\n\n` +
+          `• <b>Mã đơn:</b> #${orderCode}\n` +
+          `• <b>Số tiền nhận:</b> <b>${transferAmount.toLocaleString('vi-VN')} đ</b>\n` +
+          `• <b>Mã GD Ngân hàng:</b> ${id}\n` +
+          `• <b>Ngày nhận:</b> ${transactionDate}\n\n` +
+          `✅ Hệ thống đã tự động kích hoạt gửi Email xác nhận & Email cảm ơn qua Resend cho khách hàng!`;
+        
+        await sendTelegramNotification(message);
+      } catch (telegramError) {
+        console.error('Failed to send Telegram payment confirmation notification:', telegramError);
+      }
     } catch (dbError) {
       console.error('Failed to update order status in local SQLite database:', dbError);
     }
