@@ -36,15 +36,6 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: Build and push MCP Server Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./mcp-server
-          push: true
-          tags: ghcr.io/buiduchoan30122004-wq/summit-mcp-server:latest
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
   deploy:
     needs: build-and-push
     runs-on: ubuntu-latest
@@ -83,17 +74,6 @@ jobs:
               -e HOSTNAME=0.0.0.0 \
               -v /opt/summit-outdoor/data:/app/data \
               ghcr.io/buiduchoan30122004-wq/giai-o-n-1-giao-di-n-summit-outdoor:latest
-              
-            # Run the MCP Server container
-            docker run -d \
-              --name summit-mcp-server \
-              --restart unless-stopped \
-              -p 8000:8000 \
-              --network goclaw-net \
-              --env-file /opt/summit-outdoor/.env \
-              -v /opt/summit-outdoor/data:/opt/summit-outdoor/data \
-              -e DATABASE_PATH=/opt/summit-outdoor/data/brain.db \
-              ghcr.io/buiduchoan30122004-wq/summit-mcp-server:latest
-            
+
             # Clean up old unused images
             docker image prune -f
