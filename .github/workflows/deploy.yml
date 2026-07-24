@@ -68,6 +68,7 @@ jobs:
               -p 3000:3000 \
               --network goclaw-net \
               --env-file /opt/summit-outdoor/.env \
+              -e HOSTNAME=0.0.0.0 \
               -v /opt/summit-outdoor/data:/app/data \
               ghcr.io/buiduchoan30122004-wq/giai-o-n-1-giao-di-n-summit-outdoor:latest
             
