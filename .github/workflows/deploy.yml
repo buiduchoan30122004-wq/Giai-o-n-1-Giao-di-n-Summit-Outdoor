@@ -1,51 +1,75 @@
-name: Deploy to VPS
+name: Deploy Website to VPS
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
+  workflow_dispatch:
 
 jobs:
-  deploy:
+  build-and-push:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Copy files to VPS via SCP
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USERNAME }}
-          key: ${{ secrets.VPS_SSH_KEY }}
-          password: ${{ secrets.VPS_PASSWORD }}
-          source: "."
-          target: "/var/www/summit-outdoor"
-          exclude: "brain.db"
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
-      - name: Build and Restart on VPS
-        uses: appleboy/ssh-action@v1.0.3
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ghcr.io/buiduchoan30122004-wq/giai-o-n-1-giao-di-n-summit-outdoor:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Executing remote ssh commands to deploy
+        uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USERNAME }}
-          key: ${{ secrets.VPS_SSH_KEY }}
           password: ${{ secrets.VPS_PASSWORD }}
+          port: 22
           script: |
-            cd /var/www/summit-outdoor
+            # Create deployment directory
+            mkdir -p /opt/summit-outdoor/data
             
-            # Cài đặt thư viện mới (nếu có) và Build lại sạch
-            yarn install
-            rm -rf .next
-            yarn build
+            # Login to GitHub Container Registry on VPS
+            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
             
-            # Giải phóng cổng 3000 (nếu bị kẹt) và khởi động lại Next.js trực tiếp qua PM2 (tránh lỗi thông dịch Shell của yarn)
-            npx kill-port 3000 || true
-            pm2 delete summit-outdoor || true
-            pm2 delete 0 || true
-            pm2 start node_modules/next/dist/bin/next --name "summit-outdoor" -- start
+            # Pull the latest Docker image
+            docker pull ghcr.io/buiduchoan30122004-wq/giai-o-n-1-giao-di-n-summit-outdoor:latest
             
-            # Đợi 5 giây để ghi lại logs trạng thái nhằm phục vụ debug từ xa
-            sleep 5
-            pm2 status
-            pm2 logs summit-outdoor --lines 50 --no-daemon &
-            sleep 3
-            kill $! || true
+            # Stop and remove existing container
+            docker stop summit-outdoor || true
+            docker rm summit-outdoor || true
+            
+            # Run the new container
+            docker run -d \
+              --name summit-outdoor \
+              --restart unless-stopped \
+              -p 3000:3000 \
+              --network goclaw-net \
+              --env-file /opt/summit-outdoor/.env \
+              -v /opt/summit-outdoor/data:/app/data \
+              ghcr.io/buiduchoan30122004-wq/giai-o-n-1-giao-di-n-summit-outdoor:latest
+            
+            # Clean up old unused images
+            docker image prune -f
