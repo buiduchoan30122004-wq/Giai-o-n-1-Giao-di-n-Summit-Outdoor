@@ -1,4 +1,4 @@
-name: Deploy Website to VPS
+name: Deploy Website and MCP Server to VPS
 
 on:
   push:
@@ -27,12 +27,21 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and push Docker image
+      - name: Build and push Website Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
           tags: ghcr.io/buiduchoan30122004-wq/giai-o-n-1-giao-di-n-summit-outdoor:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build and push MCP Server Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./mcp-server
+          push: true
+          tags: ghcr.io/buiduchoan30122004-wq/summit-mcp-server:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -54,14 +63,17 @@ jobs:
             # Login to GitHub Container Registry on VPS
             echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
             
-            # Pull the latest Docker image
+            # Pull the latest Docker images
             docker pull ghcr.io/buiduchoan30122004-wq/giai-o-n-1-giao-di-n-summit-outdoor:latest
+            docker pull ghcr.io/buiduchoan30122004-wq/summit-mcp-server:latest
             
-            # Stop and remove existing container
+            # Stop and remove existing containers
             docker stop summit-outdoor || true
             docker rm summit-outdoor || true
+            docker stop summit-mcp-server || true
+            docker rm summit-mcp-server || true
             
-            # Run the new container
+            # Run the Website container
             docker run -d \
               --name summit-outdoor \
               --restart unless-stopped \
@@ -71,6 +83,17 @@ jobs:
               -e HOSTNAME=0.0.0.0 \
               -v /opt/summit-outdoor/data:/app/data \
               ghcr.io/buiduchoan30122004-wq/giai-o-n-1-giao-di-n-summit-outdoor:latest
+              
+            # Run the MCP Server container
+            docker run -d \
+              --name summit-mcp-server \
+              --restart unless-stopped \
+              -p 8000:8000 \
+              --network goclaw-net \
+              --env-file /opt/summit-outdoor/.env \
+              -v /opt/summit-outdoor/data:/opt/summit-outdoor/data \
+              -e DATABASE_PATH=/opt/summit-outdoor/data/brain.db \
+              ghcr.io/buiduchoan30122004-wq/summit-mcp-server:latest
             
             # Clean up old unused images
             docker image prune -f
