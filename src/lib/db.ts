@@ -2,9 +2,9 @@ import path from 'path';
 import fs from 'fs';
 
 const isVps = fs.existsSync('/var/www/summit-outdoor');
-let dbPath = path.join(process.cwd(), 'brain.db');
+let dbPath = process.env.DATABASE_PATH || path.join(process.cwd(), 'brain.db');
 
-if (isVps) {
+if (isVps && !process.env.DATABASE_PATH) {
   const newPath = '/var/www/brain.db';
   const oldPath = '/var/www/summit-outdoor/brain.db';
   try {
