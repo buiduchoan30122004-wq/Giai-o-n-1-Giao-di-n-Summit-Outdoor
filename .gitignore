@@ -44,3 +44,7 @@ next-env.d.ts
 brain.db
 /brain.db
 *.db
+
+# local artifacts
+*.zip
+output.json
