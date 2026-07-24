@@ -83,6 +83,16 @@ function createMcpServer() {
             },
             required: ["order_code"]
           }
+        },
+        {
+          name: "get_business_signals",
+          description: "Retrieve recent business signals including new orders, new customer leads, and today's summary metrics.",
+          inputSchema: {
+            type: "object",
+            properties: {
+              time_window_minutes: { type: "number", description: "How many minutes back to look for new events (default: 5)" }
+            }
+          }
         }
       ]
     };
@@ -402,6 +412,108 @@ function createMcpServer() {
                   `- Trạng thái DB: Cập nhật thành công sang 'confirmed'.\n` +
                   `- Gửi email xác nhận & cảm ơn qua Resend: ${emailSent ? 'Thành công' : 'Bị bỏ qua hoặc có lỗi (' + (emailError || 'Resend chưa config') + ')'}`
           }]
+        };
+      }
+
+      if (name === "get_business_signals") {
+        const timeWindow = args.time_window_minutes || 5;
+        if (typeof timeWindow !== 'number' || timeWindow <= 0) {
+          throw new Error("Invalid parameter: time_window_minutes must be a positive number");
+        }
+
+        log(`get_business_signals: querying lookback window of ${timeWindow} minutes`);
+
+        // 1. Get new orders in lookback window (SQLite format: YYYY-MM-DD HH:mm:ss in UTC)
+        const ordersRes = await dbClient.execute({
+          sql: `
+            SELECT o.order_code, o.total_price, o.quantity, c.name as customer_name
+            FROM orders o
+            JOIN customers c ON o.customer_id = c.id
+            WHERE o.created_at >= datetime('now', '-' || ? || ' minutes')
+            ORDER BY o.id DESC
+          `,
+          args: [timeWindow]
+        });
+
+        // 2. Get new leads in lookback window
+        const leadsRes = await dbClient.execute({
+          sql: `
+            SELECT name, phone, email
+            FROM customers
+            WHERE created_at >= datetime('now', '-' || ? || ' minutes')
+            ORDER BY id DESC
+          `,
+          args: [timeWindow]
+        });
+
+        // 3. Get today's summary (since start of day UTC)
+        const todayOrdersRes = await dbClient.execute(`
+          SELECT COUNT(DISTINCT order_code) as cnt, COALESCE(SUM(total_price), 0) as rev
+          FROM orders
+          WHERE created_at >= datetime('now', 'start of day')
+        `);
+        const todayOrders = todayOrdersRes.rows[0];
+
+        const todayLeadsRes = await dbClient.execute(`
+          SELECT COUNT(*) as cnt
+          FROM customers
+          WHERE created_at >= datetime('now', 'start of day')
+        `);
+        const todayLeads = todayLeadsRes.rows[0];
+
+        // 4. Get 24-hour summary
+        const last24hOrdersRes = await dbClient.execute(`
+          SELECT COUNT(DISTINCT order_code) as cnt, COALESCE(SUM(total_price), 0) as rev
+          FROM orders
+          WHERE created_at >= datetime('now', '-24 hours')
+        `);
+        const last24hOrders = last24hOrdersRes.rows[0];
+
+        const last24hLeadsRes = await dbClient.execute(`
+          SELECT COUNT(*) as cnt
+          FROM customers
+          WHERE created_at >= datetime('now', '-24 hours')
+        `);
+        const last24hLeads = last24hLeadsRes.rows[0];
+
+        // Format result text
+        let resultText = `=== SIGNALS FOR THE LAST ${timeWindow} MINUTES ===\n`;
+        
+        if (ordersRes.rows.length > 0) {
+          resultText += `🛒 New Orders (${ordersRes.rows.length}):\n`;
+          for (const row of ordersRes.rows) {
+            resultText += `- Đơn ${row.order_code}: Khách ${row.customer_name}, ${row.total_price.toLocaleString('vi-VN')} đ, ${row.quantity} sản phẩm.\n`;
+          }
+        } else {
+          resultText += `No new orders.\n`;
+        }
+
+        resultText += `\n`;
+
+        if (leadsRes.rows.length > 0) {
+          resultText += `👤 New Leads (${leadsRes.rows.length}):\n`;
+          for (const row of leadsRes.rows) {
+            resultText += `- Khách ${row.name}, SĐT ${row.phone || 'N/A'}, Email ${row.email || 'N/A'}.\n`;
+          }
+        } else {
+          resultText += `No new leads.\n`;
+        }
+
+        resultText += `\n`;
+        resultText += `=== TODAY'S STATISTICS ===\n`;
+        resultText += `- Total orders: ${todayOrders.cnt || 0}\n`;
+        resultText += `- Total revenue: ${(Number(todayOrders.rev) || 0).toLocaleString('vi-VN')} đ\n`;
+        resultText += `- Total new leads: ${todayLeads.cnt || 0}\n`;
+
+        resultText += `\n`;
+        resultText += `=== 24-HOUR SUMMARY (Morning Report) ===\n`;
+        resultText += `- Orders: ${last24hOrders.cnt || 0}\n`;
+        resultText += `- Revenue: ${(Number(last24hOrders.rev) || 0).toLocaleString('vi-VN')} đ\n`;
+        resultText += `- New leads: ${last24hLeads.cnt || 0}\n`;
+
+        log(`get_business_signals success: returned data for window ${timeWindow}m`);
+        return {
+          content: [{ type: "text", text: resultText }]
         };
       }
 
