@@ -61,7 +61,8 @@ async function runMigrations(client: any) {
     "INSERT OR IGNORE INTO homepage_configs (layout_key, layout_name, is_active, display_order, content_value, created_at) VALUES ('featured_nutrition', 'Dinh dưỡng nổi bật', 1, 3, '{\"product_ids\":[]}', datetime('now'));",
     "INSERT OR IGNORE INTO homepage_configs (layout_key, layout_name, is_active, display_order, content_value, created_at) VALUES ('special_promotions', 'Chương trình khuyến mãi đặc biệt', 1, 4, '{\"product_ids\":[]}', datetime('now'));",
     "INSERT OR IGNORE INTO homepage_configs (layout_key, layout_name, is_active, display_order, content_value, created_at) VALUES ('accessories_section', 'Phụ kiện Trail running', 1, 5, '{\"product_ids\":[]}', datetime('now'));",
-    "CREATE TABLE IF NOT EXISTS email_queue (id INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT, name TEXT, email_type INTEGER, scheduled_time TEXT, sent INTEGER DEFAULT 0, created_at TEXT DEFAULT CURRENT_TIMESTAMP);"
+    "CREATE TABLE IF NOT EXISTS email_queue (id INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT, name TEXT, email_type INTEGER, scheduled_time TEXT, sent INTEGER DEFAULT 0, created_at TEXT DEFAULT CURRENT_TIMESTAMP);",
+    "CREATE TABLE IF NOT EXISTS marketing_posts (id INTEGER PRIMARY KEY AUTOINCREMENT, topic TEXT, platform TEXT, content TEXT, image_url TEXT, scheduled_time TEXT, posted_at TEXT, status TEXT, main_key TEXT, fb_post_id TEXT, created_at TEXT DEFAULT CURRENT_TIMESTAMP);"
   ];
 
   for (const sql of columns) {
