@@ -426,8 +426,51 @@ if (typeof global !== 'undefined') {
             console.error(`Email Queue Worker: Failed to send job ${emailJob.id} to ${emailJob.email}:`, jobErr);
           }
         }
+
+        // Tự động đăng bài Facebook đã lên lịch
+        try {
+          const pendingFbPosts = await qAll<any>(
+            "SELECT * FROM marketing_posts WHERE status = 'scheduled' AND scheduled_time <= datetime('now')"
+          );
+
+          for (const postJob of pendingFbPosts) {
+            // Cập nhật trạng thái tạm lánh để tránh trùng lặp do race-conditions
+            await qRun(
+              "UPDATE marketing_posts SET status = 'publishing' WHERE id = ?",
+              [postJob.id]
+            );
+
+            try {
+              console.log(`Facebook Worker: Publishing scheduled post ID #${postJob.id} to Facebook Page...`);
+              const { publishToFacebook } = await import('./facebook');
+              const publishResult = await publishToFacebook(postJob.content, postJob.image_url || undefined);
+
+              if (publishResult.success && publishResult.id) {
+                await qRun(
+                  "UPDATE marketing_posts SET status = 'published', posted_at = datetime('now'), fb_post_id = ? WHERE id = ?",
+                  [publishResult.id, postJob.id]
+                );
+                console.log(`Facebook Worker: Successfully published scheduled post ID #${postJob.id}.`);
+              } else {
+                await qRun(
+                  "UPDATE marketing_posts SET status = 'failed' WHERE id = ?",
+                  [postJob.id]
+                );
+                console.error(`Facebook Worker: Failed to publish scheduled post ID #${postJob.id}:`, publishResult.error);
+              }
+            } catch (jobErr) {
+              await qRun(
+                "UPDATE marketing_posts SET status = 'failed' WHERE id = ?",
+                [postJob.id]
+              );
+              console.error(`Facebook Worker: Exception while publishing scheduled post ID #${postJob.id}:`, jobErr);
+            }
+          }
+        } catch (fbErr) {
+          console.error('Facebook Worker Loop Error:', fbErr);
+        }
       } catch (err) {
-        console.error('Email Queue Worker Loop Error:', err);
+        console.error('Email/Facebook Queue Worker Loop Error:', err);
       }
     }, 30000); // Chạy kiểm tra mỗi 30 giây
   }
