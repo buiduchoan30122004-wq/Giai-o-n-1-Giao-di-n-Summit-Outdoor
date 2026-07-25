@@ -11,6 +11,8 @@ export async function POST(request: NextRequest) {
     const preferred_brand = body.preferred_brand || body.favoriteBrand || '';
     const experience_level = body.experience_level || body.experienceLevel || '';
     const interests = body.interests || '';
+    const source = body.source || '';
+    const chatbot_data = body.chatbot_data || null;
     
     if (!name || !email) {
       return NextResponse.json({ success: false, error: 'Thiếu tên hoặc email khách hàng' }, { status: 400 });
@@ -89,13 +91,31 @@ export async function POST(request: NextRequest) {
     // Gửi thông báo đăng ký mới qua Telegram
     try {
       const { sendTelegramNotification } = await import('@/lib/telegram');
-      const telegramMessage = `<b>🔔 KHÁCH ĐĂNG KÝ TƯ VẤN MỚI 🔔</b>\n\n` +
-        `<b>• Họ tên:</b> ${name}\n` +
-        `<b>• Email:</b> ${email}\n` +
-        `<b>• Số điện thoại:</b> ${phone || 'Chưa cung cấp'}\n` +
-        `<b>• Thương hiệu yêu thích:</b> ${preferred_brand || 'Chưa cung cấp'}\n` +
-        `<b>• Kinh nghiệm:</b> ${experience_level || 'Chưa cung cấp'}\n` +
-        `<b>• Quan tâm:</b> ${interests || 'Chưa cung cấp'}`;
+      
+      let telegramMessage = '';
+      if (source === 'chatbot_recommendation' && chatbot_data) {
+        telegramMessage = `<b>🤖 KHÁCH ĐIỀN FORM TƯ VẤN CHATBOT 🤖</b>\n\n` +
+          `<b>• Họ tên:</b> ${name}\n` +
+          `<b>• Email:</b> ${email}\n` +
+          `<b>• Số điện thoại:</b> ${phone || 'Chưa cung cấp'}\n` +
+          `<b>• Sản phẩm tìm kiếm:</b> ${chatbot_data.product_type || 'Chưa chọn'}\n` +
+          `<b>• Cự ly chạy:</b> ${chatbot_data.distance || 'Chưa chọn'}\n` +
+          `<b>• Địa hình:</b> ${chatbot_data.terrain || 'Chưa chọn'}\n` +
+          `<b>• Ưu tiên:</b> ${chatbot_data.priority || 'Chưa chọn'}\n` +
+          `<b>• Size giày:</b> ${chatbot_data.shoe_size || 'Chưa chọn'}\n` +
+          `<b>• Thương hiệu hiện tại:</b> ${chatbot_data.current_brand || 'Chưa chọn'}\n` +
+          `<b>• Ngân sách:</b> ${chatbot_data.budget || 'Chưa chọn'}\n` +
+          `<b>• Vấn đề chân:</b> ${chatbot_data.foot_issue && chatbot_data.foot_issue.length > 0 ? chatbot_data.foot_issue.join(', ') : 'Không có'}`;
+      } else {
+        telegramMessage = `<b>🔔 KHÁCH ĐĂNG KÝ TƯ VẤN MỚI 🔔</b>\n\n` +
+          `<b>• Họ tên:</b> ${name}\n` +
+          `<b>• Email:</b> ${email}\n` +
+          `<b>• Số điện thoại:</b> ${phone || 'Chưa cung cấp'}\n` +
+          `<b>• Thương hiệu yêu thích:</b> ${preferred_brand || 'Chưa cung cấp'}\n` +
+          `<b>• Kinh nghiệm:</b> ${experience_level || 'Chưa cung cấp'}\n` +
+          `<b>• Quan tâm:</b> ${interests || 'Chưa cung cấp'}`;
+      }
+      
       await sendTelegramNotification(telegramMessage);
     } catch (telegramError) {
       console.error('Failed to send Telegram subscription notification:', telegramError);

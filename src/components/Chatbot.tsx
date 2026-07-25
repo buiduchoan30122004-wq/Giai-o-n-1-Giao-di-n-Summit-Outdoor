@@ -178,7 +178,9 @@ export default function Chatbot() {
             phone: data.phone || '',
             preferred_brand: data.current_brand || '',
             experience_level: data.experience || '',
-            interests: `Sản phẩm: ${data.product_type}. Cự ly: ${data.distance}. Địa hình: ${data.terrain}. Size: ${data.shoe_size || 'Không'}. Vấn đề chân: ${data.foot_issue.join(', ')}`
+            interests: `Sản phẩm: ${data.product_type}. Cự ly: ${data.distance}. Địa hình: ${data.terrain}. Size: ${data.shoe_size || 'Không'}. Vấn đề chân: ${data.foot_issue.join(', ')}`,
+            source: 'chatbot_recommendation',
+            chatbot_data: data
           }),
         });
       }
