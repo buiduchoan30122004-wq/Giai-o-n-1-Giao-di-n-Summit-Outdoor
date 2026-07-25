@@ -100,6 +100,20 @@ const RecommendationPopup = ({ isOpen, onClose, onSubmit }: RecommendationPopupP
       if (!formData.priority) newErrors.priority = 'Vui lòng chọn tiêu chí quan tâm nhất!';
       if (!formData.current_brand) newErrors.current_brand = 'Vui lòng chọn thương hiệu đang dùng!';
       if (!formData.budget) newErrors.budget = 'Vui lòng chọn mức ngân sách!';
+    } else if (currentStep === 3) {
+      if (!formData.name || !formData.name.trim()) {
+        newErrors.name = 'Vui lòng nhập họ và tên!';
+      }
+      if (!formData.phone || !formData.phone.trim()) {
+        newErrors.phone = 'Vui lòng nhập số điện thoại!';
+      } else if (!/^[0-9]{9,11}$/.test(formData.phone.trim().replace(/[\s.-]/g, ''))) {
+        newErrors.phone = 'Số điện thoại không hợp lệ (yêu cầu từ 9 đến 11 chữ số)!';
+      }
+      if (!formData.email || !formData.email.trim()) {
+        newErrors.email = 'Vui lòng nhập email!';
+      } else if (!/\S+@\S+\.\S+/.test(formData.email.trim())) {
+        newErrors.email = 'Địa chỉ email không hợp lệ!';
+      }
     }
 
     setErrors(newErrors);
@@ -344,10 +358,10 @@ const RecommendationPopup = ({ isOpen, onClose, onSubmit }: RecommendationPopupP
           {step === 3 && (
             <div className={styles.stepContent}>
               <h4 className={styles.stepTitle}>Thông tin liên hệ</h4>
-              <p className={styles.stepDescription}>Thông tin bên dưới giúp chúng tôi dễ dàng gửi thêm tài liệu hoặc liên hệ khi bạn cần (Không bắt buộc)</p>
+              <p className={styles.stepDescription}>Vui lòng điền thông tin để chuyên gia của chúng tôi gửi tài liệu hoặc liên hệ khi cần thiết</p>
               
               <div className={styles.inputGroup}>
-                <label className={styles.inputLabel} htmlFor="fullName_input">Họ và tên</label>
+                <label className={styles.inputLabel} htmlFor="fullName_input">Họ và tên <span className={styles.required}>*</span></label>
                 <input
                   id="fullName_input"
                   type="text"
@@ -356,10 +370,11 @@ const RecommendationPopup = ({ isOpen, onClose, onSubmit }: RecommendationPopupP
                   onChange={e => handleTextChange('name', e.target.value)}
                   className={styles.textInput}
                 />
+                {errors.name && <p className={styles.errorText}>{errors.name}</p>}
               </div>
 
               <div className={styles.inputGroup}>
-                <label className={styles.inputLabel} htmlFor="phone_input">Số điện thoại</label>
+                <label className={styles.inputLabel} htmlFor="phone_input">Số điện thoại <span className={styles.required}>*</span></label>
                 <input
                   id="phone_input"
                   type="tel"
@@ -368,10 +383,11 @@ const RecommendationPopup = ({ isOpen, onClose, onSubmit }: RecommendationPopupP
                   onChange={e => handleTextChange('phone', e.target.value)}
                   className={styles.textInput}
                 />
+                {errors.phone && <p className={styles.errorText}>{errors.phone}</p>}
               </div>
 
               <div className={styles.inputGroup}>
-                <label className={styles.inputLabel} htmlFor="email_input">Email</label>
+                <label className={styles.inputLabel} htmlFor="email_input">Email <span className={styles.required}>*</span></label>
                 <input
                   id="email_input"
                   type="email"
@@ -380,6 +396,7 @@ const RecommendationPopup = ({ isOpen, onClose, onSubmit }: RecommendationPopupP
                   onChange={e => handleTextChange('email', e.target.value)}
                   className={styles.textInput}
                 />
+                {errors.email && <p className={styles.errorText}>{errors.email}</p>}
               </div>
             </div>
           )}
