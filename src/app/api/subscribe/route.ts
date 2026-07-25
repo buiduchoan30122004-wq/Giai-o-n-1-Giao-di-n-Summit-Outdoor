@@ -86,6 +86,21 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Gửi thông báo đăng ký mới qua Telegram
+    try {
+      const { sendTelegramNotification } = await import('@/lib/telegram');
+      const telegramMessage = `<b>🔔 KHÁCH ĐĂNG KÝ TƯ VẤN MỚI 🔔</b>\n\n` +
+        `<b>• Họ tên:</b> ${name}\n` +
+        `<b>• Email:</b> ${email}\n` +
+        `<b>• Số điện thoại:</b> ${phone || 'Chưa cung cấp'}\n` +
+        `<b>• Thương hiệu yêu thích:</b> ${preferred_brand || 'Chưa cung cấp'}\n` +
+        `<b>• Kinh nghiệm:</b> ${experience_level || 'Chưa cung cấp'}\n` +
+        `<b>• Quan tâm:</b> ${interests || 'Chưa cung cấp'}`;
+      await sendTelegramNotification(telegramMessage);
+    } catch (telegramError) {
+      console.error('Failed to send Telegram subscription notification:', telegramError);
+    }
+
     return NextResponse.json({ success: true });
     
   } catch (error: any) {
