@@ -35,7 +35,7 @@ RestartSec=5
 # Các biến môi trường cần thiết
 Environment=PORT=3001
 Environment=DATABASE_PATH=/opt/summit-outdoor/data/brain.db
-Environment=RESEND_API_KEY=re_B4rVSB3o_5ypyEGoS9tFJxeTLS4xhS52u
+Environment=RESEND_API_KEY=your_resend_api_key_here
 
 [Install]
 WantedBy=multi-user.target
