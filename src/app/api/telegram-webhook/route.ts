@@ -76,6 +76,63 @@ Nội dung chi tiết bài viết đăng Facebook ở đây...
   };
 }
 
+// Hàm nhận diện ý định hội thoại tự nhiên từ tin nhắn người dùng
+async function classifyIntent(messageText: string): Promise<{
+  intent: 'write' | 'post' | 'schedule' | 'suggest' | 'list' | 'cancel' | 'help' | 'unknown';
+  argument?: string;
+  scheduled_time?: string;
+}> {
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) return { intent: 'unknown' };
+
+  const localTime = new Date().toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' });
+  const systemInstruction = `Bạn là bộ não phân tích ý định tin nhắn của chủ cửa hàng gửi cho Bot Facebook Marketing của Summit Outdoor.
+Hãy phân tích tin nhắn và phân loại vào một trong các ý định sau:
+1. 'help': Muốn xem hướng dẫn sử dụng, trợ giúp. (Ví dụ: "hướng dẫn anh dùng", "trợ giúp", "cứu", "help", "làm thế nào để sử dụng")
+2. 'write': Muốn soạn/viết bài viết mới. (Ví dụ: "viết bài về Salomon", "soạn bài marketing về tất trail", "viết bài dựa trên link này http://...", "soạn bài giới thiệu vest nước")
+3. 'post': Muốn đăng bài viết lên Facebook ngay lập tức. (Ví dụ: "đăng bài này đi", "đăng bài số 5 lên page", "đăng nội dung: ...", "đăng bài nháp số 2")
+4. 'schedule': Muốn lên lịch/hẹn giờ đăng bài. (Ví dụ: "hẹn giờ bài này lúc 9h sáng mai", "lên lịch đăng bài số 3 vào 2026-07-26 15:00", "đặt lịch bài nháp 1 vào tối nay lúc 20:00")
+5. 'suggest': Muốn nhận gợi ý chủ đề marketing hoặc lập lịch 7 ngày tự động. (Ví dụ: "gợi ý chủ đề", "lập lịch 7 ngày", "lên lịch tự động", "tuần này nên viết gì")
+6. 'list': Muốn xem danh sách bài viết. (Ví dụ: "xem danh sách bài viết", "danh sách bài đăng", "lịch đăng bài gần đây", "show danh sách")
+7. 'cancel': Muốn hủy/xóa lịch đăng của bài viết. (Ví dụ: "hủy bài số 4", "xóa lịch đăng bài 5", "hủy lịch đăng")
+
+Trả về cấu trúc JSON duy nhất dưới đây (không kèm bất cứ văn bản nào khác):
+{
+  "intent": "write" | "post" | "schedule" | "suggest" | "list" | "cancel" | "help" | "unknown",
+  "argument": "tham số chi tiết trích xuất được (như chủ đề cần viết, link đối thủ, ID bài viết cần đăng/hủy, hoặc nội dung bài đăng)",
+  "scheduled_time": "Thời gian hẹn giờ định dạng YYYY-MM-DD HH:MM nếu có. Hãy tự tính toán dựa trên thời gian máy chủ hiện tại ở Việt Nam là: ${localTime}"
+}`;
+
+  const prompt = {
+    contents: [{
+      parts: [{
+        text: `${systemInstruction}\n\nTin nhắn người dùng: "${messageText}"`
+      }]
+    }]
+  };
+
+  try {
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(prompt),
+    });
+
+    if (!response.ok) return { intent: 'unknown' };
+
+    const result = await response.json();
+    const rawText = result?.candidates?.[0]?.content?.parts?.[0]?.text || '';
+    
+    const jsonMatch = rawText.match(/\{[\s\S]*?\}/);
+    if (jsonMatch) {
+      return JSON.parse(jsonMatch[0]);
+    }
+  } catch (e) {
+    console.error('Failed to classify intent:', e);
+  }
+  return { intent: 'unknown' };
+}
+
 export async function POST(req: NextRequest) {
   try {
     const update = await req.json();
@@ -86,7 +143,47 @@ export async function POST(req: NextRequest) {
     }
 
     const chatId = update.message.chat.id;
-    const text: string = update.message.text.trim();
+    const rawText: string = update.message.text.trim();
+    let text = rawText;
+
+    // Nếu không phải là lệnh có gạch chéo /, dùng Gemini để phân tích ý định tự nhiên
+    if (!text.startsWith('/')) {
+      await sendTelegramMessage(chatId, '🧠 Đang phân tích ý định tin nhắn của bạn...');
+      const classified = await classifyIntent(text);
+      console.log('Classified Telegram input:', classified);
+
+      switch (classified.intent) {
+        case 'help':
+          text = '/help';
+          break;
+        case 'suggest':
+          if (rawText.includes('7 ngày') || rawText.includes('tự động') || (classified.argument && classified.argument.includes('7 ngày'))) {
+            text = '/lich_7_ngay';
+          } else {
+            text = '/goiy';
+          }
+          break;
+        case 'write':
+          text = `/viet ${classified.argument || ''}`;
+          break;
+        case 'post':
+          text = `/dang ${classified.argument || ''}`;
+          break;
+        case 'schedule':
+          text = `/hengio ${classified.scheduled_time || ''} ${classified.argument || ''}`;
+          break;
+        case 'list':
+          text = '/danhsach';
+          break;
+        case 'cancel':
+          text = `/huy ${classified.argument || ''}`;
+          break;
+        default:
+          // Mặc định xem như yêu cầu viết bài
+          text = `/viet ${rawText}`;
+          break;
+      }
+    }
 
     // 1. Lệnh trợ giúp / Trợ giúp chung
     if (text.startsWith('/start') || text.startsWith('/help') || text.startsWith('/trogiup')) {
