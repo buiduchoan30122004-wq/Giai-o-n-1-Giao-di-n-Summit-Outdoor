@@ -93,6 +93,54 @@ function createMcpServer() {
               time_window_minutes: { type: "number", description: "How many minutes back to look for new events (default: 5)" }
             }
           }
+        },
+        {
+          name: "publish_facebook_post",
+          description: "Publish a status message or image to Facebook Fanpage immediately.",
+          inputSchema: {
+            type: "object",
+            properties: {
+              content: { type: "string", description: "The marketing post message content to publish" },
+              image_url: { type: "string", description: "Optional image URL to include in the post" }
+            },
+            required: ["content"]
+          }
+        },
+        {
+          name: "schedule_facebook_post",
+          description: "Schedule a marketing post to be published on Facebook at a specific time in the future.",
+          inputSchema: {
+            type: "object",
+            properties: {
+              topic: { type: "string", description: "A brief topic/title of the post" },
+              content: { type: "string", description: "The message content of the post" },
+              image_url: { type: "string", description: "Optional image URL" },
+              scheduled_time: { type: "string", description: "The date and time to publish, in YYYY-MM-DD HH:MM format (Local VN time)" },
+              main_key: { type: "string", description: "Optional hashtags or tags for reference" }
+            },
+            required: ["topic", "content", "scheduled_time"]
+          }
+        },
+        {
+          name: "list_marketing_posts",
+          description: "List recent marketing posts including draft, scheduled, and published statuses.",
+          inputSchema: {
+            type: "object",
+            properties: {
+              limit: { type: "number", description: "Maximum number of posts to return (default: 10)" }
+            }
+          }
+        },
+        {
+          name: "cancel_marketing_post",
+          description: "Delete or cancel a scheduled marketing post by its ID.",
+          inputSchema: {
+            type: "object",
+            properties: {
+              id: { type: "number", description: "The ID of the marketing post to cancel" }
+            },
+            required: ["id"]
+          }
         }
       ]
     };
@@ -514,6 +562,137 @@ function createMcpServer() {
         log(`get_business_signals success: returned data for window ${timeWindow}m`);
         return {
           content: [{ type: "text", text: resultText }]
+        };
+      }
+
+      if (name === "publish_facebook_post") {
+        const { content, image_url: imageUrl } = args;
+        const pageId = process.env.FACEBOOK_PAGE_ID;
+        const pageAccessToken = process.env.FACEBOOK_PAGE_ACCESS_TOKEN;
+
+        if (!pageId || !pageAccessToken) {
+          throw new Error("FACEBOOK_PAGE_ID or FACEBOOK_PAGE_ACCESS_TOKEN is not configured on the server.");
+        }
+
+        try {
+          let url = `https://graph.facebook.com/v19.0/${pageId}/feed`;
+          const formData = new URLSearchParams();
+          formData.append('access_token', pageAccessToken);
+
+          if (imageUrl && imageUrl.trim()) {
+            url = `https://graph.facebook.com/v19.0/${pageId}/photos`;
+            formData.append('url', imageUrl.trim());
+            formData.append('caption', content);
+          } else {
+            formData.append('message', content);
+          }
+
+          const response = await fetch(url, {
+            method: 'POST',
+            body: formData
+          });
+
+          const data = await response.json();
+          if (!response.ok) {
+            return {
+              content: [{ type: "text", text: `Lỗi API Facebook: ${data.error?.message || JSON.stringify(data)}` }]
+            };
+          }
+
+          const postId = data.post_id || data.id;
+          
+          try {
+            await dbClient.execute({
+              sql: "INSERT INTO marketing_posts (topic, platform, content, image_url, status, posted_at, fb_post_id) VALUES (?, 'Facebook', ?, ?, 'published', datetime('now'), ?)",
+              args: ["Đăng trực tiếp qua Agent", content, imageUrl || '', postId]
+            });
+          } catch (dbErr) {
+            log(`Failed to save published post to DB: ${dbErr.message}`);
+          }
+
+          return {
+            content: [{ type: "text", text: `Đã đăng bài viết lên Facebook Fanpage thành công! ID bài viết: ${postId}` }]
+          };
+        } catch (err) {
+          return {
+            content: [{ type: "text", text: `Lỗi kết nối Facebook API: ${err.message}` }]
+          };
+        }
+      }
+
+      if (name === "schedule_facebook_post") {
+        const { topic, content, image_url: imageUrl, scheduled_time: scheduledTimeStr, main_key: mainKey } = args;
+
+        const localDate = new Date(scheduledTimeStr.replace(' ', 'T') + ':00+07:00');
+        if (isNaN(localDate.getTime())) {
+          throw new Error("Thời gian scheduled_time không hợp lệ. Định dạng yêu cầu: YYYY-MM-DD HH:MM");
+        }
+        const utcIsoStr = localDate.toISOString().replace('T', ' ').substring(0, 19);
+
+        await dbClient.execute({
+          sql: "INSERT INTO marketing_posts (topic, platform, content, image_url, status, scheduled_time, main_key) VALUES (?, 'Facebook', ?, ?, 'scheduled', ?, ?)",
+          args: [topic, content, imageUrl || '', utcIsoStr, mainKey || '']
+        });
+
+        return {
+          content: [{ type: "text", text: `Đã lên lịch đăng bài thành công vào lúc ${scheduledTimeStr} (Giờ VN).` }]
+        };
+      }
+
+      if (name === "list_marketing_posts") {
+        const limit = args.limit || 10;
+        const res = await dbClient.execute({
+          sql: "SELECT id, topic, status, scheduled_time, posted_at FROM marketing_posts ORDER BY id DESC LIMIT ?",
+          args: [limit]
+        });
+
+        if (res.rows.length === 0) {
+          return {
+            content: [{ type: "text", text: "Chưa có bài viết marketing nào." }]
+          };
+        }
+
+        let reply = "📋 DANH SÁCH BÀI VIẾT MARKETING:\n\n";
+        res.rows.forEach(post => {
+          let timeInfo = '';
+          if (post.status === 'scheduled' && post.scheduled_time) {
+            const localDate = new Date(post.scheduled_time + 'Z');
+            const vnTime = localDate.toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' });
+            timeInfo = ` - Lên lịch: ${vnTime}`;
+          } else if (post.status === 'published' && post.posted_at) {
+            const localDate = new Date(post.posted_at + 'Z');
+            const vnTime = localDate.toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' });
+            timeInfo = ` - Đã đăng: ${vnTime}`;
+          }
+          const icon = post.status === 'published' ? '✅' : post.status === 'scheduled' ? '⏰' : '📝';
+          reply += `${icon} #${post.id}: [${post.status.toUpperCase()}] ${post.topic}${timeInfo}\n`;
+        });
+
+        return {
+          content: [{ type: "text", text: reply }]
+        };
+      }
+
+      if (name === "cancel_marketing_post") {
+        const { id } = args;
+        const check = await dbClient.execute({
+          sql: "SELECT id FROM marketing_posts WHERE id = ?",
+          args: [id]
+        });
+
+        if (check.rows.length === 0) {
+          return {
+            content: [{ type: "text", text: `Không tìm thấy bài viết ID #${id}.` }]
+          };
+        }
+
+        await dbClient.execute({
+          sql: "DELETE FROM marketing_posts WHERE id = ?",
+          args: [id]
+        });
+
+        return {
+          content: [{ type: "text", text: `Đã hủy/xóa thành công bài viết ID #${id}.` }]
         };
       }
 
