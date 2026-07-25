@@ -76,9 +76,93 @@ Nội dung chi tiết bài viết đăng Facebook ở đây...
   };
 }
 
+// Hàm duyệt đơn hàng qua mã đơn hàng (gửi hóa đơn & cảm ơn qua Resend)
+async function confirmOrder(orderCode: string): Promise<string> {
+  let code = orderCode.trim().toUpperCase().replace('#', '');
+  if (!code.startsWith('SUMMIT') && /^\d+$/.test(code)) {
+    code = `SUMMIT${code}`;
+  }
+
+  try {
+    const order: any = await queryGet('SELECT * FROM orders WHERE order_code = ?', [code]);
+    if (!order) {
+      return `❌ Không tìm thấy đơn hàng mã <code>${code}</code> trong database.`;
+    }
+
+    if (order.status === 'confirmed') {
+      return `ℹ️ Đơn hàng <code>${code}</code> đã được xác nhận thanh toán/duyệt từ trước đó rồi.`;
+    }
+
+    await queryRun(
+      "UPDATE orders SET status = 'confirmed', updated_at = datetime('now') WHERE order_code = ?",
+      [code]
+    );
+
+    // Gửi email xác nhận đặt hàng & email cảm ơn mua hàng qua Resend
+    try {
+      const { sendOrderConfirmationByCode, sendThankYouEmailByCode } = await import('@/lib/email');
+      await sendOrderConfirmationByCode(code);
+      await sendThankYouEmailByCode(code);
+    } catch (mailError) {
+      console.error('Failed to send emails during Telegram order confirmation:', mailError);
+    }
+
+    return `✅ <b>DUYỆT ĐƠN THÀNH CÔNG!</b>\n\n• Mã đơn: <code>${code}</code>\n• Trạng thái: Confirmed (Đã xác nhận)\n\n📧 Hệ thống đã tự động kích hoạt gửi Email hóa đơn & Cảm ơn qua Resend cho khách hàng!`;
+  } catch (err: any) {
+    console.error('Error confirming order via Telegram:', err);
+    return `❌ Lỗi hệ thống khi duyệt đơn: ${err.message}`;
+  }
+}
+
+// Hàm xuất báo cáo doanh số/đơn hàng ngày hôm nay
+async function getTodayReport(): Promise<string> {
+  try {
+    const now = new Date();
+    const vnOffset = 7 * 60 * 60 * 1000;
+    const vnTime = new Date(now.getTime() + vnOffset);
+    const todayStr = vnTime.toISOString().substring(0, 10); // YYYY-MM-DD
+
+    const orders = await queryAll<any>(
+      `SELECT o.*, c.name as customer_name FROM orders o 
+       JOIN customers c ON o.customer_id = c.id 
+       WHERE o.created_at LIKE ?`,
+      [`%${todayStr}%`]
+    );
+
+    if (!orders || orders.length === 0) {
+      return `📊 <b>BÁO CÁO DOANH THU HÔM NAY (${todayStr}):</b>\n\nHôm nay chưa phát sinh đơn hàng mới nào.`;
+    }
+
+    const count = orders.length;
+    const confirmedCount = orders.filter(o => o.status === 'confirmed').length;
+    const pendingCount = orders.filter(o => o.status === 'pending').length;
+    
+    const totalRevenue = orders
+      .filter(o => o.status === 'confirmed')
+      .reduce((sum, o) => sum + (o.total_price || 0), 0);
+
+    let reportText = `📊 <b>BÁO CÁO DOANH THU HÔM NAY (${todayStr}):</b>\n\n` +
+      `• <b>Tổng số đơn:</b> ${count} đơn\n` +
+      `  - Đã duyệt: ${confirmedCount} đơn\n` +
+      `  - Chờ thanh toán: ${pendingCount} đơn\n` +
+      `• <b>Doanh thu đã thu:</b> <b>${totalRevenue.toLocaleString('vi-VN')} đ</b>\n\n` +
+      `<b>Chi tiết các đơn hàng:</b>\n`;
+
+    for (const order of orders) {
+      const statusIcon = order.status === 'confirmed' ? '✅' : '⏳';
+      reportText += `${statusIcon} <code>#${order.order_code}</code> - ${order.customer_name} - <b>${order.total_price.toLocaleString('vi-VN')} đ</b> (${order.status})\n`;
+    }
+
+    return reportText;
+  } catch (err: any) {
+    console.error('Error generating report:', err);
+    return `❌ Lỗi khi xuất báo cáo: ${err.message}`;
+  }
+}
+
 // Hàm nhận diện ý định hội thoại tự nhiên từ tin nhắn người dùng
 async function classifyIntent(messageText: string): Promise<{
-  intent: 'write' | 'post' | 'schedule' | 'suggest' | 'list' | 'cancel' | 'help' | 'unknown';
+  intent: 'write' | 'post' | 'schedule' | 'suggest' | 'list' | 'cancel' | 'help' | 'report' | 'confirm' | 'unknown';
   argument?: string;
   scheduled_time?: string;
 }> {
@@ -88,18 +172,20 @@ async function classifyIntent(messageText: string): Promise<{
   const localTime = new Date().toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' });
   const systemInstruction = `Bạn là bộ não phân tích ý định tin nhắn của chủ cửa hàng gửi cho Bot Facebook Marketing của Summit Outdoor.
 Hãy phân tích tin nhắn và phân loại vào một trong các ý định sau:
-1. 'help': Muốn xem hướng dẫn sử dụng, trợ giúp. (Ví dụ: "hướng dẫn anh dùng", "trợ giúp", "cứu", "help", "làm thế nào để sử dụng")
-2. 'write': Muốn soạn/viết bài viết mới. (Ví dụ: "viết bài về Salomon", "soạn bài marketing về tất trail", "viết bài dựa trên link này http://...", "soạn bài giới thiệu vest nước")
-3. 'post': Muốn đăng bài viết lên Facebook ngay lập tức. (Ví dụ: "đăng bài này đi", "đăng bài số 5 lên page", "đăng nội dung: ...", "đăng bài nháp số 2")
-4. 'schedule': Muốn lên lịch/hẹn giờ đăng bài. (Ví dụ: "hẹn giờ bài này lúc 9h sáng mai", "lên lịch đăng bài số 3 vào 2026-07-26 15:00", "đặt lịch bài nháp 1 vào tối nay lúc 20:00")
-5. 'suggest': Muốn nhận gợi ý chủ đề marketing hoặc lập lịch 7 ngày tự động. (Ví dụ: "gợi ý chủ đề", "lập lịch 7 ngày", "lên lịch tự động", "tuần này nên viết gì")
-6. 'list': Muốn xem danh sách bài viết. (Ví dụ: "xem danh sách bài viết", "danh sách bài đăng", "lịch đăng bài gần đây", "show danh sách")
-7. 'cancel': Muốn hủy/xóa lịch đăng của bài viết. (Ví dụ: "hủy bài số 4", "xóa lịch đăng bài 5", "hủy lịch đăng")
+1. 'help': Muêu xem hướng dẫn sử dụng, trợ giúp. (Ví dụ: "hướng dẫn anh dùng", "trợ giúp", "cứu", "help")
+2. 'report': Xem báo cáo doanh thu/đơn hàng ngày hôm nay. (Ví dụ: "báo cáo đơn hôm nay", "báo cáo doanh thu", "doanh số hôm nay", "hôm nay bán được bao nhiêu")
+3. 'confirm': Muốn duyệt hoặc xác nhận thanh toán đơn hàng. (Ví dụ: "duyệt đơn SUMMIT1004", "xác nhận đơn 8508", "duyệt đơn hàng SUMMIT2622")
+4. 'write': Muốn soạn/viết bài viết mới. (Ví dụ: "viết bài về Salomon", "soạn bài marketing về tất trail", "viết bài dựa trên link này http://...")
+5. 'post': Muốn đăng bài viết lên Facebook ngay lập tức. (Ví dụ: "đăng bài này đi", "đăng bài số 5 lên page", "đăng bài nháp số 2")
+6. 'schedule': Muốn lên lịch/hẹn giờ đăng bài. (Ví dụ: "hẹn giờ bài này lúc 9h sáng mai", "lên lịch đăng bài số 3 vào 2026-07-26 15:00", "đặt lịch bài nháp 1 vào tối nay lúc 20:00")
+7. 'suggest': Muốn nhận gợi ý chủ đề marketing hoặc lập lịch 7 ngày tự động. (Ví dụ: "gợi ý chủ đề", "lập lịch 7 ngày", "lên lịch tự động", "tuần này nên viết gì")
+8. 'list': Muốn xem danh sách bài viết. (Ví dụ: "xem danh sách bài viết", "danh sách bài đăng", "lịch đăng bài gần đây")
+9. 'cancel': Muốn hủy/xóa lịch đăng của bài viết. (Ví dụ: "hủy bài số 4", "xóa lịch đăng bài 5")
 
 Trả về cấu trúc JSON duy nhất dưới đây (không kèm bất cứ văn bản nào khác):
 {
-  "intent": "write" | "post" | "schedule" | "suggest" | "list" | "cancel" | "help" | "unknown",
-  "argument": "tham số chi tiết trích xuất được (như chủ đề cần viết, link đối thủ, ID bài viết cần đăng/hủy, hoặc nội dung bài đăng)",
+  "intent": "write" | "post" | "schedule" | "suggest" | "list" | "cancel" | "help" | "report" | "confirm" | "unknown",
+  "argument": "tham số chi tiết trích xuất được (như chủ đề cần viết, link đối thủ, ID bài viết cần đăng/hủy, mã đơn hàng cần duyệt, hoặc nội dung bài đăng)",
   "scheduled_time": "Thời gian hẹn giờ định dạng YYYY-MM-DD HH:MM nếu có. Hãy tự tính toán dựa trên thời gian máy chủ hiện tại ở Việt Nam là: ${localTime}"
 }`;
 
@@ -148,40 +234,72 @@ export async function POST(req: NextRequest) {
 
     // Nếu không phải là lệnh có gạch chéo /, dùng Gemini để phân tích ý định tự nhiên
     if (!text.startsWith('/')) {
-      await sendTelegramMessage(chatId, '🧠 Đang phân tích ý định tin nhắn của bạn...');
-      const classified = await classifyIntent(text);
-      console.log('Classified Telegram input:', classified);
+      const lowerText = text.toLowerCase();
+      
+      // Nhận diện nhanh báo cáo đơn hôm nay
+      if (lowerText.includes('báo cáo') || lowerText.includes('doanh thu') || lowerText.includes('doanh số') || lowerText.includes('đơn hôm nay')) {
+        text = '/baocao';
+      } 
+      // Nhận diện nhanh duyệt đơn hàng
+      else if (lowerText.includes('duyệt') || lowerText.includes('xác nhận')) {
+        const match = text.match(/(SUMMIT\d+|\d+)/i);
+        if (match) {
+          text = `/duyet ${match[1]}`;
+        } else {
+          await sendTelegramMessage(chatId, '❓ Bạn muốn duyệt đơn hàng nào? Vui lòng ghi rõ mã đơn hàng (ví dụ: "Duyệt đơn SUMMIT1004" hoặc "duyệt đơn 1004").');
+          return NextResponse.json({ ok: true });
+        }
+      } 
+      // Mọi ý định khác sẽ được phân tích qua Gemini AI
+      else {
+        // Gửi thông báo đang xử lý, nếu Gemini API key bị lỗi sẽ bắt exception và thông báo cụ thể
+        const apiKey = process.env.GEMINI_API_KEY;
+        if (!apiKey) {
+          await sendTelegramMessage(chatId, '❌ Lỗi: Server chưa cấu hình GEMINI_API_KEY để phân tích tin nhắn tự nhiên. Vui lòng gõ các lệnh bằng dấu gạch chéo (ví dụ: /help, /danhsach, /viet Salomon...).');
+          return NextResponse.json({ ok: true });
+        }
 
-      switch (classified.intent) {
-        case 'help':
-          text = '/help';
-          break;
-        case 'suggest':
-          if (rawText.includes('7 ngày') || rawText.includes('tự động') || (classified.argument && classified.argument.includes('7 ngày'))) {
-            text = '/lich_7_ngay';
-          } else {
-            text = '/goiy';
-          }
-          break;
-        case 'write':
-          text = `/viet ${classified.argument || ''}`;
-          break;
-        case 'post':
-          text = `/dang ${classified.argument || ''}`;
-          break;
-        case 'schedule':
-          text = `/hengio ${classified.scheduled_time || ''} ${classified.argument || ''}`;
-          break;
-        case 'list':
-          text = '/danhsach';
-          break;
-        case 'cancel':
-          text = `/huy ${classified.argument || ''}`;
-          break;
-        default:
-          // Mặc định xem như yêu cầu viết bài
-          text = `/viet ${rawText}`;
-          break;
+        await sendTelegramMessage(chatId, '🧠 Đang suy nghĩ...');
+        const classified = await classifyIntent(text);
+        console.log('Classified Telegram input:', classified);
+
+        switch (classified.intent) {
+          case 'help':
+            text = '/help';
+            break;
+          case 'report':
+            text = '/baocao';
+            break;
+          case 'confirm':
+            text = `/duyet ${classified.argument || ''}`;
+            break;
+          case 'suggest':
+            if (rawText.includes('7 ngày') || rawText.includes('tự động') || (classified.argument && classified.argument.includes('7 ngày'))) {
+              text = '/lich_7_ngay';
+            } else {
+              text = '/goiy';
+            }
+            break;
+          case 'write':
+            text = `/viet ${classified.argument || ''}`;
+            break;
+          case 'post':
+            text = `/dang ${classified.argument || ''}`;
+            break;
+          case 'schedule':
+            text = `/hengio ${classified.scheduled_time || ''} ${classified.argument || ''}`;
+            break;
+          case 'list':
+            text = '/danhsach';
+            break;
+          case 'cancel':
+            text = `/huy ${classified.argument || ''}`;
+            break;
+          default:
+            // Mặc định xem như yêu cầu viết bài
+            text = `/viet ${rawText}`;
+            break;
+        }
       }
     }
 
@@ -524,6 +642,29 @@ export async function POST(req: NextRequest) {
         await sendTelegramMessage(chatId, `🗑️ Đã xóa/hủy bài viết ID #${id} thành công.`);
       } catch (err: any) {
         await sendTelegramMessage(chatId, `❌ Lỗi khi hủy bài viết: ${err.message}`);
+      }
+      return NextResponse.json({ ok: true });
+    }
+
+    // 9. Lệnh báo cáo doanh thu hôm nay
+    if (text === '/baocao') {
+      try {
+        const report = await getTodayReport();
+        await sendTelegramMessage(chatId, report);
+      } catch (err: any) {
+        await sendTelegramMessage(chatId, `❌ Lỗi khi xuất báo cáo: ${err.message}`);
+      }
+      return NextResponse.json({ ok: true });
+    }
+
+    // 10. Lệnh duyệt đơn hàng
+    if (text.startsWith('/duyet ')) {
+      const orderCodeArg = text.substring(7).trim();
+      try {
+        const resultMessage = await confirmOrder(orderCodeArg);
+        await sendTelegramMessage(chatId, resultMessage);
+      } catch (err: any) {
+        await sendTelegramMessage(chatId, `❌ Lỗi khi duyệt đơn: ${err.message}`);
       }
       return NextResponse.json({ ok: true });
     }
