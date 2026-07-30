@@ -343,13 +343,10 @@
 
 .productImgContainer {
   width: 100%;
-  aspect-ratio: 1 / 1;
+  padding-bottom: 100%; /* Đảm bảo hình vuông tỷ lệ 1:1 chuẩn tuyệt đối */
+  height: 0;
   background-color: #ffffff; /* Nền trắng thuần đồng nhất */
   border-radius: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 10px;
   position: relative;
   overflow: hidden;
   transition: background-color 0.3s ease;
@@ -371,10 +368,23 @@
   background-color: #ffffff; /* Giữ nguyên nền trắng khi hover */
 }
 
-.productImg {
+.productImgLink {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  display: block;
+}
+
+.productImg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Giữ nguyên tỷ lệ giày không bị méo */
+  padding: 12px; /* Đệm khoảng cách đẹp bao quanh sản phẩm */
   transition: transform 0.4s ease;
 }
 
@@ -461,6 +471,8 @@
   text-transform: uppercase;
   margin-bottom: 4px;
   letter-spacing: 0.2px;
+  min-height: 1.2em; /* Luôn giữ chỗ chiều cao của 1 dòng chữ */
+  display: block;
 }
 
 .productName {

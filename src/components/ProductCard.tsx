@@ -45,7 +45,7 @@ export default function ProductCard({ id, brand, name, price, image, status, sub
             <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
           </svg>
         </button>
-        <Link href={`/product/${id}`} style={{ display: 'block', width: '100%', height: '100%' }}>
+        <Link href={`/product/${id}`} className={styles.productImgLink}>
           <img 
             src={image} 
             alt={name} 
@@ -90,7 +90,7 @@ export default function ProductCard({ id, brand, name, price, image, status, sub
       {/* Thông tin sản phẩm */}
       <Link href={`/product/${id}`} style={{ textDecoration: 'none', color: 'inherit', display: 'block', marginTop: 'auto' }}>
         <div className={styles.productInfo}>
-          {status && <span className={styles.productStatus}>{status}</span>}
+          <span className={styles.productStatus}>{status || '\u00A0'}</span>
           <h4 className={styles.productName}>{name}</h4>
           <span className={styles.productSubtitle}>{subtitle || `${brand} - Unisex`}</span>
           <div className={styles.productPrice}>{price}</div>
