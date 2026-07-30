@@ -461,3 +461,171 @@
     padding-bottom: 30px;
   }
 }
+
+/* 10 Top Trail Brands Section */
+.topBrandsSection {
+  padding: 30px 0 10px 0; /* Thu gọn padding để tiết kiệm diện tích */
+  background-color: var(--color-white);
+  width: 100%;
+}
+
+.topBrandsHeader {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.topBrandsLogoWrapper {
+  display: inline-flex;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+
+.topBrandsLogoIcon {
+  animation: none;
+}
+
+.topBrandsTitle {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: var(--color-black);
+  letter-spacing: 0.5px;
+  margin: 5px 0;
+  text-transform: uppercase;
+}
+
+.topBrandsSubtitleLine {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 5px;
+}
+
+.subLine {
+  flex-grow: 1;
+  max-width: 200px;
+  height: 1px;
+  background-color: #e4e4e7;
+}
+
+.subText {
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--color-black);
+  letter-spacing: 2px;
+}
+
+.topBrandsGrid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 15px;
+}
+
+.topBrandCard {
+  border: 1px solid #e4e4e7;
+  border-radius: 8px;
+  background-color: var(--color-white);
+  padding: 18px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 140px;
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+
+.topBrandCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.04);
+  border-color: #a1a1aa;
+}
+
+.topBrandLogoContainer {
+  height: 60px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.topBrandLogo {
+  max-width: 80%;
+  max-height: 42px;
+  object-fit: contain;
+}
+
+.topBrandLabel {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--color-black);
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.redCircle {
+  color: var(--color-primary); /* Màu đỏ thương hiệu */
+  font-size: 0.95rem;
+  font-weight: bold;
+}
+
+.topBrandsHr {
+  border: none;
+  height: 1px;
+  background-color: #e4e4e7;
+  margin: 30px auto 15px auto;
+  max-width: 100%;
+}
+
+.topBrandsBottomRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 5px;
+}
+
+.bottomLogoIcon {
+  flex-shrink: 0;
+}
+
+.bottomBrandInfo {
+  text-align: left;
+}
+
+.bottomBrandTitle {
+  font-size: 0.82rem;
+  font-weight: 900;
+  letter-spacing: 0.8px;
+  color: var(--color-black);
+  line-height: 1.1;
+}
+
+.bottomBrandSub {
+  font-size: 0.58rem;
+  font-weight: 800;
+  color: #71717a;
+  letter-spacing: 0.5px;
+  line-height: 1;
+}
+
+@media (max-width: 991px) {
+  .topBrandsGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 576px) {
+  .topBrandsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .topBrandsTitle {
+    font-size: 1.25rem;
+  }
+  .subLine {
+    max-width: 80px;
+  }
+}
+

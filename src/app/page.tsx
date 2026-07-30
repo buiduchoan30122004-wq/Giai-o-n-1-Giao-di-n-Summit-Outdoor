@@ -264,6 +264,113 @@ export default function Home() {
         </div>
       </section>
 
+      {/* 10 Top Trail Brands */}
+      <section className={styles.topBrandsSection}>
+        <div className="container">
+          <div className={styles.topBrandsHeader}>
+            <div className={styles.topBrandsLogoWrapper}>
+              <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" className={styles.topBrandsLogoIcon}>
+                <polygon points="13,6 3,24 23,24" fill="var(--color-primary)" />
+                <polygon points="21,11 13,24 29,24" fill="var(--color-black)" />
+                <polygon points="13,24 16,19 18,24" fill="var(--color-white)" />
+              </svg>
+            </div>
+            <h2 className={styles.topBrandsTitle}>10 THƯƠNG HIỆU ĐỒ TRAIL HÀNG ĐẦU</h2>
+            <div className={styles.topBrandsSubtitleLine}>
+              <span className={styles.subLine}></span>
+              <span className={styles.subText}>SUMMIT OUTDOOR</span>
+              <span className={styles.subLine}></span>
+            </div>
+          </div>
+
+          <div className={styles.topBrandsGrid}>
+            <div className={styles.topBrandCard}>
+              <div className={styles.topBrandLogoContainer}>
+                <img src="/brands/salomon.svg" alt="Salomon" className={styles.topBrandLogo} />
+              </div>
+              <div className={styles.topBrandLabel}><span className={styles.redCircle}>①</span> Salomon</div>
+            </div>
+
+            <div className={styles.topBrandCard}>
+              <div className={styles.topBrandLogoContainer}>
+                <img src="/brands/hoka.svg" alt="HOKA" className={styles.topBrandLogo} />
+              </div>
+              <div className={styles.topBrandLabel}><span className={styles.redCircle}>②</span> HOKA</div>
+            </div>
+
+            <div className={styles.topBrandCard}>
+              <div className={styles.topBrandLogoContainer}>
+                <img src="/brands/altra.svg" alt="Altra" className={styles.topBrandLogo} style={{ maxHeight: '28px' }} />
+              </div>
+              <div className={styles.topBrandLabel}><span className={styles.redCircle}>③</span> Altra</div>
+            </div>
+
+            <div className={styles.topBrandCard}>
+              <div className={styles.topBrandLogoContainer}>
+                <img src="/brands/lasportiva.svg" alt="La Sportiva" className={styles.topBrandLogo} />
+              </div>
+              <div className={styles.topBrandLabel}><span className={styles.redCircle}>④</span> La Sportiva</div>
+            </div>
+
+            <div className={styles.topBrandCard}>
+              <div className={styles.topBrandLogoContainer}>
+                <img src="/brands/brooks.svg" alt="Brooks" className={styles.topBrandLogo} />
+              </div>
+              <div className={styles.topBrandLabel}><span className={styles.redCircle}>⑤</span> Brooks</div>
+            </div>
+
+            <div className={styles.topBrandCard}>
+              <div className={styles.topBrandLogoContainer}>
+                <img src="/brands/saucony.svg" alt="Saucony" className={styles.topBrandLogo} />
+              </div>
+              <div className={styles.topBrandLabel}><span className={styles.redCircle}>⑥</span> Saucony</div>
+            </div>
+
+            <div className={styles.topBrandCard}>
+              <div className={styles.topBrandLogoContainer}>
+                <img src="/brands/asics.svg" alt="ASICS" className={styles.topBrandLogo} />
+              </div>
+              <div className={styles.topBrandLabel}><span className={styles.redCircle}>⑦</span> ASICS</div>
+            </div>
+
+            <div className={styles.topBrandCard}>
+              <div className={styles.topBrandLogoContainer} style={{ position: 'relative' }}>
+                <img src="/brands/adidas.svg" alt="adidas TERREX" className={styles.topBrandLogo} style={{ transform: 'translateY(-6px)' }} />
+                <span style={{ fontSize: '0.62rem', fontWeight: 900, fontFamily: 'sans-serif', position: 'absolute', bottom: '12px', letterSpacing: '1px' }}>TERREX</span>
+              </div>
+              <div className={styles.topBrandLabel}><span className={styles.redCircle}>⑧</span> adidas TERREX</div>
+            </div>
+
+            <div className={styles.topBrandCard}>
+              <div className={styles.topBrandLogoContainer}>
+                <img src="/brands/nnormal.svg" alt="NNormal" className={styles.topBrandLogo} />
+              </div>
+              <div className={styles.topBrandLabel}><span className={styles.redCircle}>⑨</span> NNormal</div>
+            </div>
+
+            <div className={styles.topBrandCard}>
+              <div className={styles.topBrandLogoContainer}>
+                <img src="/brands/merrell.svg" alt="Merrell" className={styles.topBrandLogo} />
+              </div>
+              <div className={styles.topBrandLabel}><span className={styles.redCircle}>⑩</span> Merrell</div>
+            </div>
+          </div>
+
+          <hr className={styles.topBrandsHr} />
+          <div className={styles.topBrandsBottomRow}>
+            <svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" className={styles.bottomLogoIcon}>
+              <polygon points="13,6 3,24 23,24" fill="var(--color-primary)" />
+              <polygon points="21,11 13,24 29,24" fill="var(--color-black)" />
+              <polygon points="13,24 16,19 18,24" fill="var(--color-white)" />
+            </svg>
+            <div className={styles.bottomBrandInfo}>
+              <div className={styles.bottomBrandTitle}>SUMMIT OUTDOOR</div>
+              <div className={styles.bottomBrandSub}>TRAIL RUNNING & OUTDOOR GEAR</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Partner Brands */}
       <section className={styles.partnerSection}>
         <div className="container">
