@@ -10,27 +10,158 @@
 }
 
 .topBar {
-  background-color: var(--color-black);
+  background-color: #0b0b0b;
   color: var(--color-white);
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  padding: 10px 0;
+  font-size: 0.72rem;
+  letter-spacing: 0.3px;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .topBarInner {
   display: flex;
-  justify-content: flex-end;
-  gap: 30px;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.topBarInner span {
+.topBarLeft {
+  display: flex;
+  align-items: center;
+}
+
+.promoText {
+  color: rgba(255, 255, 255, 0.65);
+  font-weight: 450;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.promoIcon {
+  font-size: 0.85rem;
+}
+
+.topBarRight {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.topBarLink {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: rgba(255, 255, 255, 0.65);
   cursor: pointer;
-  opacity: 0.7;
+  transition: all 0.25s ease;
+  font-weight: 500;
 }
 
-.topBarInner span:hover {
+.topBarLink:hover {
+  color: var(--color-white);
   opacity: 1;
+}
+
+.linkIcon {
+  stroke: rgba(255, 255, 255, 0.65);
+  transition: stroke 0.25s ease, transform 0.25s ease;
+}
+
+.topBarLink:hover .linkIcon {
+  stroke: var(--color-primary);
+  transform: translateY(-1px);
+}
+
+/* Language Selector */
+.langSelector {
+  position: relative;
+  display: inline-block;
+  padding-bottom: 2px;
+}
+
+.langButton {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 0.72rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0;
+  background: none;
+  border: none;
+  transition: color 0.25s ease;
+}
+
+.langSelector:hover .langButton {
+  color: var(--color-white);
+}
+
+.flagIcon {
+  font-size: 0.85rem;
+}
+
+.chevronIcon {
+  stroke: rgba(255, 255, 255, 0.5);
+  transition: transform 0.25s ease;
+}
+
+.langSelector:hover .chevronIcon {
+  transform: rotate(180deg);
+  stroke: var(--color-white);
+}
+
+.langDropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  background-color: #121212;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  min-width: 120px;
+  padding: 6px 0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  z-index: 1000;
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.langSelector:hover .langDropdown {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.dropdownItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 16px;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.72rem;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dropdownItem:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: var(--color-white);
+}
+
+.activeLang {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.dropdownFlag {
+  font-size: 0.85rem;
 }
 
 .mainHeaderInner {
@@ -89,19 +220,136 @@
 
 .headerActions {
   display: flex;
-  gap: 30px;
+  gap: 20px;
   align-items: center;
 }
 
 .actionIcon {
-  font-size: 1.4rem;
-  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: var(--color-black);
-  transition: color 0.2s;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
 }
 
 .actionIcon:hover {
+  background-color: var(--color-gray-light);
   color: var(--color-primary);
+}
+
+.actionSvg {
+  stroke: var(--color-black);
+  transition: stroke 0.2s ease;
+}
+
+.actionIcon:hover .actionSvg {
+  stroke: var(--color-primary);
+}
+
+/* Flag Buttons */
+.flagContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-right: 10px;
+}
+
+.flagBtn {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  overflow: hidden;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid transparent;
+  padding: 0;
+  background: none;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+  transition: all 0.2s ease;
+}
+
+.flagBtn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+}
+
+.flagActive {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 1px var(--color-primary);
+}
+
+.flagSvg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Cart Action */
+.cartAction {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-black);
+  font-weight: 500;
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.cartAction:hover {
+  background-color: var(--color-gray-light);
+  color: var(--color-primary);
+}
+
+.cartText {
+  font-weight: 600;
+  text-transform: none; /* Vietnamese looks cleaner without all-caps */
+}
+
+.cartIconWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.cartIcon {
+  stroke: var(--color-black);
+  transition: stroke 0.2s ease;
+}
+
+.cartAction:hover .cartIcon {
+  stroke: var(--color-primary);
+}
+
+.cartBadge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background-color: #2D2D2D; /* Dark gray circular badge like in the screenshot */
+  color: var(--color-white);
+  font-size: 0.65rem;
+  font-weight: 700;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid var(--color-white);
+}
+
+.cartAction:hover .cartBadge {
+  background-color: var(--color-primary);
 }
 
 /* Brand Bar */
@@ -224,9 +472,9 @@
   color: var(--color-gray-medium);
 }
 
-/* PRODUCT CARD - Salomon Style (Minimal, Swatches, Grey BG Image) */
+/* PRODUCT CARD - Salomon Style (Minimal, No Border, Big Image) */
 .productCard {
-  background-color: transparent;
+  background-color: var(--color-gray-light);
   padding: 0;
   position: relative;
   transition: all 0.3s ease;
@@ -237,175 +485,68 @@
 }
 
 .productCard:hover {
-  background-color: transparent;
+  background-color: #E5E7EB;
 }
 
 .wishlist {
   position: absolute;
   top: 15px;
   right: 15px;
-  background: var(--color-white);
-  border: none;
-  border-radius: 50%;
-  width: 34px;
-  height: 34px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   color: var(--color-black);
+  font-size: 1.4rem;
   z-index: 10;
-  cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  transition: transform 0.2s ease, background-color 0.2s ease;
+  opacity: 0.5;
 }
 
 .wishlist:hover {
-  transform: scale(1.05);
-  background-color: #f3f4f6;
+  opacity: 1;
 }
 
 .productImgContainer {
   width: 100%;
   aspect-ratio: 1 / 1;
-  background-color: #ffffff; /* Nền trắng thuần đồng nhất */
-  border-radius: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 10px;
-  position: relative;
+  padding: 30px;
+  flex-shrink: 0;
   overflow: hidden;
-  transition: background-color 0.3s ease;
-}
-
-.productImgContainer::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 100px;
-  height: 30px;
-  background-color: #ffffff; /* Che watermark IMSports ở góc dưới phải */
-  z-index: 5;
-  pointer-events: none;
-}
-
-.productCard:hover .productImgContainer {
-  background-color: #ffffff; /* Giữ nguyên nền trắng khi hover */
 }
 
 .productImg {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  transition: transform 0.4s ease;
 }
 
-.productCard:hover .productImg {
-  transform: scale(1.03);
-}
-
-/* Swatch Row */
-.swatchRow {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: 12px 0 10px 0;
-  padding: 0 2px;
-}
-
-.swatchList {
-  display: flex;
-  gap: 6px;
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-
-.swatchList::-webkit-scrollbar {
-  display: none;
-}
-
-.swatchItem {
-  width: 28px;
-  height: 28px;
-  border: 1px solid #e4e4e7;
-  border-radius: 4px;
-  padding: 2px;
-  background-color: var(--color-white);
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.swatchItem:hover {
-  border-color: #a1a1aa;
-}
-
-.activeSwatch {
-  border: 1.5px solid var(--color-black) !important;
-}
-
-.swatchImg {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-.swatchArrow {
-  color: #a1a1aa;
-  display: flex;
-  align-items: center;
-  padding-left: 4px;
-  cursor: pointer;
-  transition: color 0.2s ease;
-}
-
-.swatchArrow:hover {
-  color: var(--color-black);
-}
-
-/* Info */
 .productInfo {
-  padding: 6px 2px;
-  background-color: transparent;
+  padding: 25px;
+  background-color: var(--color-white);
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  text-align: left;
 }
 
-.productStatus {
-  color: var(--color-primary); /* Đỏ nổi bật */
-  font-size: 0.78rem;
-  font-weight: 700;
+.productBrand {
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
   text-transform: uppercase;
-  margin-bottom: 4px;
-  letter-spacing: 0.2px;
+  font-weight: 700;
+  margin-bottom: 5px;
 }
 
 .productName {
-  font-weight: 800;
+  font-weight: 700;
   font-size: 0.95rem;
-  margin-bottom: 4px;
-  line-height: 1.35;
+  margin-bottom: 12px;
+  line-height: 1.4;
+  flex-grow: 1;
   text-transform: uppercase;
   color: var(--color-black);
-  letter-spacing: -0.2px;
-}
-
-.productSubtitle {
-  color: #71717a;
-  font-size: 0.82rem;
-  font-weight: 500;
-  margin-bottom: 8px;
-  text-transform: none;
 }
 
 .productPrice {
   color: var(--color-black);
   font-weight: 800;
-  font-size: 1.05rem;
+  font-size: 1.1rem;
 }

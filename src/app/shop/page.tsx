@@ -1,63 +1,20 @@
+'use client';
+
 import Link from 'next/link';
 import styles from './shop.module.css';
 import ProductCard from '../../components/ProductCard';
+import { useLanguage } from '../../context/LanguageContext';
 
 export default function Shop() {
+  const { t } = useLanguage();
+
   const products = [
-    { 
-      id: 'speedcross', 
-      brand: 'Salomon', 
-      name: 'Speedcross 6', 
-      price: '3.250.000đ', 
-      image: '/products/salomon_xt6_black.jpg',
-      status: 'New',
-      subtitle: 'Trail running shoes - Unisex'
-    },
-    { 
-      id: 'speedgoat', 
-      brand: 'Hoka', 
-      name: 'Speedgoat 5', 
-      price: '3.850.000đ', 
-      image: 'https://images.unsplash.com/photo-1530541930197-ff16ac917b0e?q=80&w=500',
-      status: 'New',
-      subtitle: 'Trail running shoes - Unisex'
-    },
-    { 
-      id: 'pegasus', 
-      brand: 'Nike', 
-      name: 'Pegasus Trail 4', 
-      price: '3.990.000đ', 
-      image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=500',
-      status: '',
-      subtitle: 'Trail running shoes - Unisex'
-    },
-    { 
-      id: 'trabuco', 
-      brand: 'Asics', 
-      name: 'Trabuco Max 2', 
-      price: '3.490.000đ', 
-      image: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=500',
-      status: 'New',
-      subtitle: 'Trail running shoes - Unisex'
-    },
-    { 
-      id: 'senseride', 
-      brand: 'Salomon', 
-      name: 'Sense Ride 5', 
-      price: '3.490.000đ', 
-      image: '/products/salomon_slab_ultraglide.jpg',
-      status: '',
-      subtitle: 'Trail running shoes - Unisex'
-    },
-    { 
-      id: 'wildhorse', 
-      brand: 'Nike', 
-      name: 'Wildhorse 8', 
-      price: '3.250.000đ', 
-      image: 'https://images.unsplash.com/photo-1539185441755-769473a23570?q=80&w=500',
-      status: 'New',
-      subtitle: 'Trail running shoes - Unisex'
-    }
+    { id: '1', brand: 'Salomon', name: 'Speedcross 6', price: '$130.00', image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=500' },
+    { id: '2', brand: 'Hoka', name: 'Speedgoat 5', price: '$155.00', image: 'https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?q=80&w=500' },
+    { id: '3', brand: 'Nike', name: 'Pegasus Trail 4', price: '$160.00', image: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=500' },
+    { id: '4', brand: 'Asics', name: 'Trabuco Max 2', price: '$140.00', image: 'https://images.unsplash.com/photo-1511556532299-8f662fc26c06?q=80&w=500' },
+    { id: '5', brand: 'Salomon', name: 'SENSE RIDE 5', price: '$140.00', image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=500' },
+    { id: '6', brand: 'Nike', name: 'Wildhorse 8', price: '$130.00', image: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=500' }
   ];
 
   return (
@@ -65,9 +22,9 @@ export default function Shop() {
       <div className={styles.shopContainer}>
         {/* Sidebar */}
         <aside className={styles.sidebar}>
-          <h2 className={styles.sidebarTitle}>Filters</h2>
+          <h2 className={styles.sidebarTitle}>{t('shop.filters')}</h2>
           <div className={styles.filterGroup}>
-            <h3 className={styles.filterTitle}>Brand</h3>
+            <h3 className={styles.filterTitle}>{t('shop.brand')}</h3>
             <ul className={styles.filterList}>
               <li><input type="checkbox" /> Salomon (12)</li>
               <li><input type="checkbox" /> Hoka (8)</li>
@@ -75,7 +32,7 @@ export default function Shop() {
             </ul>
           </div>
           <div className={styles.filterGroup}>
-            <h3 className={styles.filterTitle}>Size</h3>
+            <h3 className={styles.filterTitle}>{t('shop.size')}</h3>
             <ul className={styles.filterList}>
               <li><input type="checkbox" /> US 8</li>
               <li><input type="checkbox" /> US 9</li>
@@ -86,19 +43,12 @@ export default function Shop() {
 
         {/* Main Content */}
         <div className={styles.mainContent}>
-          <div className={styles.categoryBanner}>
-            <img src="https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?q=80&w=1200" alt="Trail Running Banner" className={styles.bannerImg} />
-            <div className={styles.bannerOverlay}>
-              <h1 className={styles.bannerTitle}>Men's Trail Collection</h1>
-            </div>
-          </div>
-          
           <div className={styles.header}>
-            <span className={styles.itemCount}>Hiển thị 6 sản phẩm</span>
+            <h1 className={styles.title}>{t('shop.title')}</h1>
             <select className={styles.sort}>
-              <option>Sort by: Recommended</option>
-              <option>Price: Low to High</option>
-              <option>Price: High to Low</option>
+              <option>{t('shop.sort')}</option>
+              <option>{t('shop.sort.low')}</option>
+              <option>{t('shop.sort.high')}</option>
             </select>
           </div>
           
