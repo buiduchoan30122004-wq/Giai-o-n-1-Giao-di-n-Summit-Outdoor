@@ -145,68 +145,67 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Shop by Brand */}
-      <section className={styles.brandSection}>
+      {/* Shop by Activity */}
+      <section className={styles.activitySection}>
         <div className="container">
-          <div className={styles.brandGrid}>
-            <Link href="/shop" className={styles.brandCard}>
-              <div className={styles.brandImgWrapper}>
-                <img src="https://images.unsplash.com/photo-1502680390469-be75c86b636f?q=80&w=500" alt="Adidas" className={styles.brandCardImg} />
-                <div className={styles.brandImgOverlay}>
-                  <img src="/brands/adidas.svg" alt="Adidas Logo" className={styles.brandCardLogo} />
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.sectionTitle}>Chọn Theo Hoạt Động</h2>
+            <Link href="/shop" className={styles.viewAll}>Xem Tất Cả</Link>
+          </div>
+          <div className={styles.activityGrid}>
+            <Link href="/shop/trail" className={styles.activityCard}>
+              <div className={styles.activityImgWrapper}>
+                <img src="https://images.unsplash.com/photo-1502680390469-be75c86b636f?q=80&w=600" alt="Gravel Running" className={styles.activityImg} />
+                <div className={styles.activityOverlay}>
+                  <div className={styles.activityLabel}>
+                    Gravel Running <span className={styles.arrow}>→</span>
+                  </div>
                 </div>
               </div>
-              <div className={styles.brandCardLabel}>adidas</div>
             </Link>
 
-            <Link href="/shop" className={styles.brandCard}>
-              <div className={styles.brandImgWrapper}>
-                <img src="https://images.unsplash.com/photo-1538805060514-97d9cc17730c?q=80&w=500" alt="Asics" className={styles.brandCardImg} />
-                <div className={styles.brandImgOverlay}>
-                  <img src="/brands/asics.svg" alt="Asics Logo" className={styles.brandCardLogo} />
+            <Link href="/shop/trail" className={styles.activityCard}>
+              <div className={styles.activityImgWrapper}>
+                <img src="https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?q=80&w=600" alt="Trail Running" className={styles.activityImg} />
+                <div className={styles.activityOverlay}>
+                  <div className={styles.activityLabel}>
+                    Trail Running <span className={styles.arrow}>→</span>
+                  </div>
                 </div>
               </div>
-              <div className={styles.brandCardLabel}>ASICS</div>
             </Link>
 
-            <Link href="/shop" className={styles.brandCard}>
-              <div className={styles.brandImgWrapper}>
-                <img src="https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?q=80&w=500" alt="Brooks" className={styles.brandCardImg} />
-                <div className={styles.brandImgOverlay}>
-                  <img src="/brands/brooks.svg" alt="Brooks Logo" className={styles.brandCardLogo} />
+            <Link href="/shop" className={styles.activityCard}>
+              <div className={styles.activityImgWrapper}>
+                <img src="https://images.unsplash.com/photo-1486218119243-13883505764c?q=80&w=600" alt="Road Running" className={styles.activityImg} />
+                <div className={styles.activityOverlay}>
+                  <div className={styles.activityLabel}>
+                    Road Running <span className={styles.arrow}>→</span>
+                  </div>
                 </div>
               </div>
-              <div className={styles.brandCardLabel}>Brooks</div>
             </Link>
 
-            <Link href="/shop" className={styles.brandCard}>
-              <div className={styles.brandImgWrapper}>
-                <img src="https://images.unsplash.com/photo-1530541930197-ff16ac917b0e?q=80&w=500" alt="Hoka" className={styles.brandCardImg} />
-                <div className={styles.brandImgOverlay}>
-                  <img src="/brands/hoka.svg" alt="Hoka Logo" className={styles.brandCardLogo} />
+            <Link href="/shop/hiking" className={styles.activityCard}>
+              <div className={styles.activityImgWrapper}>
+                <img src="https://images.unsplash.com/photo-1551632306-47462ce41955?q=80&w=600" alt="Hiking" className={styles.activityImg} />
+                <div className={styles.activityOverlay}>
+                  <div className={styles.activityLabel}>
+                    Hiking <span className={styles.arrow}>→</span>
+                  </div>
                 </div>
               </div>
-              <div className={styles.brandCardLabel}>HOKA</div>
             </Link>
 
-            <Link href="/shop" className={styles.brandCard}>
-              <div className={styles.brandImgWrapper}>
-                <img src="https://images.unsplash.com/photo-1539185441755-769473a23570?q=80&w=500" alt="New Balance" className={styles.brandCardImg} />
-                <div className={styles.brandImgOverlay}>
-                  <img src="/brands/new-balance.svg" alt="New Balance Logo" className={styles.brandCardLogo} />
+            <Link href="/shop" className={styles.activityCard}>
+              <div className={styles.activityImgWrapper}>
+                <img src="https://images.unsplash.com/photo-1539185441755-769473a23570?q=80&w=600" alt="Sportstyle" className={styles.activityImg} />
+                <div className={styles.activityOverlay}>
+                  <div className={styles.activityLabel}>
+                    Sportstyle <span className={styles.arrow}>→</span>
+                  </div>
                 </div>
               </div>
-              <div className={styles.brandCardLabel}>Cân bằng mới</div>
-            </Link>
-
-            <Link href="/shop" className={styles.brandCard}>
-              <div className={styles.brandImgWrapper}>
-                <img src="https://images.unsplash.com/photo-1486218119243-13883505764c?q=80&w=500" alt="Nike" className={styles.brandCardImg} />
-                <div className={styles.brandImgOverlay}>
-                  <img src="/brands/nike.svg" alt="Nike Logo" className={styles.brandCardLogo} />
-                </div>
-              </div>
-              <div className={styles.brandCardLabel}>Nike</div>
             </Link>
           </div>
         </div>

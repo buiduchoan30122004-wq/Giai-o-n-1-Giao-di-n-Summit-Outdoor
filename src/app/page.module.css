@@ -73,86 +73,90 @@
   color: var(--color-primary);
 }
 
-.brandSection {
-  padding: 0 0 35px 0; /* Thu gọn từ 60px */
+.activitySection {
+  padding: 40px 0;
   width: 100%;
 }
 
-/* Brand Grid - Premium Cards */
-.brandGrid {
+.activityGrid {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 20px;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
 }
 
-.brandCard {
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  background-color: var(--color-white);
-  padding: 12px;
-  display: flex;
-  flex-direction: column;
+.activityCard {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4; /* Tỷ lệ ảnh đứng rất thể thao và hiện đại */
+  overflow: hidden;
   cursor: pointer;
-  transition: all 0.3s ease;
   text-decoration: none;
 }
 
-.brandCard:hover {
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
-  transform: translateY(-2px);
-  border-color: rgba(0, 0, 0, 0.15);
-}
-
-.brandImgWrapper {
+.activityImgWrapper {
   position: relative;
   width: 100%;
-  aspect-ratio: 1 / 1;
+  height: 100%;
   overflow: hidden;
-  border-radius: 8px;
-  background-color: #f3f4f6;
 }
 
-.brandCardImg {
+.activityImg {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.5s ease;
+  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-.brandCard:hover .brandCardImg {
-  transform: scale(1.04);
+.activityCard:hover .activityImg {
+  transform: scale(1.05);
 }
 
-.brandImgOverlay {
+.activityOverlay {
   position: absolute;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.55); /* Lớp phủ đen để logo trắng nổi bật */
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.45) 0%,
+    rgba(0, 0, 0, 0.15) 35%,
+    rgba(0, 0, 0, 0) 100%
+  ); /* Đổ dốc đen từ trên xuống để chữ trắng nổi bật */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 20px;
+  z-index: 2;
+  transition: background 0.3s ease;
+}
+
+.activityCard:hover .activityOverlay {
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.55) 0%,
+    rgba(0, 0, 0, 0.25) 35%,
+    rgba(0, 0, 0, 0) 100%
+  );
+}
+
+.activityLabel {
+  color: var(--color-white);
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: 0.5px;
   display: flex;
   align-items: center;
-  justify-content: center;
-  z-index: 2;
-  transition: background-color 0.3s ease;
+  gap: 6px;
+  text-transform: none;
 }
 
-.brandCard:hover .brandImgOverlay {
-  background-color: rgba(0, 0, 0, 0.45);
+.arrow {
+  opacity: 0;
+  transform: translateX(-5px);
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-.brandCardLogo {
-  width: 50%;
-  height: 40px;
-  object-fit: contain;
-  filter: brightness(0) invert(1); /* Biến logo đen thành màu trắng tinh khiết */
-  z-index: 3;
-}
-
-.brandCardLabel {
-  padding: 16px 0 4px 0;
-  text-align: center;
-  font-weight: 700;
-  font-size: 0.95rem;
-  color: var(--color-black);
-  text-transform: none; /* Giữ nguyên dạng chữ nhập trong file HTML */
+.activityCard:hover .arrow {
+  opacity: 1;
+  transform: translateX(0);
 }
 
 /* Product Grid */
