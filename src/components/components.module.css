@@ -89,19 +89,94 @@
 
 .headerActions {
   display: flex;
-  gap: 30px;
+  gap: 20px;
   align-items: center;
 }
 
 .actionIcon {
-  font-size: 1.4rem;
-  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: var(--color-black);
-  transition: color 0.2s;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
 }
 
 .actionIcon:hover {
+  background-color: var(--color-gray-light);
   color: var(--color-primary);
+}
+
+.actionSvg {
+  stroke: var(--color-black);
+  transition: stroke 0.2s ease;
+}
+
+.actionIcon:hover .actionSvg {
+  stroke: var(--color-primary);
+}
+
+/* Cart Action */
+.cartAction {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-black);
+  font-weight: 500;
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.cartAction:hover {
+  background-color: var(--color-gray-light);
+  color: var(--color-primary);
+}
+
+.cartText {
+  font-weight: 600;
+  text-transform: none;
+}
+
+.cartIconWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.cartIcon {
+  stroke: var(--color-black);
+  transition: stroke 0.2s ease;
+}
+
+.cartAction:hover .cartIcon {
+  stroke: var(--color-primary);
+}
+
+.cartBadge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background-color: #2D2D2D; /* Dark gray circular badge like in the screenshot */
+  color: var(--color-white);
+  font-size: 0.65rem;
+  font-weight: 700;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid var(--color-white);
+}
+
+.cartAction:hover .cartBadge {
+  background-color: var(--color-primary);
 }
 
 /* Brand Bar */
