@@ -46,9 +46,21 @@ export default function Header() {
       <div className={styles.topBar}>
         <div className="container">
           <div className={styles.topBarInner}>
-            <span>Hệ Thống Cửa Hàng</span>
-            <span>Trợ Giúp</span>
-            <span>VN</span>
+            <div className={styles.topBarLeft}>
+              <span>⚡ MIỄN PHÍ VẬN CHUYỂN TOÀN QUỐC CHO ĐƠN HÀNG TỪ 2.000.000đ</span>
+            </div>
+            <div className={styles.topBarRight}>
+              <Link href="/shop" className={styles.topLink}>
+                <span className={styles.topLinkIcon}>📍</span> Tìm Cửa Hàng
+              </Link>
+              <Link href="/shop" className={styles.topLink}>
+                <span className={styles.topLinkIcon}>💬</span> Trợ Giúp
+              </Link>
+              <div className={styles.langSelector}>
+                <span>🇻🇳 VN</span>
+                <span className={styles.dropdownArrow}>▾</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>

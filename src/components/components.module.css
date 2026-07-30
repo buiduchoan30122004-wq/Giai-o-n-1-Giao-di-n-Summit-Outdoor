@@ -10,27 +10,70 @@
 }
 
 .topBar {
-  background-color: var(--color-black);
-  color: var(--color-white);
-  font-size: 0.75rem;
+  background-color: #0c0c0c; /* Màu đen premium sang trọng */
+  color: #a1a1aa; /* Chữ xám nhạt tinh tế hơn trắng tinh */
+  font-size: 0.72rem;
+  font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 1px;
-  padding: 10px 0;
+  letter-spacing: 0.8px;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05); /* Đường gạch chân rất mảnh */
 }
 
 .topBarInner {
   display: flex;
-  justify-content: flex-end;
-  gap: 30px;
+  justify-content: space-between; /* Đẩy nội dung sang 2 bên */
+  align-items: center;
 }
 
-.topBarInner span {
+.topBarLeft {
+  color: var(--color-white); /* Riêng tin tức khuyến mãi sẽ màu trắng nổi bật */
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+}
+
+.topBarRight {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+
+.topLink {
+  color: #a1a1aa;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: color 0.2s ease;
+}
+
+.topLink:hover {
+  color: var(--color-white);
+}
+
+.topLinkIcon {
+  font-size: 0.8rem;
+}
+
+.langSelector {
+  display: flex;
+  align-items: center;
+  gap: 4px;
   cursor: pointer;
-  opacity: 0.7;
+  color: #a1a1aa;
+  transition: color 0.2s ease;
 }
 
-.topBarInner span:hover {
-  opacity: 1;
+.langSelector:hover {
+  color: var(--color-white);
+}
+
+.dropdownArrow {
+  font-size: 0.6rem;
+  vertical-align: middle;
+  opacity: 0.8;
 }
 
 .mainHeaderInner {
