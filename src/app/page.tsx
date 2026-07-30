@@ -321,7 +321,7 @@ export default function Home() {
 
             <div className={styles.topBrandCard}>
               <div className={styles.topBrandLogoContainer}>
-                <img src="/brands/saucony.svg" alt="Saucony" className={styles.topBrandLogo} />
+                <img src="/brands/saucony.png" alt="Saucony" className={styles.topBrandLogo} />
               </div>
               <div className={styles.topBrandLabel}><span className={styles.redCircle}>⑥</span> Saucony</div>
             </div>
@@ -335,14 +335,14 @@ export default function Home() {
 
             <div className={styles.topBrandCard}>
               <div className={styles.topBrandLogoContainer}>
-                <img src="/brands/adidas-terrex.svg" alt="adidas TERREX" className={styles.topBrandLogo} />
+                <img src="/brands/adidas-terrex.png" alt="adidas TERREX" className={styles.topBrandLogo} />
               </div>
               <div className={styles.topBrandLabel}><span className={styles.redCircle}>⑧</span> adidas TERREX</div>
             </div>
 
             <div className={styles.topBrandCard}>
               <div className={styles.topBrandLogoContainer}>
-                <img src="/brands/nnormal.svg" alt="NNormal" className={styles.topBrandLogo} />
+                <img src="/brands/nnormal.png" alt="NNormal" className={styles.topBrandLogo} />
               </div>
               <div className={styles.topBrandLabel}><span className={styles.redCircle}>⑨</span> NNormal</div>
             </div>

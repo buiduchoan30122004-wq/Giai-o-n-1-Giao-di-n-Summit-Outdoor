@@ -11,10 +11,10 @@ const brandsList = [
   { name: 'Altra', logo: '/brands/altra.png' },
   { name: 'La Sportiva', logo: '/brands/lasportiva.png' },
   { name: 'Brooks', logo: '/brands/brooks.png' },
-  { name: 'Saucony', logo: '/brands/saucony.svg' },
+  { name: 'Saucony', logo: '/brands/saucony.png' },
   { name: 'ASICS', logo: '/brands/asics.svg' },
-  { name: 'adidas TERREX', logo: '/brands/adidas-terrex.svg' },
-  { name: 'NNormal', logo: '/brands/nnormal.svg' },
+  { name: 'adidas TERREX', logo: '/brands/adidas-terrex.png' },
+  { name: 'NNormal', logo: '/brands/nnormal.png' },
   { name: 'Merrell', logo: '/brands/merrell.svg' }
 ];
 
