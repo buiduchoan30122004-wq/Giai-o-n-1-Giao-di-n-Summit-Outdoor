@@ -140,14 +140,12 @@ export default function Header() {
           {brandsList.map((brand, idx) => (
             <span key={`marq1-${idx}`} className={styles.brandItem}>
               <img src={brand.logo} alt={brand.name} className={styles.brandLogo} />
-              {brand.name}
             </span>
           ))}
           {/* Vòng lặp thứ hai tạo hiệu ứng nối đuôi vô tận */}
           {brandsList.map((brand, idx) => (
             <span key={`marq2-${idx}`} className={styles.brandItem}>
               <img src={brand.logo} alt={brand.name} className={styles.brandLogo} />
-              {brand.name}
             </span>
           ))}
         </div>

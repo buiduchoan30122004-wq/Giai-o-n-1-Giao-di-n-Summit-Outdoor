@@ -260,7 +260,7 @@
   display: flex;
   width: max-content;
   flex-wrap: nowrap;
-  gap: 60px;
+  gap: 100px; /* Tăng khoảng cách giữa các logo để thông thoáng hơn */
   align-items: center;
   animation: marqueeAnimation 30s linear infinite;
 }
@@ -281,37 +281,25 @@
 .brandItem {
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-weight: 800;
-  font-size: 0.95rem;
-  color: var(--color-text-muted);
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  transition: all 0.3s ease;
-  font-family: 'Inter', sans-serif;
+  justify-content: center;
   cursor: pointer;
   white-space: nowrap;
-}
-
-.brandItem:hover {
-  color: var(--color-black);
+  height: 40px; /* Giữ chiều cao cố định cho mỗi vị trí */
 }
 
 .brandLogo {
-  height: 20px;
+  height: 26px; /* Tăng chiều cao logo từ 20px lên 26px để nhìn rõ ràng hơn */
   width: auto;
-  max-width: 80px;
+  max-width: 120px;
   object-fit: contain;
   flex-shrink: 0;
-  filter: grayscale(100%);
-  opacity: 0.65;
+  opacity: 0.9; /* Giữ logo luôn có màu đầy đủ, không để grayscale */
   transition: all 0.3s ease;
 }
 
 .brandItem:hover .brandLogo {
-  filter: grayscale(0%);
   opacity: 1;
-  transform: scale(1.08);
+  transform: scale(1.1);
 }
 
 /* FOOTER - Salomon Style */
