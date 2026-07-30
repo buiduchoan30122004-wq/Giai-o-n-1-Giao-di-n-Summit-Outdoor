@@ -237,8 +237,82 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Top Trail Brands Grid (Khôi phục không có tiêu đề chữ) */}
+      <section className={styles.topBrandsSection}>
+        <div className="container">
+          <div className={styles.topBrandsGrid}>
+            <div className={styles.topBrandCard}>
+              <div className={styles.topBrandLogoContainer}>
+                <img src="/brands/salomon.png" alt="Salomon" className={styles.topBrandLogo} />
+              </div>
+              <div className={styles.topBrandLabel}><span className={styles.redCircle}>①</span> Salomon</div>
+            </div>
 
+            <div className={styles.topBrandCard}>
+              <div className={styles.topBrandLogoContainer}>
+                <img src="/brands/hoka.png" alt="HOKA" className={styles.topBrandLogo} />
+              </div>
+              <div className={styles.topBrandLabel}><span className={styles.redCircle}>②</span> HOKA</div>
+            </div>
 
+            <div className={styles.topBrandCard}>
+              <div className={styles.topBrandLogoContainer}>
+                <img src="/brands/altra.png" alt="Altra" className={styles.topBrandLogo} style={{ maxHeight: '28px' }} />
+              </div>
+              <div className={styles.topBrandLabel}><span className={styles.redCircle}>③</span> Altra</div>
+            </div>
+
+            <div className={styles.topBrandCard}>
+              <div className={styles.topBrandLogoContainer}>
+                <img src="/brands/lasportiva.png" alt="La Sportiva" className={styles.topBrandLogo} />
+              </div>
+              <div className={styles.topBrandLabel}><span className={styles.redCircle}>④</span> La Sportiva</div>
+            </div>
+
+            <div className={styles.topBrandCard}>
+              <div className={styles.topBrandLogoContainer}>
+                <img src="/brands/brooks.png" alt="Brooks" className={styles.topBrandLogo} />
+              </div>
+              <div className={styles.topBrandLabel}><span className={styles.redCircle}>⑤</span> Brooks</div>
+            </div>
+
+            <div className={styles.topBrandCard}>
+              <div className={styles.topBrandLogoContainer}>
+                <img src="/brands/saucony.png" alt="Saucony" className={styles.topBrandLogo} />
+              </div>
+              <div className={styles.topBrandLabel}><span className={styles.redCircle}>⑥</span> Saucony</div>
+            </div>
+
+            <div className={styles.topBrandCard}>
+              <div className={styles.topBrandLogoContainer}>
+                <img src="/brands/asics.png" alt="ASICS" className={styles.topBrandLogo} />
+              </div>
+              <div className={styles.topBrandLabel}><span className={styles.redCircle}>⑦</span> ASICS</div>
+            </div>
+
+            <div className={styles.topBrandCard}>
+              <div className={styles.topBrandLogoContainer}>
+                <img src="/brands/adidas-terrex.png" alt="adidas TERREX" className={styles.topBrandLogo} />
+              </div>
+              <div className={styles.topBrandLabel}><span className={styles.redCircle}>⑧</span> adidas TERREX</div>
+            </div>
+
+            <div className={styles.topBrandCard}>
+              <div className={styles.topBrandLogoContainer}>
+                <img src="/brands/nnormal.png" alt="NNormal" className={styles.topBrandLogo} />
+              </div>
+              <div className={styles.topBrandLabel}><span className={styles.redCircle}>⑨</span> NNormal</div>
+            </div>
+
+            <div className={styles.topBrandCard}>
+              <div className={styles.topBrandLogoContainer}>
+                <img src="/brands/merrell.png" alt="Merrell" className={styles.topBrandLogo} />
+              </div>
+              <div className={styles.topBrandLabel}><span className={styles.redCircle}>⑩</span> Merrell</div>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Disclaimer */}
       <section className={styles.disclaimerSection}>
