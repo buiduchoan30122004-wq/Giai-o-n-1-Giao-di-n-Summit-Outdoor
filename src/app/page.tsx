@@ -161,7 +161,7 @@ export default function Home() {
 
             <Link href="/shop/hiking" className={styles.activityCard}>
               <div className={styles.activityImgWrapper}>
-                <img src="https://images.unsplash.com/photo-1551632306-47462ce41955?q=80&w=600" alt="Hiking" className={styles.activityImg} />
+                <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=600" alt="Hiking" className={styles.activityImg} />
                 <div className={styles.activityOverlay}>
                   <div className={styles.activityLabel}>
                     Hiking <span className={styles.arrow}>→</span>
