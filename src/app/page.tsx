@@ -334,9 +334,8 @@ export default function Home() {
             </div>
 
             <div className={styles.topBrandCard}>
-              <div className={styles.topBrandLogoContainer} style={{ position: 'relative' }}>
-                <img src="/brands/adidas.svg" alt="adidas TERREX" className={styles.topBrandLogo} style={{ transform: 'translateY(-6px)' }} />
-                <span style={{ fontSize: '0.62rem', fontWeight: 900, fontFamily: 'sans-serif', position: 'absolute', bottom: '12px', letterSpacing: '1px' }}>TERREX</span>
+              <div className={styles.topBrandLogoContainer}>
+                <img src="/brands/adidas-terrex.svg" alt="adidas TERREX" className={styles.topBrandLogo} />
               </div>
               <div className={styles.topBrandLabel}><span className={styles.redCircle}>⑧</span> adidas TERREX</div>
             </div>

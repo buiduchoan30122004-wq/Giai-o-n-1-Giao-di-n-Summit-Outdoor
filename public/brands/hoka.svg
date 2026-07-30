@@ -1,1 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 50"><text x="0" y="40" font-family="Arial, Helvetica, sans-serif" font-weight="900" font-size="48" font-style="italic" fill="black">HOKA</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 90" width="100%" height="100%">
+  <g transform="translate(30, 10)">
+    <text x="100" y="55" font-family="'Inter', system-ui, sans-serif" font-weight="900" font-style="italic" font-size="56" fill="#009fdf" letter-spacing="-1.5px">HOKA</text>
+    <!-- Bird wing flying out of O -->
+    <path d="M152 28 Q162 20 170 28 Q160 28 154 36 Z" fill="#009fdf" />
+    <path d="M155 33 Q164 26 171 33 Q162 33 157 40 Z" fill="#009fdf" />
+  </g>
+</svg>
