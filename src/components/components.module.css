@@ -229,45 +229,89 @@
   width: 100%;
   background-color: var(--color-gray-light);
   border-bottom: 1px solid var(--color-border);
-  padding: 15px 0;
+  padding: 12px 0;
   overflow: hidden;
+  position: relative;
+}
+
+/* Hiệu ứng mờ dần hai đầu băng chuyền logo */
+.brandBar::before,
+.brandBar::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 120px;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.brandBar::before {
+  left: 0;
+  background: linear-gradient(to right, #f4f4f5 10%, rgba(244, 244, 245, 0));
+}
+
+.brandBar::after {
+  right: 0;
+  background: linear-gradient(to left, #f4f4f5 10%, rgba(244, 244, 245, 0));
 }
 
 .brandBarInner {
   display: flex;
-  justify-content: space-between;
+  width: max-content;
+  flex-wrap: nowrap;
+  gap: 60px;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 30px;
+  animation: marqueeAnimation 30s linear infinite;
+}
+
+.brandBarInner:hover {
+  animation-play-state: paused;
+}
+
+@keyframes marqueeAnimation {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
 .brandItem {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-weight: 900;
-  font-size: 1.05rem;
+  gap: 10px;
+  font-weight: 800;
+  font-size: 0.95rem;
   color: var(--color-text-muted);
   text-transform: uppercase;
-  letter-spacing: 1px;
-  opacity: 0.5;
+  letter-spacing: 1.5px;
   transition: all 0.3s ease;
   font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  white-space: nowrap;
 }
 
 .brandItem:hover {
-  opacity: 1;
   color: var(--color-black);
-  cursor: pointer;
 }
 
 .brandLogo {
+  height: 20px;
+  width: auto;
+  max-width: 80px;
+  object-fit: contain;
   flex-shrink: 0;
-  transition: transform 0.3s ease;
+  filter: grayscale(100%);
+  opacity: 0.65;
+  transition: all 0.3s ease;
 }
 
 .brandItem:hover .brandLogo {
-  transform: scale(1.15);
+  filter: grayscale(0%);
+  opacity: 1;
+  transform: scale(1.08);
 }
 
 /* FOOTER - Salomon Style */
