@@ -116,34 +116,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Brands Section (Logo Strip) */}
-      <section className={styles.partnerSection}>
-        <div className="container">
-          <div className={styles.partnerGrid}>
-            <div className={styles.partnerLogo}>
-              <img src="/brands/asics.svg" alt="Asics" />
-            </div>
-            <div className={styles.partnerLogo}>
-              <img src="/brands/adidas.svg" alt="Adidas" />
-            </div>
-            <div className={styles.partnerLogo}>
-              <img src="/brands/salomon.svg" alt="Salomon" />
-            </div>
-            <div className={styles.partnerLogo}>
-              <img src="/brands/hoka.svg" alt="Hoka" />
-            </div>
-            <div className={styles.partnerLogo}>
-              <img src="/brands/puma.svg" alt="Puma" />
-            </div>
-            <div className={styles.partnerLogo}>
-              <img src="/brands/new-balance.svg" alt="New Balance" />
-            </div>
-            <div className={styles.partnerLogo}>
-              <img src="/brands/nike.svg" alt="Nike" />
-            </div>
-          </div>
-        </div>
-      </section>
+
 
       {/* Shop by Activity */}
       <section className={styles.activitySection}>
