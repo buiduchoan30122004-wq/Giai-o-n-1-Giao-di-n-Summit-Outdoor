@@ -328,7 +328,7 @@ export default function Home() {
 
             <div className={styles.topBrandCard}>
               <div className={styles.topBrandLogoContainer}>
-                <img src="/brands/asics.svg" alt="ASICS" className={styles.topBrandLogo} />
+                <img src="/brands/asics.png" alt="ASICS" className={styles.topBrandLogo} />
               </div>
               <div className={styles.topBrandLabel}><span className={styles.redCircle}>⑦</span> ASICS</div>
             </div>
@@ -349,7 +349,7 @@ export default function Home() {
 
             <div className={styles.topBrandCard}>
               <div className={styles.topBrandLogoContainer}>
-                <img src="/brands/merrell.svg" alt="Merrell" className={styles.topBrandLogo} />
+                <img src="/brands/merrell.png" alt="Merrell" className={styles.topBrandLogo} />
               </div>
               <div className={styles.topBrandLabel}><span className={styles.redCircle}>⑩</span> Merrell</div>
             </div>
@@ -375,7 +375,7 @@ export default function Home() {
         <div className="container">
           <div className={styles.partnerGrid}>
             <div className={styles.partnerLogo}>
-              <img src="/brands/asics.svg" alt="Asics" />
+              <img src="/brands/asics.png" alt="Asics" />
             </div>
             <div className={styles.partnerLogo}>
               <img src="/brands/adidas.svg" alt="Adidas" />
