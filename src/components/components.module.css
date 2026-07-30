@@ -389,22 +389,15 @@
   padding-bottom: 100%; /* Đảm bảo hình vuông tỷ lệ 1:1 chuẩn tuyệt đối */
   height: 0;
   background-color: #ffffff; /* Nền trắng thuần đồng nhất */
-  border-radius: 6px;
+  border-radius: 0; /* Vuông góc hoàn toàn theo phong cách Salomon */
   position: relative;
   overflow: hidden;
   transition: background-color 0.3s ease;
 }
 
+/* Loại bỏ lớp phủ màu trắng ở góc dưới bên phải để ảnh sản phẩm liền mạch, không bị khuyết góc */
 .productImgContainer::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 100px;
-  height: 30px;
-  background-color: #ffffff; /* Che watermark IMSports ở góc dưới phải */
-  z-index: 5;
-  pointer-events: none;
+  display: none;
 }
 
 .productCard:hover .productImgContainer {
@@ -459,7 +452,7 @@
   width: 28px;
   height: 28px;
   border: 1px solid #e4e4e7;
-  border-radius: 4px;
+  border-radius: 0; /* Vuông góc hoàn toàn */
   padding: 2px;
   background-color: var(--color-white);
   cursor: pointer;
