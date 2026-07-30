@@ -6,11 +6,11 @@ import styles from './components.module.css';
 import React, { useState, useEffect } from 'react';
 
 const brandsList = [
-  { name: 'Salomon', logo: '/brands/salomon.svg' },
-  { name: 'HOKA', logo: '/brands/hoka.svg' },
-  { name: 'Altra', logo: '/brands/altra.svg' },
-  { name: 'La Sportiva', logo: '/brands/lasportiva.svg' },
-  { name: 'Brooks', logo: '/brands/brooks.svg' },
+  { name: 'Salomon', logo: '/brands/salomon.png' },
+  { name: 'HOKA', logo: '/brands/hoka.png' },
+  { name: 'Altra', logo: '/brands/altra.png' },
+  { name: 'La Sportiva', logo: '/brands/lasportiva.png' },
+  { name: 'Brooks', logo: '/brands/brooks.png' },
   { name: 'Saucony', logo: '/brands/saucony.svg' },
   { name: 'ASICS', logo: '/brands/asics.svg' },
   { name: 'adidas TERREX', logo: '/brands/adidas-terrex.svg' },

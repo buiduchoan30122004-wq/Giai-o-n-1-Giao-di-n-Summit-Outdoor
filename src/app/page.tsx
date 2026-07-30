@@ -286,35 +286,35 @@ export default function Home() {
           <div className={styles.topBrandsGrid}>
             <div className={styles.topBrandCard}>
               <div className={styles.topBrandLogoContainer}>
-                <img src="/brands/salomon.svg" alt="Salomon" className={styles.topBrandLogo} />
+                <img src="/brands/salomon.png" alt="Salomon" className={styles.topBrandLogo} />
               </div>
               <div className={styles.topBrandLabel}><span className={styles.redCircle}>①</span> Salomon</div>
             </div>
 
             <div className={styles.topBrandCard}>
               <div className={styles.topBrandLogoContainer}>
-                <img src="/brands/hoka.svg" alt="HOKA" className={styles.topBrandLogo} />
+                <img src="/brands/hoka.png" alt="HOKA" className={styles.topBrandLogo} />
               </div>
               <div className={styles.topBrandLabel}><span className={styles.redCircle}>②</span> HOKA</div>
             </div>
 
             <div className={styles.topBrandCard}>
               <div className={styles.topBrandLogoContainer}>
-                <img src="/brands/altra.svg" alt="Altra" className={styles.topBrandLogo} style={{ maxHeight: '28px' }} />
+                <img src="/brands/altra.png" alt="Altra" className={styles.topBrandLogo} style={{ maxHeight: '28px' }} />
               </div>
               <div className={styles.topBrandLabel}><span className={styles.redCircle}>③</span> Altra</div>
             </div>
 
             <div className={styles.topBrandCard}>
               <div className={styles.topBrandLogoContainer}>
-                <img src="/brands/lasportiva.svg" alt="La Sportiva" className={styles.topBrandLogo} />
+                <img src="/brands/lasportiva.png" alt="La Sportiva" className={styles.topBrandLogo} />
               </div>
               <div className={styles.topBrandLabel}><span className={styles.redCircle}>④</span> La Sportiva</div>
             </div>
 
             <div className={styles.topBrandCard}>
               <div className={styles.topBrandLogoContainer}>
-                <img src="/brands/brooks.svg" alt="Brooks" className={styles.topBrandLogo} />
+                <img src="/brands/brooks.png" alt="Brooks" className={styles.topBrandLogo} />
               </div>
               <div className={styles.topBrandLabel}><span className={styles.redCircle}>⑤</span> Brooks</div>
             </div>
@@ -381,10 +381,10 @@ export default function Home() {
               <img src="/brands/adidas.svg" alt="Adidas" />
             </div>
             <div className={styles.partnerLogo}>
-              <img src="/brands/salomon.svg" alt="Salomon" />
+              <img src="/brands/salomon.png" alt="Salomon" />
             </div>
             <div className={styles.partnerLogo}>
-              <img src="/brands/hoka.svg" alt="Hoka" />
+              <img src="/brands/hoka.png" alt="Hoka" />
             </div>
             <div className={styles.partnerLogo}>
               <img src="/brands/puma.svg" alt="Puma" />
