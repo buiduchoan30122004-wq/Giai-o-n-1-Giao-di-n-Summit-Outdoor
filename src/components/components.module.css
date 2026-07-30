@@ -69,9 +69,10 @@
 /* Nav Bar (Salomon Style Mega Menu Trigger) */
 .navList {
   display: flex;
-  gap: 35px;
-  margin-left: 60px;
+  gap: clamp(15px, 2vw, 30px);
+  margin-left: clamp(20px, 4vw, 60px);
   flex: 1;
+  flex-wrap: nowrap;
 }
 
 .navItem {
@@ -81,6 +82,7 @@
   cursor: pointer;
   position: relative;
   letter-spacing: 0.5px;
+  white-space: nowrap;
 }
 
 .navItem:hover {
