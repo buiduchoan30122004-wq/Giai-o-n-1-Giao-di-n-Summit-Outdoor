@@ -512,13 +512,13 @@
 }
 
 .productName {
-  font-weight: 800;
-  font-size: 0.95rem;
+  font-weight: 700;
+  font-size: 0.92rem;
   margin-bottom: 4px;
   line-height: 1.35;
-  text-transform: uppercase;
-  color: var(--color-black);
-  letter-spacing: -0.2px;
+  text-transform: none; /* Giữ nguyên chữ thường/hoa tự nhiên để tên sản phẩm thanh thoát hơn */
+  color: #18181b; /* Màu đen kẽm tối thay cho đen xì, tinh tế và sang trọng */
+  letter-spacing: -0.1px;
 }
 
 .productSubtitle {

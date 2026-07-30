@@ -401,7 +401,7 @@ export const productsDatabase: Record<string, Product> = {
   'gu-tabs': {
     id: 'gu-tabs',
     brand: 'GU Energy',
-    name: 'Viên Sủi Điện Giải GU Hydration Drink Tabs',
+    name: 'Viên sủi điện giải GU Hydration Tabs',
     price: '219.000đ',
     image: 'https://cdn.hstatic.net/products/200001165929/20230830_jsdi42u6db_5cf9e7362ea3440387a5069d7fb44de3_grande.jpeg',
     thumbnails: [
@@ -464,7 +464,7 @@ export const productsDatabase: Record<string, Product> = {
   'hammer-recover-real': {
     id: 'hammer-recover-real',
     brand: 'Hammer Nutrition',
-    name: 'Thức Uống Phục Hồi Hammer Recoverite Socola',
+    name: 'Bột phục hồi Hammer Recoverite Socola',
     price: '105.000đ',
     image: 'https://cdn.hstatic.net/products/200001165929/upload_a5f8396e74d444f8b8eaf1d8955b389d_grande.jpg',
     thumbnails: [
@@ -486,7 +486,7 @@ export const productsDatabase: Record<string, Product> = {
   'hammer-gel-real': {
     id: 'hammer-gel-real',
     brand: 'Hammer Nutrition',
-    name: 'Gel Năng Lượng Hammer Gel Vị Montana Huckleberry',
+    name: 'Hammer Gel vị Montana Huckleberry',
     price: '49.000đ',
     image: 'https://cdn.hstatic.net/products/200001165929/upload_4532655c9b5c42ed813f44962cfe05f2_grande.jpg',
     thumbnails: [
@@ -507,7 +507,7 @@ export const productsDatabase: Record<string, Product> = {
   'lecka-bar': {
     id: 'lecka-bar',
     brand: 'Lecka',
-    name: 'Thanh Năng Lượng Tự Nhiên Lecka Vị Chuối Quế',
+    name: 'Thanh năng lượng Lecka Chuối Quế',
     price: '2.000đ',
     image: 'https://cdn.hstatic.net/products/200001165929/upload_4313a74252a94f94b90421b303c3845e_grande.jpg',
     thumbnails: [
@@ -528,7 +528,7 @@ export const productsDatabase: Record<string, Product> = {
   'lecka-bar-cacao': {
     id: 'lecka-bar-cacao',
     brand: 'Lecka',
-    name: 'Thanh Năng Lượng Tự Nhiên Lecka Vị Cacao Chuối',
+    name: 'Thanh năng lượng Lecka Cacao Chuối',
     price: '40.000đ',
     image: 'https://cdn.hstatic.net/products/200001165929/upload_89eacceb324947b089b62a9b6dafef04_grande.jpg',
     thumbnails: [
@@ -549,7 +549,7 @@ export const productsDatabase: Record<string, Product> = {
   'tailwind-rebuild-coffee': {
     id: 'tailwind-rebuild-coffee',
     brand: 'Tailwind',
-    name: 'Bột Phục Hồi Tailwind Rebuild Recovery Vị Cà Phê',
+    name: 'Tailwind Rebuild Recovery vị Cà phê',
     price: '105.000đ',
     image: 'https://cdn.hstatic.net/products/200001165929/upload_f8628d03aee6468081987a8a6475fdbb_grande.jpg',
     thumbnails: [
@@ -570,7 +570,7 @@ export const productsDatabase: Record<string, Product> = {
   'tailwind-rebuild-caramel': {
     id: 'tailwind-rebuild-caramel',
     brand: 'Tailwind',
-    name: 'Bột Phục Hồi Tailwind Rebuild Recovery Vị Caramel Muối',
+    name: 'Tailwind Rebuild Recovery vị Caramel Muối',
     price: '105.000đ',
     image: 'https://cdn.hstatic.net/products/200001165929/upload_9917b20f06da4ad1907eb925cfd9b99a_grande.jpg',
     thumbnails: [
@@ -591,7 +591,7 @@ export const productsDatabase: Record<string, Product> = {
   'pillar-recovery-berry': {
     id: 'pillar-recovery-berry',
     brand: 'Pillar Performance',
-    name: 'Vi Chất Magie Phục Hồi Pillar Triple Magnesium Berry',
+    name: 'Bột Magie Pillar Triple Magnesium',
     price: '40.000đ',
     image: 'https://cdn.hstatic.net/products/200001165929/upload_0e36e90b54224a0882255a7198ed9bf9_grande.jpg',
     thumbnails: [
@@ -612,7 +612,7 @@ export const productsDatabase: Record<string, Product> = {
   'gu-roctane-chocolate': {
     id: 'gu-roctane-chocolate',
     brand: 'GU Energy',
-    name: 'Gel Năng Lượng GU Roctane Vị Socola Muối Biển',
+    name: 'Gel GU Roctane vị Socola Muối',
     price: '79.000đ',
     image: 'https://cdn.hstatic.net/products/200001165929/upload_64ff9079187c44ee8abe49e34418719c_grande.jpg',
     thumbnails: [

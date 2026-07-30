@@ -7,7 +7,7 @@ export default function ShopNutrition() {
     { 
       id: 'gu-tabs', 
       brand: 'GU Energy', 
-      name: 'Viên Sủi Điện Giải GU Hydration Drink Tabs', 
+      name: 'Viên sủi điện giải GU Hydration Tabs', 
       price: '219.000đ', 
       image: 'https://cdn.hstatic.net/products/200001165929/20230830_jsdi42u6db_5cf9e7362ea3440387a5069d7fb44de3_grande.jpeg',
       status: 'Essential',
@@ -16,7 +16,7 @@ export default function ShopNutrition() {
     { 
       id: 'hammer-gel-real', 
       brand: 'Hammer Nutrition', 
-      name: 'Gel Năng Lượng Hammer Gel Vị Montana Huckleberry', 
+      name: 'Hammer Gel vị Montana Huckleberry', 
       price: '49.000đ', 
       image: 'https://cdn.hstatic.net/products/200001165929/upload_4532655c9b5c42ed813f44962cfe05f2_grande.jpg',
       status: 'Popular',
@@ -25,7 +25,7 @@ export default function ShopNutrition() {
     { 
       id: 'lecka-bar', 
       brand: 'Lecka', 
-      name: 'Thanh Năng Lượng Tự Nhiên Lecka Vị Chuối Quế', 
+      name: 'Thanh năng lượng Lecka Chuối Quế', 
       price: '40.000đ', 
       image: 'https://cdn.hstatic.net/products/200001165929/upload_4313a74252a94f94b90421b303c3845e_grande.jpg',
       status: 'Eco-Friendly',
@@ -34,7 +34,7 @@ export default function ShopNutrition() {
     { 
       id: 'lecka-bar-cacao', 
       brand: 'Lecka', 
-      name: 'Thanh Năng Lượng Tự Nhiên Lecka Vị Cacao Chuối', 
+      name: 'Thanh năng lượng Lecka Cacao Chuối', 
       price: '40.000đ', 
       image: 'https://cdn.hstatic.net/products/200001165929/upload_89eacceb324947b089b62a9b6dafef04_grande.jpg',
       status: 'Popular',
@@ -43,7 +43,7 @@ export default function ShopNutrition() {
     { 
       id: 'pillar-recovery-berry', 
       brand: 'Pillar Performance', 
-      name: 'Vi Chất Magie Phục Hồi Pillar Triple Magnesium Berry', 
+      name: 'Bột Magie Pillar Triple Magnesium', 
       price: '40.000đ', 
       image: 'https://cdn.hstatic.net/products/200001165929/upload_0e36e90b54224a0882255a7198ed9bf9_grande.jpg',
       status: 'High Tech',
