@@ -343,34 +343,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Partner Brands */}
-      <section className={styles.partnerSection}>
-        <div className="container">
-          <div className={styles.partnerGrid}>
-            <div className={styles.partnerLogo}>
-              <img src="/brands/asics.png" alt="Asics" />
-            </div>
-            <div className={styles.partnerLogo}>
-              <img src="/brands/adidas.svg" alt="Adidas" />
-            </div>
-            <div className={styles.partnerLogo}>
-              <img src="/brands/salomon.png" alt="Salomon" />
-            </div>
-            <div className={styles.partnerLogo}>
-              <img src="/brands/hoka.png" alt="Hoka" />
-            </div>
-            <div className={styles.partnerLogo}>
-              <img src="/brands/puma.svg" alt="Puma" />
-            </div>
-            <div className={styles.partnerLogo}>
-              <img src="/brands/new-balance.svg" alt="New Balance" />
-            </div>
-            <div className={styles.partnerLogo}>
-              <img src="/brands/nike.svg" alt="Nike" />
-            </div>
-          </div>
-        </div>
-      </section>
+
       {/* Disclaimer */}
       <section className={styles.disclaimerSection}>
         <div className="container">
