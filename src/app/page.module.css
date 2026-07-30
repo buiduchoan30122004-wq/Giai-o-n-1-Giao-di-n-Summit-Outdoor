@@ -208,7 +208,7 @@
 /* Partner Brands Section */
 .partnerSection {
   background-color: var(--color-white);
-  padding: 40px 0;
+  padding: 15px 0; /* Thu hẹp khoảng trắng từ 40px xuống 15px */
   border-top: 1px solid #f0f0f0;
 }
 
