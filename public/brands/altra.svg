@@ -1,3 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 80" width="100%" height="100%">
-  <text x="50%" y="55" font-family="'Inter', system-ui, sans-serif" font-weight="900" font-style="italic" font-size="48" fill="#a6192e" text-anchor="middle" letter-spacing="-1px">ALTRA</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 110" width="100%" height="100%">
+  <!-- Swept back wing shape (Red & Black) -->
+  <g transform="translate(60, 5)">
+    <path d="M15 32 L150 12 L180 18 L35 38 Z" fill="#a6192e" />
+    <path d="M0 45 L130 25 L145 29 L5 49 Z" fill="#000000" />
+  </g>
+  <!-- ALTRA text in black italic -->
+  <text x="50%" y="95" font-family="'Inter', system-ui, sans-serif" font-weight="900" font-style="italic" font-size="40" fill="#000000" text-anchor="middle" letter-spacing="1.5px">ALTRA</text>
 </svg>

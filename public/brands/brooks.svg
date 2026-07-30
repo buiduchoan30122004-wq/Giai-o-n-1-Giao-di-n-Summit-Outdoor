@@ -1,9 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 90" width="100%" height="100%">
-  <g transform="translate(15, 20)">
-    <!-- Brooks Chevron Logo -->
-    <path d="M12 22 L45 22 L32 34 L3 34 Z" fill="#005ca9" />
-    <path d="M42 22 L49 22 L38 34 L31 34 Z" fill="#005ca9" opacity="0.8" />
-    <!-- Brooks text -->
-    <text x="60" y="36" font-family="'Inter', system-ui, sans-serif" font-weight="900" font-style="italic" font-size="44" fill="#005ca9" letter-spacing="-1.5px">BROOKS</text>
+  <g transform="translate(10, 20)">
+    <!-- Sleek Brooks Chevron Logo -->
+    <path d="M0 26 C15 14, 45 14, 60 27 C40 27, 25 31, 10 41 Z" fill="#005ca9" />
+    <!-- Brooks text in blue italic -->
+    <text x="75" y="38" font-family="'Inter', system-ui, sans-serif" font-weight="900" font-style="italic" font-size="44" fill="#005ca9" letter-spacing="-1px">BROOKS</text>
   </g>
 </svg>
