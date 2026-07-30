@@ -1,11 +1,14 @@
-'use client';
+"use client";
 
+import { usePathname } from 'next/navigation';
 import styles from './components.module.css';
-import { useLanguage } from '../context/LanguageContext';
 
 export default function Footer() {
-  const { t } = useLanguage();
+  const pathname = usePathname();
 
+  if (pathname && pathname.startsWith('/admin')) {
+    return null;
+  }
   return (
     <footer className={styles.footer}>
       <div className={`container ${styles.footerInner}`}>
@@ -19,42 +22,42 @@ export default function Footer() {
             SUMMIT<span>OUTDOOR</span>
           </div>
           <p className={styles.footerDesc}>
-            {t('footer.desc')}
+            Hệ thống cửa hàng phân phối đồ chạy bộ địa hình và dã ngoại cao cấp, tập trung vào sản phẩm chính hãng, tư vấn chuyên sâu và xây dựng cộng đồng đam mê thể thao.
           </p>
         </div>
         <div>
-          <h3 className={styles.footerColTitle}>{t('footer.shop')}</h3>
+          <h3 className={styles.footerColTitle}>Mua Sắm</h3>
           <ul className={styles.footerList}>
-            <li>{t('footer.men')}</li>
-            <li>{t('footer.women')}</li>
-            <li>{t('footer.trail')}</li>
-            <li>{t('footer.hiking')}</li>
-            <li>{t('footer.accessories')}</li>
+            <li>Đồ Cho Nam</li>
+            <li>Đồ Cho Nữ</li>
+            <li>Giày Chạy Địa Hình</li>
+            <li>Giày Leo Núi</li>
+            <li>Phụ Kiện Thể Thao</li>
           </ul>
         </div>
         <div>
-          <h3 className={styles.footerColTitle}>{t('footer.support')}</h3>
+          <h3 className={styles.footerColTitle}>Hỗ Trợ</h3>
           <ul className={styles.footerList}>
-            <li>{t('footer.track')}</li>
-            <li>{t('footer.returns')}</li>
-            <li>{t('footer.warranty')}</li>
-            <li>{t('footer.contact')}</li>
-            <li>{t('footer.faq')}</li>
+            <li>Tra Cứu Đơn Hàng</li>
+            <li>Chính Sách Đổi Trả</li>
+            <li>Chính Sách Bảo Hành</li>
+            <li>Liên Hệ</li>
+            <li>Câu Hỏi Thường Gặp</li>
           </ul>
         </div>
         <div>
-          <h3 className={styles.footerColTitle}>{t('footer.discover')}</h3>
+          <h3 className={styles.footerColTitle}>Khám Phá</h3>
           <ul className={styles.footerList}>
-            <li>{t('footer.about')}</li>
-            <li>{t('footer.events')}</li>
-            <li>{t('footer.blog')}</li>
-            <li>{t('footer.jobs')}</li>
+            <li>Về Summit Outdoor</li>
+            <li>Sự Kiện Cộng Đồng</li>
+            <li>Blog & Câu Chuyện</li>
+            <li>Tuyển Dụng</li>
           </ul>
         </div>
       </div>
       <div className={styles.copyright}>
         <div className="container">
-          &copy; {new Date().getFullYear()} {t('footer.copyright')}
+          &copy; {new Date().getFullYear()} Summit Outdoor. Đã đăng ký bản quyền.
         </div>
       </div>
     </footer>

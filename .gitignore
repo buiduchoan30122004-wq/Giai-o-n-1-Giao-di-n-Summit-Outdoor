@@ -40,7 +40,11 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# local databases and config keys
-resend_config.txt
+# local databases
 brain.db
-package-lock.json
+/brain.db
+*.db
+
+# local artifacts
+*.zip
+output.json

@@ -4,7 +4,6 @@ import "./globals.css";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import Chatbot from "../components/Chatbot";
-import { LanguageProvider } from "../context/LanguageContext";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -27,12 +26,10 @@ export default function RootLayout({
   return (
     <html lang="vi" className={`${inter.variable}`}>
       <body>
-        <LanguageProvider>
-          <Header />
-          {children}
-          <Footer />
-          <Chatbot />
-        </LanguageProvider>
+        <Header />
+        {children}
+        <Footer />
+        <Chatbot />
       </body>
     </html>
   );
